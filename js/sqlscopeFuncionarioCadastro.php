@@ -24,6 +24,14 @@ if ($funcao == 'gravarNovaSenha') {
     call_user_func($funcao);
 }
 
+if ($funcao == 'verificaCpf') {
+    call_user_func($funcao);
+}
+
+if($funcao == 'validaCpf'){
+    call_user_func($funcao);
+}
+
 return;
 
 
@@ -276,5 +284,37 @@ function gravarNovaSenha()
 
     echo $ret;
 
+    return;
+}
+
+function verificaCpf()
+{
+    $utils = new comum();
+
+    $result = $utils->validaCpf($_POST['cpf']);
+
+    if( $result ){
+        echo 'sucess#';
+    }else{
+        echo 'failed#';
+    }
+}
+
+function validaCpf(){
+    $reposit = new reposit();
+    $utils = new comum();
+
+    $cpf = $utils->formatarString($_POST['cpf']);
+
+    $sql = "SELECT cpf from dbo.funcionario where cpf = $cpf";
+
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+    $ret = 'sucess# CPF cadastrado';
+    if (count($result)>0) {
+        $ret = 'failed# CPF já existente';
+    }
+    echo $ret;
     return;
 }

@@ -3,16 +3,16 @@ function gravaFuncionario(id, ativo, nome, cpf, dataNascimento) {
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: {funcao: "grava", id:id, ativo:ativo, nome:nome, cpf:cpf, dataNascimento:dataNascimento}, 
+        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, dataNascimento: dataNascimento },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
-                var mensagem = piece[1];              
+                var mensagem = piece[1];
                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
                 return '';
             } else {
                 smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                setInterval( novo(), 1500 )
+                setInterval(novo(), 1500)
             }
             //retorno dos dados
         },
@@ -20,8 +20,57 @@ function gravaFuncionario(id, ativo, nome, cpf, dataNascimento) {
             //tratamento de erro
         }
     });
-    return '';
 
+
+    return '';
+}
+
+function verificarCpf() {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioCadastro.php',
+        dataType: ' html',
+        type: 'post',
+        cpf: { funcao: 'verificaCpf', cpf : cpf },
+        success: function (data, textStatus) {
+            if (data.indexOf('failed') > -1) {
+                var piece = data.split("#");
+                var mensagem = piece[1];
+
+                if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error");
+                } else {
+                    smartAlert("Atenção", "CPF inválido", "error");
+                }
+            }
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
+}
+
+function validarCpf() {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioCadastro.php',
+        dataType: ' html',
+        type: 'post',
+        cpf: { funcao: 'validaCpf', cpf : cpf },
+        success: function (data, textStatus) {
+            if (data.indexOf('failed') > -1) {
+                var piece = data.split("#");
+                var mensagem = piece[1];
+
+                if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error");
+                } else {
+                    smartAlert("Atenção", "CPF inválido", "error");
+                }
+            }
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
 }
 
 function recuperaFuncionario(id) {
@@ -29,7 +78,7 @@ function recuperaFuncionario(id) {
         url: 'js/sqlscopeFuncionarioCadastro.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: {funcao: 'recupera', id: id}, //valores enviados ao script     
+        data: { funcao: 'recupera', id: id }, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -51,12 +100,12 @@ function recuperaFuncionario(id) {
                 var ativo = +piece[2];
                 var cpf = piece[3];
                 var dataNascimento = piece[4];
-               
+
                 $("#codigo").val(codigo);
                 $("#nome").val(nome);
                 $("#ativo").val(ativo);
                 $("#cpf").val(cpf);
-                $("#dataNascimento").val(dataNascimento); 
+                $("#dataNascimento").val(dataNascimento);
                 //
                 //atribuindo valor 
                 if (ativo === 1) {
@@ -64,7 +113,7 @@ function recuperaFuncionario(id) {
                 } else {
                     $('#ativo').prop('checked', false);
                 }
-                idade ($("#dataNascimento").val());
+                idade($("#dataNascimento").val());
                 return;
             }
         },
@@ -81,7 +130,7 @@ function excluirFuncionario(id) {
         url: 'js/sqlscopefuncionarioCadastro.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: {funcao: 'excluir', id: id}, //valores enviados ao script     
+        data: { funcao: 'excluir', id: id }, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -105,40 +154,38 @@ function excluirFuncionario(id) {
             }
         },
         error: function (xhr, er) {
-               //tratamento de erro
+    //tratamento de erro
         }
     });
 }
 
 function recuperaDadosUsuario(callback) {
     $.ajax({
-      url: 'js/sqlscopeUsuario.php', //caminho do arquivo a ser executado
-      dataType: 'html', //tipo do retorno
-      type: 'post', //metodo de envio
-      data: { funcao: 'recuperarDadosUsuario'}, //valores enviados ao script
-  
-      success: function (data) {
-        callback(data)
-      },
+        url: 'js/sqlscopeUsuario.php', //caminho do arquivo a ser executado
+        dataType: 'html', //tipo do retorno
+        type: 'post', //metodo de envio
+        data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
+
+        success: function (data) {
+            callback(data)
+        },
     })
-  
+
     return
-  }
+}
 
-
-  function gravaNovaSenha(senha, senhaConfirma,callback) {
+function gravaNovaSenha(senha, senhaConfirma, callback) {
     $.ajax({
-      url: 'js/sqlscopeUsuario.php',
-      dataType: 'html', //tipo do retorno
-      type: 'post', //metodo de envio
-      data: {
-        funcao: 'gravarNovaSenha',
-        senha: senha,
-        senhaConfirma: senhaConfirma,
-      }, //valores enviados ao script
-      success: function (data) {
-        callback(data)
-      },
+        url: 'js/sqlscopeUsuario.php',
+        dataType: 'html', //tipo do retorno
+        type: 'post', //metodo de envio
+        data: {
+            funcao: 'gravarNovaSenha',
+            senha: senha,
+            senhaConfirma: senhaConfirma,
+        }, //valores enviados ao script
+        success: function (data) {
+            callback(data)
+        },
     })
-  }
-  
+}

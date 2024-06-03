@@ -137,7 +137,7 @@ include("inc/nav.php");
                                         <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                             <span class="fa fa-trash"></span>
                                         </button>
-                                      
+
                                         <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                             <span class="fa fa-floppy-o"></span>
                                         </button>
@@ -149,18 +149,18 @@ include("inc/nav.php");
                                         </button>
                                     </footer>
                                     <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
-                                            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-                                                <span id="ui-id-2" class="ui-dialog-title">
-                                                </span>
-                                            </div>
-                                            <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
-                                                <p>CONFIRMA A EXCLUSÃO ? </p>
-                                            </div>
-                                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                                <div class="ui-dialog-buttonset">
-                                                </div>
+                                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                                            <span id="ui-id-2" class="ui-dialog-title">
+                                            </span>
+                                        </div>
+                                        <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
+                                            <p>CONFIRMA A EXCLUSÃO ? </p>
+                                        </div>
+                                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                            <div class="ui-dialog-buttonset">
                                             </div>
                                         </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -217,29 +217,37 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
 
 //mascaras
+
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
 
         $(".cpf").inputmask("999.999.999-99");
         $(".dataNascimento").inputmask("99/99/9999");
         $("#dataNascimento").on('change', function() {
-           idade ($("#dataNascimento").val());
+            idade($("#dataNascimento").val());
         });
 
-        $("#cpf").on('change',function(){
+        $("#cpf").on('change', function() {
             verificaCpf()
         })
 
+        $("#cpf").on('change', function() {
+        validaCpf()
+    })
+
+        $("#dataNascimento").on('change',function(){
+            nascFuncionario($("#dataNascimento").val());
+        })
         carregaPagina();
     })
 
-//caixa de diálogo
+       //caixa de diálogo
     $('#dlgSimpleExcluir').dialog({
         autoOpen: false,
         width: 400,
         resizable: false,
         modal: true,
-        title:'Confirma Exclusão',
+        title: 'Confirma Exclusão',
         buttons: [{
             html: "Excluir registro",
             "class": "btn btn-success",
@@ -356,9 +364,18 @@ include("inc/scripts.php");
         return age;
     }
 
-    function verificaCpf(){
+    function nascFuncionario(dataNascimento){
+        var dataNascimento = $('#dataNascimento').val()
+        validarData(dataNascimento)
+    }
+    
+    function verificaCpf() {
         var cpf = $("#cpf").val()
-        
+        verificarCpf(cpf) //variável "passa" nesse ()
     }
 
+    function validaCpf() {
+        var cpf = $("#cpf").val()
+        validarCpf(cpf)
+    }
 </script>

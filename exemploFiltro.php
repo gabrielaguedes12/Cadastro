@@ -6,8 +6,8 @@ require_once("inc/init.php");
 require_once("inc/config.ui.php");
 
 //colocar o tratamento de permissão sempre abaixo de require_once("inc/config.ui.php");
-$condicaoAcessarOK = (in_array('USUARIO_ACESSAR', $arrayPermissao, true));
-$condicaoGravarOK = (in_array('USUARIO_GRAVAR', $arrayPermissao, true));
+$condicaoAcessarOK = true;
+$condicaoGravarOK = true;
 
 if ($condicaoAcessarOK == false) {
     unset($_SESSION['login']);
@@ -24,7 +24,7 @@ if ($condicaoGravarOK === false) {
   YOU CAN SET CONFIGURATION VARIABLES HERE BEFORE IT GOES TO NAV, RIBBON, ETC.
   E.G. $page_title = "Custom Title" */
 
-$page_title = "Grupo";
+$page_title = "Usuário";
 
 /* ---------------- END PHP Custom Scripts ------------- */
 
@@ -36,7 +36,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["configuracao"]["sub"]["grupo"]["active"] = true;
+$page_nav["configuracao"]["sub"]["usuarios"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -81,7 +81,7 @@ include("inc/nav.php");
                                                     <fieldset>
                                                         <div class="row">
                                                             <section class="col col-6">
-                                                                <label class="label">Descrição</label>
+                                                                <label class="label">Nome</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                     <input id="nome" maxlength="50" name="nome" type="text" value="">
                                                                 </label>
@@ -160,21 +160,13 @@ include("inc/scripts.php");
 
     function listarFiltro() {
         var nome = $('#nome').val();
-
-        $('#resultadoBusca').load('usuarioGrupoFiltroListagem.php?', {
+ 
+        $('#resultadoBusca').load('usuarioFiltroListagem.php?', {
             nomeFiltro: nome
         });
     }
 
-    function listarFiltro() {
-
-        var nome = $('#nome').val();
-       
-        var parametrosUrl = '&nome=' + nome;
-        $('#resultadoBusca').load('usuarioGrupoFiltroListagem.php?' + parametrosUrl);
-    }
-
     function novo() {
-        $(location).attr('href', 'usuarioGrupoCadastro.php');
+        $(location).attr('href', 'usuarioCadastro.php');
     }
 </script>

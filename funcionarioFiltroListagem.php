@@ -1,76 +1,70 @@
 <?php
 include "js/repositorio.php";
+include "js/girComum.php";
+
 ?>
 <div class="table-container">
     <div class="table-responsive" style="min-height: 115px; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
         <table id="tableSearchResult" class="table table-bordered table-striped table-condensed table-hover dataTable">
             <thead>
                 <tr role="row">
-                    <th class="text-left" style="min-width:25px;">CPF</th>
-                    <th class="text-left" style="min-width:30px;">Nome</th>
-                    <th class="text-left" style="min-width:35px;">Ativo</th>
-                    <th class="text-left" style="min: width 10px;">Data Nascimento</th>
+                    <th class="text-left" style="min-width:35px;">Nome</th>
+                    <th class="text-left" style="min-width:30px;">CPF</th>
+                    <th class="text-left" style="min-width:15px;">Data de Nascimento</th>
+                    <th class="text-left" style="min-width:10px;">Ativo</th>
+
                 </tr>
             </thead>
             <tbody>
                 <?php
+                $utils = new comum();
+                $reposit = new reposit();
                 
+                $sql = " SELECT codigo,nome,cpf, dataNascimento,ativo from dbo.funcionario ";
                 $where = "WHERE (0 = 0)";
 
-                $nome = "";
-                if ($_GET["nome"] != "") {
-                    $nome = $_GET["nome"];
-                    $where = $where . " AND ([nome] like '%' + " . "replace('" . $nome . "',' ','%') + " . "'%')";
-                }
-                
-                $cpf = "";
-                if ($_GET["cpf"] != "") {
-                    $cpf = $_GET["cpf"];
-                    $where = $where . " AND ([cpf] like '%' + " . "replace('" . $cpf . "',' ','%') + " . "'%')";
+                $nome = $_GET["nome"];
+                $cpf =  $_GET["cpf"];
+                $dataNascimento =  $_GET["dataNascimento"];
+                $ativo =  $_GET["ativo"];
+
+                if ($nome != "") {
+                    $where = $where . " AND (dbo.nome like '%' + " .  $nome . "'%')";
                 }
 
-                $dataNascimento = "";
-                if ($_GET["dataNascimento"] != "") {
-                    $dataNascimento = $_GET["dataNascimento"];
-                    $where = $where . " AND ([dataNascimento] like '%' + " . "replace('" . $dataNascimento . "',' ','%') + " . "'%')";
+                if ($cpf != "") {
+                    $where = $where . " AND (dbo.cpf like '%' + " .  $cpf . "'%')";
                 }
-
-                $sql = " SELECT [codigo]
-                            ,[ativo]
-                            ,[nome]
-                            ,[cpf]
-                            ,[dataNascimento]
-                        FROM [cadastro].[dbo].[cadastro] ";
-            
-                $where = $where . "";
+                if ($dataNascimento != "") {
+                    $where = $where . " AND (dbo.dataNascimento like '%' + " .  $dataNascimento . "'%')";
+                }
+                if ($ativo != "") {
+                    $where = $where . " AND (dbo.ativo like '%' + " .  $ativo . "'%')";
+                }
 
                 $sql = $sql . $where;
-                $reposit = new reposit();
+                
                 $result = $reposit->RunQuery($sql);
+           
 
-                foreach($result as $row) {
-                    $codigo = (int) $row['codigo'];
-                    $cpf = $row['cpf'];
-                    $ativo = (int) $row['ativo'];
-                    $nome = $row['nome'];
-                    $dataNascimento = $row['dataNascimento'];
-                    $descricaoAtivo = "";
+                foreach ($result as $row) {
+                    $id =  $row['codigo'];
+                    $nome =  $row['nome'];
+                    $cpf =  $row['cpf'];
+                    $dataNascimento = $utils->validaData($row['dataNascimento']);
+                    $ativo = $row['ativo'];
+                    
                     if ($ativo == 1) {
                         $descricaoAtivo = "Sim";
                     } else {
                         $descricaoAtivo = "Não";
                     }
 
-                    $dataNascimento = explode(" ", $dataNascimento);
-                    $dataNascimento = explode("-", $dataNascimento[0]);
-                    $dataNascimento =  $dataNascimento[2] . "/" . $dataNascimento[1] . "/" . $dataNascimento[0];
-                    
-
                     echo '<tr >';
-                    echo '<td class="text-left"><a href="usuarioCadastro.php?id=' . $codigo . '">' . $cpf . '</a></td>';
-                    echo '<td class="text-left">' . $nome . '</td>';
+                    echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">'. $nome ;
+                    echo '<td class="text-left">' . $cpf . '</td>';
+                    echo '<td class="text-left">' . $dataNascimento . '</td>';
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';
-                    echo '<td class="text-left">' .$dataNascimento . '</td>';
                     echo '</tr >';
                 }
                 ?>

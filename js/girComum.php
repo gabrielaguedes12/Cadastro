@@ -211,11 +211,25 @@ function validaString($value)
 
 function validaData($value)
 {
-    $value = explode("/", $value);
+    $value = explode("-", $value);
     $value = $value[2] . "/" . $value[1] . "/" . $value[0];
-    $value = "'" . $value . "'";
+    // $value = "'" . $value . "'";
     return $value;
 }
+
+
+function formataDataSql($value)
+{
+    if ($value == "") {
+        $value = 'NULL';
+        return $value;
+      }
+      $value = str_replace('/', '-', $value);
+    //   $value = date("Y-m-d", strtotime($value));
+      $value = "'" . $value . "'";
+      return $value;
+}
+
 
 function validaDataXML($value)
 {

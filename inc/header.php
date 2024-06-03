@@ -86,9 +86,8 @@
                 document.write('<script src="<?php echo ASSETS_URL; ?>/js/libs/jquery-ui-1.10.3.min.js"><\/script>');
             }
         </script> 
-
-
-
+       <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
+    </script>
     </head>
     <body class="smart-style-0" <?php
     // echo implode(' ', array_map(function($prop, $value) {

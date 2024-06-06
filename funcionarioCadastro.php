@@ -124,14 +124,14 @@ include("inc/nav.php");
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-                                                            <section class="col col-1">
+                                                            <!-- <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
                                                                     <select id="ativo" name="ativo">
                                                                         <option></option>
                                                                         <option value="1" selected>Sim</option>
                                                                         <option value="0">Não</option>
-                                                                    </select><i></i>
+                                                                    </select><i></i> -->
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -249,7 +249,7 @@ include("inc/scripts.php");
             verificaCpf()
         });
 
-        $("#rg").on('focusout', function() {
+        $(".rg").on('focusout', function() {
             veificaRg()
         });
 
@@ -450,8 +450,9 @@ include("inc/scripts.php");
         verificarCpf(cpf) //variável "passa" nesse ()
     }
 
+    //verificar se já foi cadastrado
     function verificaRg(){
-        var rg = $('#rg').val()
+        var rg = $("#rg").val()
         verificarRg(rg)
     }
 </script>

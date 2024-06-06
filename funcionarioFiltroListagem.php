@@ -19,33 +19,33 @@ include "js/girComum.php";
                 <?php
                 $utils = new comum();
                 $reposit = new reposit();
-                
+
                 $sql = " SELECT codigo,nome,cpf, dataNascimento,ativo from dbo.funcionario ";
                 $where = "WHERE (0 = 0)";
 
-                $nome = $_GET["nome"];
-                $cpf =  $_GET["cpf"];
-                $dataNascimento =  $_GET["dataNascimento"];
-                $ativo =  $_GET["ativo"];
+                $nome = $_POST["nome"];
+                $cpf =  $_POST["cpf"];
+                $dataNascimento =  $_POST["dataNascimento"];
+                $ativo =  $_POST["ativo"];
 
                 if ($nome != "") {
-                    $where = $where . " AND (dbo.nome like '%' + " .  $nome . "'%')";
+                    $where = $where . " AND (nome like '%" . $nome . "%')";
                 }
 
                 if ($cpf != "") {
-                    $where = $where . " AND (dbo.cpf like '%' + " .  $cpf . "'%')";
+                    $where = $where . " AND (cpf like '%" .  $cpf . "%')";
                 }
                 if ($dataNascimento != "") {
-                    $where = $where . " AND (dbo.dataNascimento like '%' + " .  $dataNascimento . "'%')";
+                    $where = $where . " AND (dataNascimento = $dataNascimento)";
                 }
                 if ($ativo != "") {
-                    $where = $where . " AND (dbo.ativo like '%' + " .  $ativo . "'%')";
+                    $where = $where . " AND (ativo = $ativo)";
                 }
 
                 $sql = $sql . $where;
-                
+
                 $result = $reposit->RunQuery($sql);
-           
+
 
                 foreach ($result as $row) {
                     $id =  $row['codigo'];
@@ -53,7 +53,7 @@ include "js/girComum.php";
                     $cpf =  $row['cpf'];
                     $dataNascimento = $utils->validaData($row['dataNascimento']);
                     $ativo = $row['ativo'];
-                    
+
                     if ($ativo == 1) {
                         $descricaoAtivo = "Sim";
                     } else {
@@ -61,7 +61,7 @@ include "js/girComum.php";
                     }
 
                     echo '<tr >';
-                    echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">'. $nome ;
+                    echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
                     echo '<td class="text-left">' . $cpf . '</td>';
                     echo '<td class="text-left">' . $dataNascimento . '</td>';
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';

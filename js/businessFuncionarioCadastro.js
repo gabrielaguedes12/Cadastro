@@ -1,9 +1,9 @@
-function gravaFuncionario(id, ativo, nome, cpf, dataNascimento) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, dataNascimento: dataNascimento },
+        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg,  dataNascimento: dataNascimento },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
@@ -25,12 +25,37 @@ function gravaFuncionario(id, ativo, nome, cpf, dataNascimento) {
     return '';
 }
 
-function verificarCpf() {
+function verificarCpf(cpf) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        cpf: { funcao: 'verificaCpf', cpf : cpf },
+        data: { funcao: 'verificaCpf', cpf : cpf },
+        success: function (data, textStatus) {
+            if (data.indexOf('failed') > -1) {
+                var piece = data.split("#");
+                var mensagem = piece[1];
+
+                if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error");
+                    validaCpf()
+                } else {
+                    smartAlert("Atenção", "CPF já cadastrado", "error");
+                }
+            }
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
+}
+
+function validarCpf(cpf) {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioCadastro.php',
+        dataType: ' html',
+        type: 'post',
+        data: { funcao: 'validaCpf', cpf : cpf },
         success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
@@ -49,12 +74,12 @@ function verificarCpf() {
     });
 }
 
-function validarCpf() {
+function verificarRg(rg) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        cpf: { funcao: 'validaCpf', cpf : cpf },
+        data: { funcao: 'verificaRg', rg : rg },
         success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
@@ -62,8 +87,9 @@ function validarCpf() {
 
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
+                    verificaRg()
                 } else {
-                    smartAlert("Atenção", "CPF inválido", "error");
+                    smartAlert("Atenção", "RG já cadastrado", "error");
                 }
             }
         },

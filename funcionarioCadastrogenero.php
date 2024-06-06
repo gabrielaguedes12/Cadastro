@@ -77,11 +77,11 @@ include("inc/nav.php");
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseCadastro" class="" id="accordionCadastro">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
-                                                        Cadastro
+                                                        
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <div id="collapseCadastro" class="panel-collapse collapse in">
+                                            <!-- <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
                                                         <div class="row">
@@ -91,7 +91,16 @@ include("inc/nav.php");
                                                                     <input id="codigo" name="codigo" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-                                                        </div>
+                                                             <section class="col col-1">
+                                                                <label class="label">Ativo</label>
+                                                                <label class="select">
+                                                                    <select id="ativo" name="ativo">
+                                                                        <option></option>
+                                                                        <option value="1" selected>Sim</option>
+                                                                        <option value="0">Não</option>
+                                                                    </select><i></i>
+                                                            </section> -->
+                                                        <!-- </div>
                                                         <div class="row">
                                                             <section class="col col-4">
                                                                 <label class="label">Nome</label>
@@ -105,13 +114,13 @@ include("inc/nav.php");
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                     <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="999.999.999-99" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
-                                                            </section>
-                                                            <section class="col col-2">
+                                                            </section> --> 
+                                                            <!-- <section class="col col-2">
                                                                 <label class="label">RG</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input class="rg" maxlength="20" id="rg" type="text" class="required" placeholder="99.999.999-9" value="" style="background-color: rgb(255, 255, 192);">
+                                                                    <input class="rg" maxlength="20" id="cpf" type="text" class="required" placeholder="99.999.999-9" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
-                                                            </section>
+                                                            </section> -->
                                                             <section class="col col-2">
                                                                 <label class="label">Data de Nascimento</label>
                                                                 <label class="input">
@@ -124,14 +133,6 @@ include("inc/nav.php");
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-                                                            <section class="col col-1">
-                                                                <label class="label">Ativo</label>
-                                                                <label class="select">
-                                                                    <select id="ativo" name="ativo">
-                                                                        <option></option>
-                                                                        <option value="1" selected>Sim</option>
-                                                                        <option value="0">Não</option>
-                                                                    </select><i></i>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -227,34 +228,29 @@ include("inc/scripts.php");
     $(document).ready(function() {
 
         $(".cpf").inputmask("999.999.999-99");
-        $(".rg").inputmask("99.999.999-9");
         $(".dataNascimento").inputmask("99/99/9999");
         $("#dataNascimento").on('change', function() {
             idade($("#dataNascimento").val());
         });
 
         $("#dataNascimento").on('focusout', function() {
-            validaData()
-            if (!validaData($("#dataNascimento").val())) {
+           validaData()
+           if (!validaData($("#dataNascimento").val())) {
                 alert("Data Inválida,por favor tentar novamente.");
             }
 
         });
 
-        $("#cpf").on('focusout', function() {
-            validaCpf()
-        });
+            $("#cpf").on('focusout', function() {
+                validaCpf()
+            });
 
-        $("#cpf").on('change', function() {
-            verificaCpf()
-        });
+            $("#cpf").on('change', function() {
+                verificaCpf()
+            });
 
-        $("#rg").on('focusout', function() {
-            veificaRg()
-        });
-
-        carregaPagina();
-    })
+            carregaPagina();
+        })
 
     //caixa de diálogo
     $('#dlgSimpleExcluir').dialog({
@@ -343,7 +339,6 @@ include("inc/scripts.php");
         }
         var nome = $("#nome").val(); //pegando valor da variavel
         var cpf = $("#cpf").val();
-        var rg = $("#rg").val();
         var dataNascimento = $("#dataNascimento").val();
 
         if (nome == "") {
@@ -357,16 +352,11 @@ include("inc/scripts.php");
             cpf = $("#cpf").focus();
             return
         }
-        if (rg == "") {
-            smartAlert("Atenção", "RG não preenchido.", "error")
-            rg = $("#rg").focus();
-            return
-        }
         if (dataNascimento == "") {
             smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
             dataNascimento = $("#dataNascimento").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento);
+        gravaFuncionario(id, ativo, nome, cpf, dataNascimento);
     }
 
     //data na ordem e contagem de idade
@@ -446,12 +436,7 @@ include("inc/scripts.php");
 
     //verificar se já foi cadastrado
     function verificaCpf() {
-        var cpf = $('#cpf').val()
+        var cpf = $("#cpf").val()
         verificarCpf(cpf) //variável "passa" nesse ()
-    }
-
-    function verificaRg(){
-        var rg = $('#rg').val()
-        verificarRg(rg)
     }
 </script>

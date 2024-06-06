@@ -1,5 +1,5 @@
 <?php
- include "repositorio.php";
+include "repositorio.php";
 include "girComum.php";
 
 $funcao = $_POST["funcao"];
@@ -28,7 +28,7 @@ if ($funcao == 'verificaCpf') {
     call_user_func($funcao);
 }
 
-if($funcao == 'validaCpf'){
+if ($funcao == 'validaCpf') {
     call_user_func($funcao);
 }
 
@@ -50,6 +50,7 @@ function grava()
     $ativo = (int) $_POST["ativo"];
     $nome = $utils->formatarString($_POST['nome']);
     $cpf = $utils->formatarString($_POST['cpf']);
+    $rg = $utils->formatarString($_POST['rg']);
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
 
     $sql = "dbo.funcionario_atualiza 
@@ -57,6 +58,7 @@ function grava()
         $nome,
         $ativo,
         $cpf,
+        $rg,
         $dataNascimento";
 
     $reposit = new reposit();
@@ -105,6 +107,7 @@ function recupera()
         $nome = $row['nome'];
         $ativo = $row['ativo'];
         $cpf = $row['cpf'];
+        $rg = $row['rg'];
         $dataNascimento = $utils->validaData($row['dataNascimento']);
     }
 
@@ -113,12 +116,12 @@ function recupera()
         $nome . "^" .
         $ativo . "^" .
         $cpf . "^" .
-        $dataNascimento; 
-        
+        $rg . "^" .
+        $dataNascimento;
+
     if ($out == "") {
         echo "failed#";
         return;
-    
     }
     echo "sucess#" . $out;
     return;
@@ -287,20 +290,23 @@ function gravarNovaSenha()
     return;
 }
 
-function verificaCpf()
+//validar cpf(exem: 111.111.111-11)
+function validaCpf()
 {
     $utils = new comum();
 
     $result = $utils->validaCpf($_POST['cpf']);
 
-    if( $result ){
+    if ($result) {
         echo 'sucess#';
-    }else{
+    } else {
         echo 'failed#';
     }
 }
 
-function validaCpf(){
+//verificar se já foi cadastrado
+function verificaCpf()
+{
     $reposit = new reposit();
     $utils = new comum();
 
@@ -311,9 +317,29 @@ function validaCpf(){
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
 
-    $ret = 'sucess# CPF cadastrado';
-    if (count($result)>0) {
-        $ret = 'failed# CPF já existente';
+    $ret = 'sucess# CPF ok';
+    if (count($result) > 0) {
+        $ret = 'failed# CPF já cadastrado';
+    }
+    echo $ret;
+    return;
+}
+
+function verificaRg()
+{
+    $reposit = new reposit();
+    $utils = new comum();
+
+    $rg = $utils->formatarString($_POST['rg']);
+
+    $sql = "SELECT rg from dbo.funcionario where rg = $rg";
+
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+    $ret = 'sucess# RG ok';
+    if (count($result) > 0) {
+        $ret = 'failed# RG já cadastrado';
     }
     echo $ret;
     return;

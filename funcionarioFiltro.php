@@ -90,17 +90,17 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" placeholder="999.999.999-99" value="">
+                                                                    <input class="cpf" maxlength="20" id="cpf" class = required type="text" placeholder="999.999.999-99" value="">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
-                                                                <label class="label">Data de Nascimento - Inicio</label>
+                                                                <label class="label">Data inicial</label>
                                                                 <label class="input">
                                                                     <input id="dataNascimento" name="dataNascimento" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
-                                                                <label class="label">Data de Nascimento - Fim</label>
+                                                                <label class="label">Data final</label>
                                                                 <label class="input">
                                                                     <input id="dataNascimento" name="dataNascimento" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
@@ -177,6 +177,7 @@ include("inc/scripts.php");
 
 
 <script>
+     $(".cpf").inputmask("999.999.999-99");
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
             listarFiltro();

@@ -190,6 +190,8 @@ class comum {
 //        }   
 //        return $cripto;
 //    }
+
+
     
     function criptografia($cadeiaCaracter)
     {

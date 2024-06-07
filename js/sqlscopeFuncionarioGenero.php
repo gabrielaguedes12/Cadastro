@@ -20,21 +20,21 @@ if ($funcao == 'recuperarDadosUsuario') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'gravarNovaSenha') {
-    call_user_func($funcao);
-}
+// if ($funcao == 'gravarNovaSenha') {
+//     call_user_func($funcao);
+// }
 
-if ($funcao == 'verificaCpf') {
-    call_user_func($funcao);
-}
+// if ($funcao == 'verificaCpf') {
+//     call_user_func($funcao);
+// }
 
-if ($funcao == 'validaCpf') {
-    call_user_func($funcao);
-}
+// if ($funcao == 'validaCpf') {
+//     call_user_func($funcao);
+// }
 
-if ($funcao == 'verificaRg') {
-    call_user_func($funcao);
-}
+// if ($funcao == 'verificaRg') {
+//     call_user_func($funcao);
+// }
 
 return;
 
@@ -51,21 +51,13 @@ function grava()
     $utils = new comum();
 
     $id = (int) $_POST["id"];
-    $ativo = (int) $_POST["ativo"];
-    $nome = $utils->formatarString($_POST['nome']);
-    $cpf = $utils->formatarString($_POST['cpf']);
-    $rg = $utils->formatarString($_POST['rg']);
-    $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
-    $estadoCivil = $utils->formatarString($_POST ['estadoCivil']);
+    $descricaoGenero = $utils->formatarString($_POST['descricaoGenero']);
+   
 
-    $sql = "dbo.funcionario_atualiza 
+    $sql = "dbo.genero_atualiza 
         $id,
-        $nome,
-        $ativo,
-        $cpf,
-        $rg,
-        $dataNascimento,
-        $estadoCivil";
+        $descricaoGenero
+       ";
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -101,7 +93,7 @@ function recupera()
     $id = $_POST["id"];
 
 
-    $sql = " SELECT codigo,nome,ativo,cpf, dataNascimento, estadoCivil from dbo.funcionario WHERE (0 = 0) and codigo = $id ";
+    $sql = " SELECT codigo,descricaoGenero from dbo.genero WHERE (0 = 0) and codigo = $id ";
 
 
     $reposit = new reposit();
@@ -110,22 +102,12 @@ function recupera()
     $out = "";
     if ($row = $result[0]) {
         $id = $row['codigo'];
-        $nome = $row['nome'];
-        $ativo = $row['ativo'];
-        $cpf = $row['cpf'];
-        $rg = $row['rg'];
-        $dataNascimento = $utils->validaData($row['dataNascimento']);
-        $estadoCivil = $row['estadoCivil'];
-    }
+        $descricaoGenero = $row['descricaoGenero'];
+        }
 
     $out =
         $id . "^" .
-        $nome . "^" .
-        $ativo . "^" .
-        $cpf . "^" .
-        $rg . "^" .
-        $dataNascimento. "^" .
-        $estadoCivil;
+        $descricaoGenero;
 
     if ($out == "") {
         echo "failed#";
@@ -152,7 +134,7 @@ function excluir()
 
     $reposit = new reposit();
 
-    $result = $reposit->update('dbo.funcionario' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $id);
+    $result = $reposit->update('dbo.genero' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $id);
 
     if ($result < 1) {
         echo ('failed#');
@@ -274,15 +256,15 @@ function gravarNovaSenha()
     $usuario =  $login;
 
     $id = $_SESSION['codigo'];
-    $funcionario = $_SESSION['funcionario'];
-    if (!$funcionario) {
-        $funcionario = 'NULL';
+    $genero = $_SESSION['genero'];
+    if (!$genero) {
+        $genero = 'NULL';
     }
     $ativo = 1;
     $tipoUsuario = 'C';
     $restaurarSenha = 0;
 
-    $sql = "Ntl.usuario_Atualiza " . $id . "," . $ativo . "," . $login . "," . $senha . "," . $tipoUsuario . "," . $usuario . "," . $funcionario . "," . $restaurarSenha . " ";
+    $sql = "Ntl.usuario_Atualiza " . $id . "," . $ativo . "," . $login . "," . $senha . "," . $tipoUsuario . "," . $usuario . "," . $genero . "," . $restaurarSenha . " ";
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -320,7 +302,7 @@ function verificaCpf()
     
     $cpf = $utils->formatarString($_POST['cpf']);
 
-    $sql = "SELECT cpf from dbo.funcionario where cpf = $cpf";
+    $sql = "SELECT cpf from dbo.genero where cpf = $cpf";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -340,7 +322,7 @@ function verificaRg()
 
     $rg = $utils->formatarString($_POST['rg']);
 
-    $sql = "SELECT rg from dbo.funcionario where rg = $rg";
+    $sql = "SELECT rg from dbo.genero where rg = $rg";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);

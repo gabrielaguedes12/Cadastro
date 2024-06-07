@@ -20,12 +20,14 @@ include "js/girComum.php";
                 $utils = new comum();
                 $reposit = new reposit();
 
-                $sql = " SELECT codigo,nome,cpf, dataNascimento,ativo from dbo.funcionario ";
+                $sql = " SELECT codigo,nome,cpf,dataNascimento,ativo from dbo.funcionario ";
                 $where = "WHERE (0 = 0)";
 
                 $nome = $_POST["nome"];
                 $cpf =  $_POST["cpf"];
-                $dataNascimento =  $_POST["dataNascimento"];
+                $dataInicial = $utils->formataDataSql($_POST["dataInicial"]);
+                $dataFinal = $utils->formataDataSql($_POST["dataFinal"]);
+
                 $ativo =  $_POST["ativo"];
 
                 if ($nome != "") {
@@ -35,8 +37,11 @@ include "js/girComum.php";
                 if ($cpf != "") {
                     $where = $where . " AND (cpf like '%" .  $cpf . "%')";
                 }
-                if ($dataNascimento != "") {
-                    $where = $where . " AND (dataNascimento = $dataNascimento)";
+                if ($dataInicial != "NULL") {
+                    $where = $where . " AND (dataNascimento >= $dataInicial)";
+                }
+                if ($dataFinal != "NULL") {
+                    $where = $where . " AND (dataNascimento <= $dataFinal)";
                 }
                 if ($ativo != "") {
                     $where = $where . " AND (ativo = $ativo)";

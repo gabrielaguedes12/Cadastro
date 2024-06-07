@@ -1,9 +1,9 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg,  dataNascimento: dataNascimento },
+        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil : estadoCivil},
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
@@ -30,7 +30,7 @@ function verificarCpf(cpf) {
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        data: { funcao: 'verificaCpf', cpf : cpf },
+        data: { funcao: 'verificaCpf', cpf: cpf },
         success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
@@ -55,7 +55,7 @@ function validarCpf(cpf) {
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        data: { funcao: 'validaCpf', cpf : cpf },
+        data: { funcao: 'validaCpf', cpf: cpf },
         success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
@@ -79,7 +79,7 @@ function verificarRg(rg) {
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        data: { funcao: 'verificaRg', rg : rg },
+        data: { funcao: 'verificaRg', rg: rg },
         success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
@@ -87,7 +87,6 @@ function verificarRg(rg) {
 
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
-                    verificaRg()
                 } else {
                     smartAlert("Atenção", "RG já cadastrado", "error");
                 }
@@ -180,7 +179,7 @@ function excluirFuncionario(id) {
             }
         },
         error: function (xhr, er) {
-    //tratamento de erro
+            //tratamento de erro
         }
     });
 }

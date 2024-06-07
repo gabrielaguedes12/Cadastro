@@ -90,19 +90,19 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" class = required type="text" placeholder="999.999.999-99" value="">
+                                                                    <input class="cpf" maxlength="20" id="cpf" class=required type="text" placeholder="999.999.999-99" value="">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
                                                                 <label class="label">Data inicial</label>
                                                                 <label class="input">
-                                                                    <input id="dataNascimento" name="dataNascimento" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataInicial" name="dataInicial" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
                                                                 <label class="label">Data final</label>
                                                                 <label class="input">
-                                                                    <input id="dataNascimento" name="dataNascimento" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataFinal" name="dataFinal" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-1">
@@ -177,7 +177,7 @@ include("inc/scripts.php");
 
 
 <script>
-     $(".cpf").inputmask("999.999.999-99");
+    $(".cpf").inputmask("999.999.999-99");
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
             listarFiltro();
@@ -190,20 +190,20 @@ include("inc/scripts.php");
     function listarFiltro() {
         var nome = $('#nome').val();
         var cpf = $('#cpf').val();
-        var dataNascimento = $('#dataNascimento').val();
+        var dataInicial = $('#dataInicial').val();
+        var dataFinal = $('#dataFinal').val();
         var ativo = $('#ativo').val();
 
         $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
             nome: nome,
             cpf: cpf,
-            dataNascimento: dataNascimento,
+            dataInicial: dataInicial,
+            dataFinal: dataFinal,
             ativo: ativo
         });
     }
 
     function novo() {
         $(location).attr('href', 'usuarioCadastro.php');
-        
-    }
-    
+}
 </script>

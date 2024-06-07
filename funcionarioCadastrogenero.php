@@ -30,7 +30,7 @@ if ($condicaoExcluirOK === false) {
   YOU CAN SET CONFIGURATION VARIABLES HERE BEFORE IT GOES TO NAV, RIBBON, ETC.
   E.G. $page_title = "Custom Title" */
 
-$page_title = "Usuário";
+$page_title = "Gênero";
 
 /* ---------------- END PHP Custom Scripts ------------- */
 
@@ -65,7 +65,7 @@ include("inc/nav.php");
                     <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false" style="">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
-                            <h2>Usuário</h2>
+                            <h2>Gênero</h2>
                         </header>
                         <div>
                             <div class="widget-body no-padding">
@@ -77,96 +77,55 @@ include("inc/nav.php");
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseCadastro" class="" id="accordionCadastro">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
-                                                        
+
                                                     </a>
                                                 </h4>
                                             </div>
-                                            <!-- <div id="collapseCadastro" class="panel-collapse collapse in">
+                                            <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
                                                         <div class="row">
-                                                            <section class="col col-1 hidden">
-                                                                <label class="label">Código</label>
-                                                                <label class="input">
-                                                                    <input id="codigo" name="codigo" type="text" class="readonly" readonly>
-                                                                </label>
-                                                            </section>
-                                                             <section class="col col-1">
-                                                                <label class="label">Ativo</label>
-                                                                <label class="select">
-                                                                    <select id="ativo" name="ativo">
-                                                                        <option></option>
-                                                                        <option value="1" selected>Sim</option>
-                                                                        <option value="0">Não</option>
-                                                                    </select><i></i>
-                                                            </section> -->
-                                                        <!-- </div>
-                                                        <div class="row">
+
                                                             <section class="col col-4">
-                                                                <label class="label">Nome</label>
+                                                                <label class="label">Descrição</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="nome" maxlength="255" name="nome" class="required" type="text" placeholder=" " value="">
+                                                                    <input id="descricaoGenero" maxlength="255" name="descricaoGenero" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
 
-                                                            <section class="col col-2">
-                                                                <label class="label">CPF</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="999.999.999-99" value="" style="background-color: rgb(255, 255, 192);">
-                                                                </label>
-                                                            </section> --> 
-                                                            <!-- <section class="col col-2">
-                                                                <label class="label">RG</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input class="rg" maxlength="20" id="cpf" type="text" class="required" placeholder="99.999.999-9" value="" style="background-color: rgb(255, 255, 192);">
-                                                                </label>
-                                                            </section> -->
-                                                            <section class="col col-2">
-                                                                <label class="label">Data de Nascimento</label>
-                                                                <label class="input">
-                                                                    <input id="dataNascimento" name="dataNascimento" type="text" class="datepicker required" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
-                                                                </label>
-                                                            </section>
-                                                            <section class="col col-1">
-                                                                <label class="label">Idade:</label>
-                                                                <label class="input">
-                                                                    <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
-                                                                </label>
-                                                            </section>
                                                         </div>
-                                                    </fieldset>
+                                                    </fieldset>    
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <footer>
-                                        <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
-                                            <span class="fa fa-trash"></span>
-                                        </button>
+                                        <footer>
+                                            <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                                <span class="fa fa-trash"></span>
+                                            </button>
 
-                                        <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
-                                            <span class="fa fa-floppy-o"></span>
-                                        </button>
-                                        <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
-                                            <span class="fa fa-file-o"></span>
-                                        </button>
-                                        <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
-                                            <span class="fa fa-backward "></span>
-                                        </button>
-                                    </footer>
-                                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
-                                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-                                            <span id="ui-id-2" class="ui-dialog-title">
-                                            </span>
-                                        </div>
-                                        <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
-                                            <p>CONFIRMA A EXCLUSÃO ? </p>
-                                        </div>
-                                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                            <div class="ui-dialog-buttonset">
+                                            <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                                <span class="fa fa-floppy-o"></span>
+                                            </button>
+                                            <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
+                                                <span class="fa fa-file-o"></span>
+                                            </button>
+                                            <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
+                                                <span class="fa fa-backward "></span>
+                                            </button>
+                                        </footer>
+                                        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
+                                            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                                                <span id="ui-id-2" class="ui-dialog-title">
+                                                </span>
+                                            </div>
+                                            <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
+                                                <p>CONFIRMA A EXCLUSÃO ? </p>
+                                            </div>
+                                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                                <div class="ui-dialog-buttonset">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -195,7 +154,7 @@ include("inc/footer.php");
 include("inc/scripts.php");
 ?>
 
-<script src="<?php echo ASSETS_URL; ?>/js/businessFuncionarioCadastro.js" type="text/javascript"></script>
+<script src="<?php echo ASSETS_URL; ?>/js/businessFuncionarioGenero.js" type="text/javascript"></script>
 
 <!-- PAGE RELATED PLUGIN(S) 
 <script src="..."></script>-->
@@ -227,30 +186,30 @@ include("inc/scripts.php");
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
 
-        $(".cpf").inputmask("999.999.999-99");
-        $(".dataNascimento").inputmask("99/99/9999");
-        $("#dataNascimento").on('change', function() {
-            idade($("#dataNascimento").val());
-        });
+        // $(".cpf").inputmask("999.999.999-99");
+        // $(".dataNascimento").inputmask("99/99/9999");
+        // $("#dataNascimento").on('change', function() {
+        //     idade($("#dataNascimento").val());
+        // });
 
-        $("#dataNascimento").on('focusout', function() {
-           validaData()
-           if (!validaData($("#dataNascimento").val())) {
-                alert("Data Inválida,por favor tentar novamente.");
-            }
+        // $("#dataNascimento").on('focusout', function() {
+        //     validaData()
+        //     if (!validaData($("#dataNascimento").val())) {
+        //         alert("Data Inválida,por favor tentar novamente.");
+        //     }
 
-        });
+        // });
 
-            $("#cpf").on('focusout', function() {
-                validaCpf()
-            });
+        // $("#cpf").on('focusout', function() {
+        //     validaCpf()
+        // });
 
-            $("#cpf").on('change', function() {
-                verificaCpf()
-            });
+        // $("#cpf").on('change', function() {
+        //     verificaCpf()
+        // });
 
-            carregaPagina();
-        })
+        carregaPagina();
+    })
 
     //caixa de diálogo
     $('#dlgSimpleExcluir').dialog({
@@ -333,110 +292,113 @@ include("inc/scripts.php");
 
     function gravar() {
         var id = +($("#codigo").val());
-        var ativo = 0;
-        if ($("#ativo").is(':checked')) {
-            ativo = 1;
-        }
-        var nome = $("#nome").val(); //pegando valor da variavel
-        var cpf = $("#cpf").val();
-        var dataNascimento = $("#dataNascimento").val();
+        var descricaoGenero = $("#descricaoGenero").val();
+        gravaFuncionario(id,descricaoGenero);
 
-        if (nome == "") {
-            smartAlert("Atenção", "Nome não preenchido.", "error")
-            $("#nome").focus();
-            return
-        }
+        // var ativo = 0;
+        // if ($("#ativo").is(':checked')) {
+        //     ativo = 1;
+        // }
+        // var nome = $("#nome").val(); //pegando valor da variavel
+        // var cpf = $("#cpf").val();
+        // var dataNascimento = $("#dataNascimento").val();
 
-        if (cpf == "") {
-            smartAlert("Atenção", "CPF não preenchido.", "error")
-            cpf = $("#cpf").focus();
-            return
-        }
-        if (dataNascimento == "") {
-            smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
-            dataNascimento = $("#dataNascimento").focus();
-        }
-        gravaFuncionario(id, ativo, nome, cpf, dataNascimento);
+        // if (nome == "") {
+        //     smartAlert("Atenção", "Nome não preenchido.", "error")
+        //     $("#nome").focus();
+        //     return
+        // }
+
+        // if (cpf == "") {
+        //     smartAlert("Atenção", "CPF não preenchido.", "error")
+        //     cpf = $("#cpf").focus();
+        //     return
+        // }
+        // if (dataNascimento == "") {
+        //     smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
+        //     dataNascimento = $("#dataNascimento").focus();
+        // }
+
     }
 
     //data na ordem e contagem de idade
-    function idade(dataNascimento) {
-        const data = dataNascimento.split("/") //
-        dataNascimento = data[1] + "-" + data[0] + "-" + data[2];
-        const today = new Date();
-        const birthDate = new Date(dataNascimento);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
+    // function idade(dataNascimento) {
+    //     const data = dataNascimento.split("/") //
+    //     dataNascimento = data[1] + "-" + data[0] + "-" + data[2];
+    //     const today = new Date();
+    //     const birthDate = new Date(dataNascimento);
+    //     let age = today.getFullYear() - birthDate.getFullYear();
+    //     const m = today.getMonth() - birthDate.getMonth();
 
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        $("#idade").val(age)
-        return age;
-    }
+    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    //         age--;
+    //     }
+    //     $("#idade").val(age)
+    //     return age;
+    // }
 
-    //data de nascimento válido
-    function validaData(dataNascimento) {
+    // //data de nascimento válido
+    // function validaData(dataNascimento) {
 
-        var verificaData = document.getElementById('dataNascimento').value;
-        var hoje = new Date().getFullYear().value;
+    //     var verificaData = document.getElementById('dataNascimento').value;
+    //     var hoje = new Date().getFullYear().value;
 
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
-            return false
-        }
+    //     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
+    //         return false
+    //     }
 
-        //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
-        if (typeof dataNascimento != 'string') {
-            return false
-        }
+    //     //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
+    //     if (typeof dataNascimento != 'string') {
+    //         return false
+    //     }
 
-        //split é oq divide os algorismos em XX//X/XXXX
-        const dataDiv = dataNascimento.split('/')
-        const data = {
-            dias: dataDiv[0],
-            mes: dataDiv[1],
-            ano: dataDiv[2]
-        }
+    //     //split é oq divide os algorismos em XX//X/XXXX
+    //     const dataDiv = dataNascimento.split('/')
+    //     const data = {
+    //         dias: dataDiv[0],
+    //         mes: dataDiv[1],
+    //         ano: dataDiv[2]
+    //     }
 
-        //parseint --> para converter strings em número inteiro
-        const dias = parseInt(data.dias)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
+    //     //parseint --> para converter strings em número inteiro
+    //     const dias = parseInt(data.dias)
+    //     const mes = parseInt(data.mes)
+    //     const ano = parseInt(data.ano)
 
-        //dias para cada mês
-        const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    //     //dias para cada mês
+    //     const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-        //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
-        if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
-            dataDias[2] == 29
-        }
+    //     //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
+    //     if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
+    //         dataDias[2] == 29
+    //     }
 
-        if (hoje > new Date().getFullYear()) {
-            return false;
-        }
+    //     if (hoje > new Date().getFullYear()) {
+    //         return false;
+    //     }
 
-        //para restringir os meses de 1 a 12
-        if (mes < 1 || mes > 12 || dias < 1) {
-            return false
-        }
+    //     //para restringir os meses de 1 a 12
+    //     if (mes < 1 || mes > 12 || dias < 1) {
+    //         return false
+    //     }
 
-        //para restringir número de dias no mês
-        else if (dias > dataDias[mes]) {
-            return false
-        }
+    //     //para restringir número de dias no mês
+    //     else if (dias > dataDias[mes]) {
+    //         return false
+    //     }
 
-        return true
-    }
+    //     return true
+    // }
 
-    //validar cpf(exem: 111.111.111-11)
-    function validaCpf() {
-        var cpf = $('#cpf').val()
-        validarCpf(cpf)
-    }
+    // //validar cpf(exem: 111.111.111-11)
+    // function validaCpf() {
+    //     var cpf = $('#cpf').val()
+    //     validarCpf(cpf)
+    // }
 
-    //verificar se já foi cadastrado
-    function verificaCpf() {
-        var cpf = $("#cpf").val()
-        verificarCpf(cpf) //variável "passa" nesse ()
-    }
+    // //verificar se já foi cadastrado
+    // function verificaCpf() {
+    //     var cpf = $("#cpf").val()
+    //     verificarCpf(cpf) //variável "passa" nesse ()
+    // }
 </script>

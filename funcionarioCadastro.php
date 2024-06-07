@@ -94,7 +94,7 @@ include("inc/nav.php");
                                                         </div>
                                                         <div class="row">
                                                             <section class="col col-4">
-                                                                <label class="label">Nome</label>
+                                                                <label class="label">Nome Completo</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                     <input id="nome" maxlength="255" name="nome" class="required" type="text" placeholder=" " value="">
                                                                 </label>
@@ -124,14 +124,27 @@ include("inc/nav.php");
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-                                                            <!-- <section class="col col-1">
+
+                                                            <section class="col col-2">
+                                                                <label class="label">Estado Civil</label>
+                                                                <label class="select">
+                                                                    <select id="estadoCivil" name="estadoCivil">
+                                                                        <option></option>
+                                                                        <option value="Solteiro(a)" selected>Solteiro(a)</option>
+                                                                        <option value="Casado(a)">Casado(a)</option>
+                                                                        <option value="Divorciado(a)">Divorciado(a)</option>
+                                                                        <option value="Viúvo(a)">Viúvo(a)</option>
+                                                                    </select><i></i>
+                                                            
+                                                            </section>
+                                                            <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
                                                                     <select id="ativo" name="ativo">
                                                                         <option></option>
                                                                         <option value="1" selected>Sim</option>
                                                                         <option value="0">Não</option>
-                                                                    </select><i></i> -->
+                                                                    </select><i></i>
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -238,7 +251,6 @@ include("inc/scripts.php");
             if (!validaData($("#dataNascimento").val())) {
                 alert("Data Inválida,por favor tentar novamente.");
             }
-
         });
 
         $("#cpf").on('focusout', function() {
@@ -249,8 +261,8 @@ include("inc/scripts.php");
             verificaCpf()
         });
 
-        $(".rg").on('focusout', function() {
-            veificaRg()
+        $(".rg").on('change', function() {
+            verificaRg()
         });
 
         carregaPagina();
@@ -337,14 +349,13 @@ include("inc/scripts.php");
 
     function gravar() {
         var id = +($("#codigo").val());
-        var ativo = 0;
-        if ($("#ativo").is(':checked')) {
-            ativo = 1;
-        }
+        var ativo = $("#ativo").val();
         var nome = $("#nome").val(); //pegando valor da variavel
         var cpf = $("#cpf").val();
         var rg = $("#rg").val();
         var dataNascimento = $("#dataNascimento").val();
+        var estadoCivil = $("#estadoCivil").val();
+
 
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
@@ -366,7 +377,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
             dataNascimento = $("#dataNascimento").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil);
     }
 
     //data na ordem e contagem de idade
@@ -451,8 +462,8 @@ include("inc/scripts.php");
     }
 
     //verificar se já foi cadastrado
-    function verificaRg(){
-        var rg = $("#rg").val()
+    function verificaRg() {
+        var rg = $('#rg').val()
         verificarRg(rg)
     }
 </script>

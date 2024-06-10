@@ -3,7 +3,7 @@
 require_once("inc/init.php");
 
 //require UI configuration (nav, ribbon, etc.)
-// require_once("inc/config.ui.php");
+require_once("inc/config.ui.php");
 
 //colocar o tratamento de permissão sempre abaixo de require_once("inc/config.ui.php");
 $condicaoAcessarOK = true;
@@ -124,7 +124,6 @@ include("inc/nav.php");
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
@@ -135,7 +134,6 @@ include("inc/nav.php");
                                                                         <option value="Divorciado(a)">Divorciado(a)</option>
                                                                         <option value="Viúvo(a)">Viúvo(a)</option>
                                                                     </select><i></i>
-                                                            
                                                             </section>
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
@@ -145,7 +143,29 @@ include("inc/nav.php");
                                                                         <option value="1" selected>Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
-                                                        </div>
+                                                            </section>
+
+                                                            <section class="col col-2">
+                                                                <label class="label">Gênero</label>
+                                                                <label class="select">
+                                                                    <select id="descricao" name="descricao" class="required">
+                                                                        <?php
+                                                                        $reposit = new reposit();
+                                                                        $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
+                                                                        $result = $reposit->RunQuery($sql);
+                                                                        foreach ($result as $row) {
+                                                                            $codigo = (int) $row['codigo'];
+                                                                            $descricao = htmlspecialchars($row['descricao'], ENT_QUOTES); //evitando caracteres especiais
+
+                                                                            echo "<option value='$codigo'>$descricao</option>";
+                                                                        }
+                                                                        ?>
+
+                                                                    </select>
+                                                                </label>
+                                                            </section>
+
+
                                                     </fieldset>
                                                 </div>
                                             </div>
@@ -186,6 +206,8 @@ include("inc/nav.php");
                 </article>
             </div>
         </section>
+
+
         <!-- end widget grid -->
 
     </div>
@@ -234,7 +256,6 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
 
-//mascaras
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
@@ -355,6 +376,7 @@ include("inc/scripts.php");
         var rg = $("#rg").val();
         var dataNascimento = $("#dataNascimento").val();
         var estadoCivil = $("#estadoCivil").val();
+        var descricao = $("#descricao").val();
 
 
         if (nome == "") {
@@ -377,7 +399,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
             dataNascimento = $("#dataNascimento").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao);
     }
 
     //data na ordem e contagem de idade

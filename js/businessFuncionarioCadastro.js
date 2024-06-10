@@ -1,9 +1,9 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil : estadoCivil},
+        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil : estadoCivil, descricao: descricao},
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
@@ -124,13 +124,19 @@ function recuperaFuncionario(id) {
                 var nome = piece[1];
                 var ativo = +piece[2];
                 var cpf = piece[3];
-                var dataNascimento = piece[4];
+                var rg = piece[4]
+                var dataNascimento = piece[5];
+                var estadoCivil = piece[6];
+                var descricao = piece[7]
 
                 $("#codigo").val(codigo);
                 $("#nome").val(nome);
                 $("#ativo").val(ativo);
                 $("#cpf").val(cpf);
+                $("#rg").val(rg);
                 $("#dataNascimento").val(dataNascimento);
+                $("#estadoCivil").val(estadoCivil);
+                $("#descricao").val(descricao);
                 //
                 //atribuindo valor 
                 if (ativo === 1) {
@@ -152,7 +158,7 @@ function recuperaFuncionario(id) {
 
 function excluirFuncionario(id) {
     $.ajax({
-        url: 'js/sqlscopefuncionarioCadastro.php', //caminho do arquivo a ser executado
+        url: 'js/sqlscopeFuncionarioCadastro.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: { funcao: 'excluir', id: id }, //valores enviados ao script     

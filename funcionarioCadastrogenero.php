@@ -87,9 +87,15 @@ include("inc/nav.php");
                                                         <div class="row">
 
                                                             <section class="col col-4">
-                                                                <label class="label">Descrição</label>
+                                                                <label class="select">Descrição</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="descricaoGenero" maxlength="255" name="descricaoGenero" class="required" type="text" placeholder=" " value="">
+                                                                    <input id="descricao" maxlength="255" name="descricao" class="required" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+                                                            <section class="col col-2 hidden">
+                                                                <label class="label">Ativo</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="ativo" maxlength="255" name="ativo" class="" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
 
@@ -173,8 +179,6 @@ include("inc/scripts.php");
 <!-- <script src="/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script> -->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/fullcalendar.js"></script>
 <!--<script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>-->
-
-
 
 <!-- Form to json -->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/form2js.js"></script>
@@ -292,8 +296,10 @@ include("inc/scripts.php");
 
     function gravar() {
         var id = +($("#codigo").val());
-        var descricaoGenero = $("#descricaoGenero").val();
-        gravaFuncionario(id,descricaoGenero);
+        var descricao = $("#descricao").val();
+        var ativo = $("#ativo").val();
+
+        gravaFuncionario(id,descricao,ativo);
 
         // var ativo = 0;
         // if ($("#ativo").is(':checked')) {

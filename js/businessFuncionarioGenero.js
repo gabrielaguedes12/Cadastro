@@ -1,18 +1,58 @@
-function gravaFuncionario(id, descricaoGenero) {
+// function gravaFuncionario(id, descricao) {
+//     $.ajax({
+//         url: 'js/sqlscopeFuncionarioGenero.php',
+//         dataType: 'html', //tipo do retorno
+//         type: 'post', //metodo de envio
+//         data: { funcao: "grava", id: id, descricao : descricao},
+//         success: function (data, textStatus) {
+//             if (data.indexOf('sucess') < 0) {
+//                 var piece = data.split("#");
+//                 var mensagem = piece[1];
+//                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+//                 return '';
+//             } else {
+//                 smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+//                 setInterval(novo(), 1500)
+//             }
+//             //retorno dos dados
+//         },
+//         error: function (xhr, er) {
+//             //tratamento de erro
+//         }
+//     });
+
+
+//     return '';
+// }
+
+function gravaFuncionario(id, descricao, ativo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioGenero.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, descricaoGenero : descricaoGenero},
+        data: { funcao: "grava", id: id, descricao: descricao, ativo: ativo}, //valores enviados ao script
+        beforeSend: function () {
+            //função chamada antes de realizar o ajax
+        },
+        complete: function () {
+            //função executada depois de terminar o ajax
+        },
         success: function (data, textStatus) {
-            if (data.indexOf('sucess') < 0) {
+            if (data.indexOf('success') < 0) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
-                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error"); 
+                } else {
+                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+
+                }
+
                 return '';
             } else {
-                smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                setInterval(novo(), 1500)
+                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                voltar();
+                //gravar();
             }
             //retorno dos dados
         },
@@ -20,9 +60,8 @@ function gravaFuncionario(id, descricaoGenero) {
             //tratamento de erro
         }
     });
-
-
     return '';
+
 }
 
 // function verificarCpf(cpf) {
@@ -98,12 +137,12 @@ function gravaFuncionario(id, descricaoGenero) {
 //     });
 // }
 
-function recuperaFuncionario(id) {
+function recuperaFuncionario(descricao) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'recupera', id: id }, //valores enviados ao script     
+        data: { funcao: 'recupera', id: id}, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -120,16 +159,16 @@ function recuperaFuncionario(id) {
                 var mensagem = piece[0];
                 var out = piece[1];
                 piece = out.split("^");
-                var codigo = +piece[0];
-                var descricaoGenero = piece[1];
-                // var ativo = +piece[2];
+                var id = +piece[0];
+                var descricao = piece[1];
+                var ativo = +piece[2];
                 // var cpf = piece[3];
                 // var dataNascimento = piece[4];
 
-                $("#codigo").val(codigo);
-                $("#idGeneri").val(idGeneri);
-                // $("#ativo").val(ativo);
-                // $("#cpf").val(cpf);
+                // $("#codigo").val(codigo);
+                $("#id").val(id);
+                $("#descricao").val(descricao);
+                $("#ativo").val(ativo);
                 // $("#dataNascimento").val(dataNascimento);
                 //
                 //atribuindo valor 
@@ -149,7 +188,7 @@ function excluirFuncionario(id) {
         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'excluir', id: id }, //valores enviados ao script     
+        data: { funcao: 'excluir', id: id}, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -180,7 +219,7 @@ function excluirFuncionario(id) {
 
 function recuperaDadosUsuario(callback) {
     $.ajax({
-        url: 'js/sqlscopeUsuario.php', //caminho do arquivo a ser executado
+        url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script

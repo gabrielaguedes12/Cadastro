@@ -41,22 +41,26 @@ return;
 
 function grava()
 {
+     $reposit = new reposit();
+
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
-        $mensagem = "Nenhum parâmetro de pesquisa foi informado.";
-        echo "failed#" . $mensagem . ' ';
-        return;
+      $id = 0;
+    } else{ 
+        $id = (int) $_POST["id"];
     }
+       
 
-    $reposit = new reposit();
-    $utils = new comum();
-
-    $id = (int) $_POST["id"];
-    $descricaoGenero = $utils->formatarString($_POST['descricaoGenero']);
    
+    $id = (int) $_POST["id"];
+    $descricao = (string) $_POST["descricao"];
+    $ativo = 1;
+   
+    session_start();
 
     $sql = "dbo.genero_atualiza 
         $id,
-        $descricaoGenero
+        $descricao,
+        $ativo
        ";
 
     $reposit = new reposit();
@@ -93,7 +97,7 @@ function recupera()
     $id = $_POST["id"];
 
 
-    $sql = " SELECT codigo,descricaoGenero from dbo.genero WHERE (0 = 0) and codigo = $id ";
+    $sql = " SELECT codigo,descricao,ativo from dbo.genero WHERE (0 = 0) and codigo = $id ";
 
 
     $reposit = new reposit();
@@ -102,12 +106,14 @@ function recupera()
     $out = "";
     if ($row = $result[0]) {
         $id = $row['codigo'];
-        $descricaoGenero = $row['descricaoGenero'];
+        $descricao = $row['descricao'];
+        $ativo = $row['ativo'];
         }
 
     $out =
         $id . "^" .
-        $descricaoGenero;
+        $descricao. "^" .
+        $ativo;
 
     if ($out == "") {
         echo "failed#";
@@ -193,144 +199,142 @@ function recuperarDadosUsuario()
 }
 
 
-function gravarNovaSenha()
-{
-    $reposit = new reposit();
-    $senhaConfirma = $_POST["senhaConfirma"];
-    $senha = $_POST["senha"];
+// function gravarNovaSenha()
+// {
+//     $reposit = new reposit();
+//     $senhaConfirma = $_POST["senhaConfirma"];
+//     $senha = $_POST["senha"];
 
-    if ((empty($_POST['senhaConfirma'])) || (!isset($_POST['senhaConfirma'])) || (is_null($_POST['senhaConfirma']))) {
-        $senhaConfirma = null;
-    }
-    if ((empty($_POST['senha'])) || (!isset($_POST['senha'])) || (is_null($_POST['senha']))) {
-        $senha = null;
-    }
+//     if ((empty($_POST['senhaConfirma'])) || (!isset($_POST['senhaConfirma'])) || (is_null($_POST['senhaConfirma']))) {
+//         $senhaConfirma = null;
+//     }
+//     if ((empty($_POST['senha'])) || (!isset($_POST['senha'])) || (is_null($_POST['senha']))) {
+//         $senha = null;
+//     }
 
-    if ((!is_null($senhaConfirma)) or (!is_null($senha))) {
-        $comum = new comum();
-        $validouSenha = 1;
-        if (!is_null($senha)) {
-            $validouSenha = $comum->validaSenha($senha);
-        }
-        if ($validouSenha === 0) {
-            if ($senhaConfirma !== $senha) {
-                $mensagem = "A confirmação da senha deve ser igual a senha.";
-                echo "failed#" . $mensagem . ' ';
-                return;
-            } else {
-                $comum = new comum();
-                $senhaCript = $comum->criptografia($senha);
-                $senha = "'" . $senhaCript . "'";
-            }
-        } else {
-            switch ($validouSenha) {
-                case 1:
-                    $mensagem = "Senha não pode conter espaços.";
-                    break;
-                case 2:
-                    $mensagem = "Senha deve possuir no mínimo 7 caracter.";
-                    break;
-                case 3:
-                    $mensagem = "Senha ultrapassou de 15 caracteres.";
-                    break;
-                case 4:
-                    $mensagem = "Senha deve possuir no mínimo um caractér númerico.";
-                    break;
-                case 5:
-                    $mensagem = "Senha deve possuir no mínimo um caractér alfabético.";
-                    break;
-                case 6:
-                    $mensagem = "Senha deve possuir no mínimo um caracter especial.\nSão válidos : ! # $ & * - + ? . ; , : ] [ ( )";
-                    break;
-                case 7:
-                    $mensagem = "Senha não pode ter caracteres acentuados.";
-                    break;
-            }
-            echo "failed#" . $mensagem . ' ';
-            return;
-        }
-    }
+//     if ((!is_null($senhaConfirma)) or (!is_null($senha))) {
+//         $comum = new comum();
+//         $validouSenha = 1;
+//         if (!is_null($senha)) {
+//             $validouSenha = $comum->validaSenha($senha);
+//         }
+//         if ($validouSenha === 0) {
+//             if ($senhaConfirma !== $senha) {
+//                 $mensagem = "A confirmação da senha deve ser igual a senha.";
+//                 echo "failed#" . $mensagem . ' ';
+//                 return;
+//             } else {
+//                 $comum = new comum();
+//                 $senhaCript = $comum->criptografia($senha);
+//                 $senha = "'" . $senhaCript . "'";
+//             }
+//         } else {
+//             switch ($validouSenha) {
+//                 case 1:
+//                     $mensagem = "Senha não pode conter espaços.";
+//                     break;
+//                 case 2:
+//                     $mensagem = "Senha deve possuir no mínimo 7 caracter.";
+//                     break;
+//                 case 3:
+//                     $mensagem = "Senha ultrapassou de 15 caracteres.";
+//                     break;
+//                 case 4:
+//                     $mensagem = "Senha deve possuir no mínimo um caractér númerico.";
+//                     break;
+//                 case 5:
+//                     $mensagem = "Senha deve possuir no mínimo um caractér alfabético.";
+//                     break;
+//                 case 6:
+//                     $mensagem = "Senha deve possuir no mínimo um caracter especial.\nSão válidos : ! # $ & * - + ? . ; , : ] [ ( )";
+//                     break;
+//                 case 7:
+//                     $mensagem = "Senha não pode ter caracteres acentuados.";
+//                     break;
+//             }
+//             echo "failed#" . $mensagem . ' ';
+//             return;
+//         }
+//     }
 
-    session_start();
-    $login = "'" .  $_SESSION['login'] . "'";
-    $usuario =  $login;
+//     session_start();
+//     $login = "'" .  $_SESSION['login'] . "'";
+//     $usuario =  $login;
 
-    $id = $_SESSION['codigo'];
-    $genero = $_SESSION['genero'];
-    if (!$genero) {
-        $genero = 'NULL';
-    }
-    $ativo = 1;
-    $tipoUsuario = 'C';
-    $restaurarSenha = 0;
+//     $id = $_SESSION['codigo'];
+//     $genero = $_SESSION['genero'];
+//     if (!$genero) {
+//         $genero = 'NULL';
+//     }
+//     $ativo = 1;
+//     $tipoUsuario = 'C';
+//     $restaurarSenha = 0;
 
-    $sql = "Ntl.usuario_Atualiza " . $id . "," . $ativo . "," . $login . "," . $senha . "," . $tipoUsuario . "," . $usuario . "," . $genero . "," . $restaurarSenha . " ";
+//     $sql = "Ntl.usuario_Atualiza " . $id . "," . $ativo . "," . $login . "," . $senha . "," . $tipoUsuario . "," . $usuario . "," . $genero . "," . $restaurarSenha . " ";
 
-    $reposit = new reposit();
-    $result = $reposit->Execprocedure($sql);
+//     $reposit = new reposit();
+//     $result = $reposit->Execprocedure($sql);
 
-    $ret = 'sucess#';
+//     $ret = 'sucess#';
 
-    if ($result < 1) {
-        $ret = 'failed#';
-    }
+//     if ($result < 1) {
+//         $ret = 'failed#';
+//     }
 
-    echo $ret;
+//     echo $ret;
 
-    return;
-}
+//     return;
+// }
 
 //validar cpf(exem: 111.111.111-11)
-function validaCpf()
-{
-    $utils = new comum();
+// function validaCpf()
+// {
+//     $utils = new comum();
 
-    $result = $utils->validaCpf($_POST['cpf']);
+//     $result = $utils->validaCpf($_POST['cpf']);
 
-    if ($result) {
-        echo 'sucess#';
-    } else {
-        echo 'failed#';
-    }
-}
+//     if ($result) {
+//         echo 'sucess#';
+//     } else {
+//         echo 'failed#';
+//     }
+// }
 
-//verificar se já foi cadastrado
-function verificaCpf()
-{
-    $reposit = new reposit();
-    $utils = new comum();
+// //verificar se já foi cadastrado
+// function verificaCpf()
+// {
+//     $reposit = new reposit();
+//     $utils = new comum();
     
-    $cpf = $utils->formatarString($_POST['cpf']);
+//     $cpf = $utils->formatarString($_POST['cpf']);
 
-    $sql = "SELECT cpf from dbo.genero where cpf = $cpf";
+//     $sql = "SELECT cpf from dbo.genero where cpf = $cpf";
 
-    $reposit = new reposit();
-    $result = $reposit->RunQuery($sql);
+//     $reposit = new reposit();
+//     $result = $reposit->RunQuery($sql);
 
-    $ret = 'sucess# CPF ok';
-    if (count($result) > 0) {
-        $ret = 'failed# CPF já cadastrado';
-    }
-    echo $ret;
-    return;
-}
+//     $ret = 'sucess# CPF ok';
+//     if (count($result) > 0) {
+//         $ret = 'failed# CPF já cadastrado';
+//     }
+//     echo $ret;
+//     return;
+// }
 
-function verificaRg()
-{
-    $reposit = new reposit();
-    $utils = new comum();
+// function verificaRg()
+// {
+//     $reposit = new reposit();
+//     $utils = new comum();
 
-    $rg = $utils->formatarString($_POST['rg']);
+//     $rg = $utils->formatarString($_POST['rg']);
 
-    $sql = "SELECT rg from dbo.genero where rg = $rg";
+//     $sql = "SELECT rg from dbo.genero where rg = $rg";
 
-    $reposit = new reposit();
-    $result = $reposit->RunQuery($sql);
+//     $reposit = new reposit();
+//     $result = $reposit->RunQuery($sql);
 
-    $ret = 'sucess# RG ok';
-    if (count($result) > 0) {
-        $ret = 'failed# RG já cadastrado';
-    }
-    echo $ret;
-    return;
-}
+//     $ret = 'sucess# RG ok';
+//     if (count($result) > 0) {
+//         $ret = 'failed# RG já cadastrado';
+//     }
+//     echo $ret;

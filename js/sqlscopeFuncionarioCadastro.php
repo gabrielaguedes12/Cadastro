@@ -58,6 +58,8 @@ function grava()
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
     $estadoCivil = $utils->formatarString($_POST ['estadoCivil']);
     $descricao = $utils->formatarString($_POST ['descricao']);
+    $telefone = $utils-> formatarString($_POST ['telefone']);
+    $email = $utils -> formatarString($_POST['email']);
 
     $sql = "dbo.funcionario_atualiza 
         $id,
@@ -67,7 +69,9 @@ function grava()
         $rg,
         $dataNascimento,
         $estadoCivil,
-        $descricao"
+        $descricao,
+        $telefone,
+        $email"
         ;
 
     $reposit = new reposit();
@@ -104,7 +108,7 @@ function recupera()
     $id = $_POST["id"];
 
 
-    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,descricao from dbo.funcionario WHERE (0 = 0) and codigo = $id ";
+    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,descricao,telefone,email from dbo.funcionario WHERE (0 = 0) and codigo = $id ";
 
 
     $reposit = new reposit();
@@ -120,6 +124,8 @@ function recupera()
         $dataNascimento = $utils->validaData($row['dataNascimento']);
         $estadoCivil = $row['estadoCivil'];
         $descricao = $row['descricao'];
+        $telefone = $row['telefone'];
+        $email = $row['email'];
     }
 
     $out =
@@ -130,7 +136,11 @@ function recupera()
         $rg . "^" .
         $dataNascimento. "^" .
         $estadoCivil. "^" .
-        $descricao;
+        $descricao. "^" .
+        $telefone . "^" .
+        $email;
+        
+
 
     if ($out == "") {
         echo "failed#";

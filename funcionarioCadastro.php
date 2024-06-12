@@ -128,12 +128,19 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil">
-                                                                        <option></option>
-                                                                        <option value="Solteiro(a)" selected>Solteiro(a)</option>
-                                                                        <option value="Casado(a)">Casado(a)</option>
-                                                                        <option value="Divorciado(a)">Divorciado(a)</option>
-                                                                        <option value="Viúvo(a)">Viúvo(a)</option>
-                                                                    </select><i></i>
+                                                                        <?php
+                                                                        $reposit = new reposit();
+                                                                        $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
+                                                                        $result = $reposit->RunQuery($sql);
+                                                                        foreach ($result as $row) {
+                                                                            $codigo = (int) $row['codigo'];
+                                                                            $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
+
+                                                                            echo "<option value='$codigo'>$estadoCivil</option>";
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                </label>
                                                             </section>
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
@@ -160,11 +167,72 @@ include("inc/nav.php");
                                                                             echo "<option value='$codigo'>$descricao</option>";
                                                                         }
                                                                         ?>
-
                                                                     </select>
                                                                 </label>
                                                             </section>
 
+
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-group smart-accordion-default" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseContato" class="" id="accordionContato">
+                                                        <i class="fa fa-lg fa-angle-down pull-right"></i>
+                                                        <i class="fa fa-lg fa-angle-up pull-right"></i>
+                                                        Contato
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseContato" class="panel-collapse collapse in">
+                                                <div class="panel-body no-padding">
+                                                    <fieldset>
+
+                                                        <div class="row">
+                                                            <section class="col col-4">
+                                                                <label class="label">Telefone</label>
+                                                                <label class="select">
+                                                                    <select id="telefone" name="telefone" class="">
+
+                                                                </label>
+                                                            </section>
+
+                                                            <section class="col col-2">
+                                                                <label class="label">&nbsp;</label>
+                                                                <label id="labelPrincipal" class="checkbox">
+                                                                    <input checked="checked" id="principal" name="principal" type="checkbox" value="true"><i></i>
+                                                                    Principal
+                                                                </label>
+                                                            </section>
+
+                                                            <section class="col col-2">
+                                                                <label class="label">&nbsp;</label>
+                                                                <label id="labelWhats" class="checkbox">
+                                                                    <input checked="checked" id="whats" name="whats" type="checkbox" value="true"><i></i>
+                                                                    Whatsapp
+                                                                </label>
+                                                            </section>
+
+                                                            <div class="row">
+                                                                <section class="col col-4">
+                                                                    <label class="label">E-mail</label>
+                                                                    <label class="select">
+                                                                        <select id="email" name="email" class="">
+
+                                                                    </label>
+                                                                </section>
+
+                                                                <section class="col col-2">
+                                                                    <label class="label">&nbsp;</label>
+                                                                    <label id="labelPrincipal" class="checkbox">
+                                                                        <input checked="checked" id="principal" name="principal" type="checkbox" value="true"><i></i>
+                                                                        Principal
+                                                                    </label>
+                                                                </section>
 
                                                     </fieldset>
                                                 </div>
@@ -377,6 +445,7 @@ include("inc/scripts.php");
         var dataNascimento = $("#dataNascimento").val();
         var estadoCivil = $("#estadoCivil").val();
         var descricao = $("#descricao").val();
+        var telefone = $("#telefone").val()
 
 
         if (nome == "") {

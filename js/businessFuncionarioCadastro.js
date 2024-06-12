@@ -1,9 +1,9 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao,telefone, email) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil : estadoCivil, descricao: descricao},
+        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil : estadoCivil, descricao: descricao, telefone: telefone, email: email},
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
@@ -124,10 +124,13 @@ function recuperaFuncionario(id) {
                 var nome = piece[1];
                 var ativo = +piece[2];
                 var cpf = piece[3];
-                var rg = piece[4]
+                var rg = piece[4];
                 var dataNascimento = piece[5];
                 var estadoCivil = piece[6];
-                var descricao = piece[7]
+                var descricao = piece[7];
+                var telefone = piece[8];
+                var email = piece [9];
+
 
                 $("#codigo").val(codigo);
                 $("#nome").val(nome);
@@ -137,6 +140,8 @@ function recuperaFuncionario(id) {
                 $("#dataNascimento").val(dataNascimento);
                 $("#estadoCivil").val(estadoCivil);
                 $("#descricao").val(descricao);
+                $("#telefone").val(telefone);
+                $("#email").val(email);
                 //
                 //atribuindo valor 
                 if (ativo === 1) {
@@ -190,33 +195,33 @@ function excluirFuncionario(id) {
     });
 }
 
-function recuperaDadosUsuario(callback) {
-    $.ajax({
-        url: 'js/sqlscopeUsuario.php', //caminho do arquivo a ser executado
-        dataType: 'html', //tipo do retorno
-        type: 'post', //metodo de envio
-        data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
+// function recuperaDadosUsuario(callback) {
+//     $.ajax({
+//         url: 'js/sqlscopeUsuario.php', //caminho do arquivo a ser executado
+//         dataType: 'html', //tipo do retorno
+//         type: 'post', //metodo de envio
+//         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
 
-        success: function (data) {
-            callback(data)
-        },
-    })
+//         success: function (data) {
+//             callback(data)
+//         },
+//     })
 
-    return
-}
+//     return
+// }
 
-function gravaNovaSenha(senha, senhaConfirma, callback) {
-    $.ajax({
-        url: 'js/sqlscopeUsuario.php',
-        dataType: 'html', //tipo do retorno
-        type: 'post', //metodo de envio
-        data: {
-            funcao: 'gravarNovaSenha',
-            senha: senha,
-            senhaConfirma: senhaConfirma,
-        }, //valores enviados ao script
-        success: function (data) {
-            callback(data)
-        },
-    })
-}
+// function gravaNovaSenha(senha, senhaConfirma, callback) {
+//     $.ajax({
+//         url: 'js/sqlscopeUsuario.php',
+//         dataType: 'html', //tipo do retorno
+//         type: 'post', //metodo de envio
+//         data: {
+//             funcao: 'gravarNovaSenha',
+//             senha: senha,
+//             senhaConfirma: senhaConfirma,
+//         }, //valores enviados ao script
+//         success: function (data) {
+//             callback(data)
+//         },
+//     })
+// }

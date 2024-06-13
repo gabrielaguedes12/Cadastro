@@ -36,6 +36,10 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
+if ($funcao== 'validaTelefone'){
+    call_user_func($funcao);
+}
+
 return;
 
 

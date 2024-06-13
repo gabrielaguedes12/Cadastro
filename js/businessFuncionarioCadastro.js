@@ -98,6 +98,29 @@ function verificarRg(rg) {
     });
 }
 
+function validaTelefone(telefone) {}
+$.ajax({
+    url: 'js/sqlscopeFuncionarioCadastro.php',
+    dataType: ' html',
+    type: 'post',
+    data: { funcao: 'validaTelefone', telefone: telefone },
+    success: function (data, textStatus) {
+        if (data.indexOf('failed') > -1) {
+            var piece = data.split("#");
+            var mensagem = piece[1];
+
+            if (mensagem !== "") {
+                smartAlert("Atenção", mensagem, "error");
+            } else {
+                smartAlert("Atenção", "Telefone já cadastrado", "error");
+            }
+        }
+    },
+    error: function (xhr, er) {
+        //tratamento de erro
+    }
+});
+
 function recuperaFuncionario(id) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php', //caminho do arquivo a ser executado
@@ -142,7 +165,7 @@ function recuperaFuncionario(id) {
                 $("#descricao").val(descricao);
                 $("#telefone").val(telefone);
                 $("#email").val(email);
-                //
+                
                 //atribuindo valor 
                 if (ativo === 1) {
                     $('#ativo').prop('checked', true);
@@ -194,34 +217,3 @@ function excluirFuncionario(id) {
         }
     });
 }
-
-// function recuperaDadosUsuario(callback) {
-//     $.ajax({
-//         url: 'js/sqlscopeUsuario.php', //caminho do arquivo a ser executado
-//         dataType: 'html', //tipo do retorno
-//         type: 'post', //metodo de envio
-//         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
-
-//         success: function (data) {
-//             callback(data)
-//         },
-//     })
-
-//     return
-// }
-
-// function gravaNovaSenha(senha, senhaConfirma, callback) {
-//     $.ajax({
-//         url: 'js/sqlscopeUsuario.php',
-//         dataType: 'html', //tipo do retorno
-//         type: 'post', //metodo de envio
-//         data: {
-//             funcao: 'gravarNovaSenha',
-//             senha: senha,
-//             senhaConfirma: senhaConfirma,
-//         }, //valores enviados ao script
-//         success: function (data) {
-//             callback(data)
-//         },
-//     })
-// }

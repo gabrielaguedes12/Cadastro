@@ -98,29 +98,6 @@ function verificarRg(rg) {
     });
 }
 
-function validaTelefone(telefone) {}
-$.ajax({
-    url: 'js/sqlscopeFuncionarioCadastro.php',
-    dataType: ' html',
-    type: 'post',
-    data: { funcao: 'validaTelefone', telefone: telefone },
-    success: function (data, textStatus) {
-        if (data.indexOf('failed') > -1) {
-            var piece = data.split("#");
-            var mensagem = piece[1];
-
-            if (mensagem !== "") {
-                smartAlert("Atenção", mensagem, "error");
-            } else {
-                smartAlert("Atenção", "Telefone já cadastrado", "error");
-            }
-        }
-    },
-    error: function (xhr, er) {
-        //tratamento de erro
-    }
-});
-
 function recuperaFuncionario(id) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php', //caminho do arquivo a ser executado
@@ -175,7 +152,7 @@ function recuperaFuncionario(id) {
                 idade($("#dataNascimento").val());
                 return;
             }
-        },
+                      },
         error: function (xhr, er) {
             //tratamento de erro
         }

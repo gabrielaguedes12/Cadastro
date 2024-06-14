@@ -42,7 +42,8 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["configuracao"]["sub"]["usuarios"]["active"] = true;
+$page_nav["Passo a Passo"]["sub"]["Cadastro"]["active"] = true;
+
 
 include("inc/nav.php");
 ?>
@@ -128,6 +129,7 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
+                                                                    <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -147,7 +149,7 @@ include("inc/nav.php");
                                                                 <label class="select">
                                                                     <select id="ativo" name="ativo">
                                                                         <option></option>
-                                                                        <option value="1" selected>Sim</option>
+                                                                        <option value="1" >Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
@@ -156,6 +158,7 @@ include("inc/nav.php");
                                                                 <label class="label">Gênero</label>
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
+                                                                    <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
@@ -195,7 +198,7 @@ include("inc/nav.php");
                                                             <section class="col col-4">
                                                                 <label class="label">Telefone</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-phone"></i>
-                                                                    <input id="telefone" maxlength="255" name="telefone" class="required" placeholder="(99) 99999-9999" value="">
+                                                                    <input id="telefone" maxlength="15" name="telefone" class="required" placeholder="(99) 99999-9999" value="">
                                                                 </label>
                                                             </section>
 
@@ -249,7 +252,7 @@ include("inc/nav.php");
                                                             <section class="col col-6">
                                                                 <label class="label">E-mail</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-envelope"></i>
-                                                                    <input id="email" maxlength="255" name="email" class="required" placeholder="" value="">
+                                                                    <input id="email" maxlength="255" name="email" class="required" placeholder="seuEmail@gmail.com" value="">
                                                                 </label>
                                                             </section>
 
@@ -383,10 +386,27 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-
+         
+        //cpf
         $(".cpf").inputmask("999.999.999-99");
+        
+        $("#cpf").on('focusout', function() {
+            validaCpf()
+        });
+        $("#cpf").on('change', function() {
+            verificaCpf()
+        });
+
+        //rg
         $(".rg").inputmask("99.999.999-9");
+
+        $(".rg").on('change', function() {
+            verificaRg()
+        });
+        
+        //data de nascimento
         $(".dataNascimento").inputmask("99/99/9999");
+
         $("#dataNascimento").on('change', function() {
             idade($("#dataNascimento").val());
         });
@@ -397,26 +417,15 @@ include("inc/scripts.php");
                 alert("Data Inválida,por favor tentar novamente.");
             }
         });
+  
+        //telefone
+        $("#telefone").inputmask("(99) 99999-9999");
 
-        $("#cpf").on('focusout', function() {
-            validaCpf()
+        $("#telefone").on('change', function() {
+            mascaraTelefone()
         });
-
-        $("#cpf").on('change', function() {
-            verificaCpf()
-        });
-
-        $(".rg").on('change', function() {
-            verificaRg()
-        });
-
-        $(".telefone").on('focusout', function() {
-            validaTelefone()
-        });
-
-
-
-        carregaPagina();
+      
+            carregaPagina();
     })
 
     //caixa de diálogo
@@ -532,6 +541,22 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
             dataNascimento = $("#dataNascimento").focus();
         }
+        if(estadoCivil == ""){
+            smartAlert("Atenção", "Estado Civil não preenchido.", "error")
+            estadoCivil = $("#estadoCivil").focus();
+        }
+        if(descricao == ""){
+            smartAlert("Atenção", "Gênero não preenchido.", "error")
+            descricao = $("#descricao").focus();
+        }
+        if(telefone == ""){
+            smartAlert("Atenção", "Telefone não preenchido.", "error")
+            telefone = $("#telefone").focus();
+        }
+        if(email == ""){
+            smartAlert("Atenção", "E-mail não preenchido.", "error")
+            email = $("#email").focus();
+        }
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, telefone, email);
     }
 
@@ -623,32 +648,13 @@ include("inc/scripts.php");
     }
 
     //valida telefone
-    function validaTelefone() {
-        var existente = false;
-        var encontrado = false;
-        var telefone = $('#telefone').val();
-        var sequencial = +$('#sequencialTel').val();
-        var telefonePrincipalMarcado = 0;
-
-        for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
-            if (telefonePrincipalMarcado === 1) {
-                if ((jsonTelefoneArray[i].telefonePrincipal === 1) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-                    encontrado = true;
-                    break;
-                }
-            }
-        }
-
-        if (existente === true) {
-            smartAlert("Erro", "Telefone já cadastrado.", "error");
-            return false;
-        }
-
-        return true;
+    function mascaraTelefone() {
+        var telefone = $('#telefone').val()
+        mascararTelefone(telefone)
     }
 
     //adiciona telefone
-    function addTelefone() {
+    function adicionaTelefone() {
         var item = $("#formTelefone").toObject({
             mode: 'combine',
             skipEmpty: false,
@@ -733,33 +739,47 @@ include("inc/scripts.php");
                 value: telefonePrincipal
             };
         }
+        if (fieldName !== '' && (fieldId === "whats")) {
+            var whats = 0;
+            if ($("#whats").is(':checked') === true) {
+                whats = 1;
+            }
+            return {
+                name: fieldName,
+                value: whats
+            };
+        }
 
         return false;
     }
 
-    //
-    function carregaTelefone(sequencialTel) {
-        var arr = jQuery.grep(jsonTelefoneArray, function(item, i) {
-            return (item.sequencialTel === sequencialTel);
-        });
-    }
+    // //
+    // function carregaTelefone(sequencialTel) {
+    //     var arr = jQuery.grep(jsonTelefoneArray, function(item, i) {
+    //         return (item.sequencialTel === sequencialTel);
+    //     });
+    // }
 
-    //exclusão 
-    function excluirContato() {
-        var arrSequencial = [];
-        $('#tableTelefone input[type=checkbox]:checked').each(function() {
-            arrSequencial.push(parseInt($(this).val()));
-        });
-        if (arrSequencial.length > 0) {
-            for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
-                var obj = jsonTelefoneArray[i];
-                if (jQuery.inArray(obj.sequencialTel, arrSequencial) > -1) {
-                    jsonTelefoneArray.splice(i, 1);
-                }
-            }
-            $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));
-            fillTableTelefone();
-        } else
-            smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
-    }
+    // //exclusão 
+    // function excluirContato() {
+    //     var arrSequencial = [];
+    //     $('#tableTelefone input[type=checkbox]:checked').each(function() {
+    //         arrSequencial.push(parseInt($(this).val()));
+    //     });
+    //     if (arrSequencial.length > 0) {
+    //         for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
+    //             var obj = jsonTelefoneArray[i];
+    //             if (jQuery.inArray(obj.sequencialTel, arrSequencial) > -1) {
+    //                 jsonTelefoneArray.splice(i, 1);
+    //             }
+    //         }
+    //         $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));
+    //         fillTableTelefone();
+    //     } else
+    //         smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
+    // }
+
+    //validaEmail
+    // ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+
 </script>

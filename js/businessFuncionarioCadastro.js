@@ -1,4 +1,4 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao,telefone, email) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, telefone, email) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
@@ -97,6 +97,8 @@ function verificarRg(rg) {
         }
     });
 }
+
+
 
 function recuperaFuncionario(id) {
     $.ajax({

@@ -56,10 +56,51 @@ function grava()
     $cpf = $utils->formatarString($_POST['cpf']);
     $rg = $utils->formatarString($_POST['rg']);
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
-    $estadoCivil = $utils->formatarString($_POST ['estadoCivil']);
-    $descricao = $utils->formatarString($_POST ['descricao']);
-    $telefone = $utils-> formatarString($_POST ['telefone']);
-    $email = $utils -> formatarString($_POST['email']);
+    $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
+    $descricao = $utils->formatarString($_POST['descricao']);
+    $telefone = $_POST['telefone'];
+    $email = $_POST['email'];
+
+
+    $nomeXml = "ArrayOfFilepondAta";
+    $nomeTabela = "ataUpload";
+    if (sizeof($arrayCaminhosFilepondAta) > 0) {
+        $xmlJsonAta = '<?xml version="1.0"?>';
+        $xmlJsonAta = $xmlJsonAta . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        foreach ($arrayCaminhosFilepondAta as $chave) {
+            $xmlJsonAta = $xmlJsonAta . "<" . $nomeTabela . ">";
+            foreach ($chave as $campo => $valor) {
+                if (($campo === "sequencialFilepond")) {
+                    continue;
+                }
+                if (($campo === "FilepondValor")) {
+                    $valor = $valor;
+                }
+                $xmlJsonAta = $xmlJsonAta . "<" . $campo . ">" . $valor . "</" . $campo . ">";
+            }
+            $xmlJsonAta = $xmlJsonAta . "</" . $nomeTabela . ">";
+        }
+        $xmlJsonAta = $xmlJsonAta . "</" . $nomeXml . ">";
+    } else {
+        $sqlDelete = "DELETE FROM [Ntl].[ataUpload]
+         WHERE campo = '$nomeCampo'  AND ata = $codigo and caminho = $caminho";
+        $reposit = new reposit();
+        $girComum = new comum();
+
+        $result = $reposit->Execprocedure($sqlDelete);
+        $xmlJsonAta = '<?xml version="1.0"?>';
+        $xmlJsonAta = $xmlJsonAta . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        $xmlJsonAta = $xmlJsonAta . "</" . $nomeXml . ">";
+    }
+    $xml = simplexml_load_string($xmlJsonAta);
+    if ($xml === false) {
+        $mensagem = "Erro na criação do XML de Solicitação";
+        echo "failed#" . $mensagem . ' ';
+        return;
+    }
+    $xmlJsonAta = "'" . $xmlJsonAta . "'";
+
+
 
     $sql = "dbo.funcionario_atualiza 
         $id,
@@ -71,8 +112,7 @@ function grava()
         $estadoCivil,
         $descricao,
         $telefone,
-        $email"
-        ;
+        $email";
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -134,12 +174,12 @@ function recupera()
         $ativo . "^" .
         $cpf . "^" .
         $rg . "^" .
-        $dataNascimento. "^" .
-        $estadoCivil. "^" .
-        $descricao. "^" .
+        $dataNascimento . "^" .
+        $estadoCivil . "^" .
+        $descricao . "^" .
         $telefone . "^" .
         $email;
-        
+
 
 
     if ($out == "") {
@@ -177,142 +217,6 @@ function excluir()
     echo 'sucess#' . $result;
     return;
 }
-
-// function valida($login)
-// {
-//     $sql = "SELECT codigo,[login],ativo FROM Ntl.usuario
-//     WHERE [login] LIKE $login and ativo = 1";
-
-//     $reposit = new reposit();
-//     $result = $reposit->RunQuery($sql);
-
-//     if ($result[0]) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
-
-// function recuperarDadosUsuario()
-// {
-
-//     session_start();
-//     $codigoLogin = $_SESSION['codigo'];
-
-//     $sql = "SELECT codigo, login, ativo, restaurarSenha
-//     FROM Ntl.usuario
-//     WHERE (0=0) AND
-//     codigo = " . $codigoLogin;
-
-//     $reposit = new reposit();
-//     $result = $reposit->RunQuery($sql);
-
-//     $out = "";
-//     if ($row = $result[0]) {
-//         $codigo = (int)$row['codigo'];
-//         $restaurarSenha = $row['restaurarSenha'];
-//     }
-
-//     $out = $codigo . "^" .
-//         $restaurarSenha;
-
-//     if ($out == "") {
-//         echo "failed#";
-//         return;
-//     }
-
-//     echo "sucess#" . $out;
-//     return;
-// }
-
-
-// function gravarNovaSenha()
-// {
-//     $reposit = new reposit();
-//     $senhaConfirma = $_POST["senhaConfirma"];
-//     $senha = $_POST["senha"];
-
-//     if ((empty($_POST['senhaConfirma'])) || (!isset($_POST['senhaConfirma'])) || (is_null($_POST['senhaConfirma']))) {
-//         $senhaConfirma = null;
-//     }
-//     if ((empty($_POST['senha'])) || (!isset($_POST['senha'])) || (is_null($_POST['senha']))) {
-//         $senha = null;
-//     }
-
-//     if ((!is_null($senhaConfirma)) or (!is_null($senha))) {
-//         $comum = new comum();
-//         $validouSenha = 1;
-//         if (!is_null($senha)) {
-//             $validouSenha = $comum->validaSenha($senha);
-//         }
-//         if ($validouSenha === 0) {
-//             if ($senhaConfirma !== $senha) {
-//                 $mensagem = "A confirmação da senha deve ser igual a senha.";
-//                 echo "failed#" . $mensagem . ' ';
-//                 return;
-//             } else {
-//                 $comum = new comum();
-//                 $senhaCript = $comum->criptografia($senha);
-//                 $senha = "'" . $senhaCript . "'";
-//             }
-//         } else {
-//             switch ($validouSenha) {
-//                 case 1:
-//                     $mensagem = "Senha não pode conter espaços.";
-//                     break;
-//                 case 2:
-//                     $mensagem = "Senha deve possuir no mínimo 7 caracter.";
-//                     break;
-//                 case 3:
-//                     $mensagem = "Senha ultrapassou de 15 caracteres.";
-//                     break;
-//                 case 4:
-//                     $mensagem = "Senha deve possuir no mínimo um caractér númerico.";
-//                     break;
-//                 case 5:
-//                     $mensagem = "Senha deve possuir no mínimo um caractér alfabético.";
-//                     break;
-//                 case 6:
-//                     $mensagem = "Senha deve possuir no mínimo um caracter especial.\nSão válidos : ! # $ & * - + ? . ; , : ] [ ( )";
-//                     break;
-//                 case 7:
-//                     $mensagem = "Senha não pode ter caracteres acentuados.";
-//                     break;
-//             }
-//             echo "failed#" . $mensagem . ' ';
-//             return;
-//         }
-//     }
-
-//     session_start();
-//     $login = "'" .  $_SESSION['login'] . "'";
-//     $usuario =  $login;
-
-//     $id = $_SESSION['codigo'];
-//     $funcionario = $_SESSION['funcionario'];
-//     if (!$funcionario) {
-//         $funcionario = 'NULL';
-//     }
-//     $ativo = 1;
-//     $tipoUsuario = 'C';
-//     $restaurarSenha = 0;
-
-//     $sql = "Ntl.usuario_Atualiza " . $id . "," . $ativo . "," . $login . "," . $senha . "," . $tipoUsuario . "," . $usuario . "," . $funcionario . "," . $restaurarSenha . " ";
-
-//     $reposit = new reposit();
-//     $result = $reposit->Execprocedure($sql);
-
-//     $ret = 'sucess#';
-
-//     if ($result < 1) {
-//         $ret = 'failed#';
-//     }
-
-//     echo $ret;
-
-//     return;
-// }
-
 //validar cpf(exem: 111.111.111-11)
 function validaCpf()
 {
@@ -332,7 +236,7 @@ function verificaCpf()
 {
     $reposit = new reposit();
     $utils = new comum();
-    
+
     $cpf = $utils->formatarString($_POST['cpf']);
 
     $sql = "SELECT cpf from dbo.funcionario where cpf = $cpf";

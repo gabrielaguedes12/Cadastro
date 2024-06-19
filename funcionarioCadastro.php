@@ -63,7 +63,7 @@ include("inc/nav.php");
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable centerBox">
-                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false" style="">
+                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
                             <h2>Usuário</h2>
@@ -107,24 +107,28 @@ include("inc/nav.php");
                                                                     <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="999.999.999-99" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-2">
                                                                 <label class="label">RG</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                     <input class="rg" maxlength="20" id="rg" type="text" class="required" placeholder="99.999.999-9" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-2">
                                                                 <label class="label">Data de Nascimento</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-calendar"></i>
                                                                     <input id="dataNascimento" name="dataNascimento" type="text" class="datepicker required" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-1">
                                                                 <label class="label">Idade:</label>
                                                                 <label class="input">
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-2">
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
@@ -144,6 +148,7 @@ include("inc/nav.php");
                                                                     </select>
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
@@ -254,10 +259,9 @@ include("inc/nav.php");
 
                                                     <fieldset class="col col-6">
                                                         <div id="formEmail">
-
                                                             <input type="" id="jsonEmail" value="[]" hidden>
                                                             <div class="row">
-                                                                <input type="" id="sequencialEmail" name="sequenciaEmail" value="" hidden>
+                                                                <input type="" id="sequencialEmail" name="sequencialEmail" value="" hidden>
                                                                 <input type="" id="emailId" name="emailId" value="" hidden>
                                                                 <section class="col col-6">
                                                                     <label class="label">E-mail</label>
@@ -268,8 +272,8 @@ include("inc/nav.php");
 
                                                                 <section class="col col-2">
                                                                     <label class="label">&nbsp;</label>
-                                                                    <label id="labelPrincipal" class="checkbox">
-                                                                        <input checked="checked" id="principal" name="principal" type="checkbox" value="true"><i></i>
+                                                                    <label id="labelPrincipalEmail" class="checkbox">
+                                                                        <input checked="checked" id="principalEmail" name="principalEmail" type="checkbox" value="true"><i></i>
                                                                         Principal
                                                                     </label>
                                                                 </section>
@@ -291,7 +295,7 @@ include("inc/nav.php");
                                                                     <thead>
                                                                         <tr role="row">
                                                                             <th></th>
-                                                                            <th class="text-center" style="min-width: 500%;">Telefone</th>
+                                                                            <th class="text-center" style="min-width: 500%;">Email</th>
                                                                             <th class="text-center" style="min-width: 500%;">Principal</th>
 
                                                                         </tr>
@@ -438,6 +442,12 @@ include("inc/scripts.php");
             mascaraTelefone()
         });
 
+        $("#principal").prop('checked', false);
+        $("#whats").prop('checked', false);
+        $("#principalEmail").prop('checked', false);
+
+
+
         carregaPagina();
     })
 
@@ -551,6 +561,7 @@ include("inc/scripts.php");
         var telefone = $("#telefone").val();
         var email = $("#email").val();
 
+        debugger
 
 
         if (nome == "") {
@@ -589,7 +600,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "E-mail não preenchido.", "error")
             email = $("#email").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, telefone, email);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray);
     }
 
     //data na ordem e contagem de idade
@@ -679,6 +690,11 @@ include("inc/scripts.php");
         verificarRg(rg)
     }
 
+    function mascaraTelefone() {
+        var telefone = $('#telefone').val()
+    }
+
+    //CONTATO
     //adiciona telefone
     function adicionaTelefone() {
         var item = $("#formTelefone").toObject({
@@ -700,7 +716,8 @@ include("inc/scripts.php");
             item["sequencialTel"] = +item["sequencialTel"];
         }
 
-        //
+        $('#telefone').val("");
+
         var index = -1;
         $.each(jsonTelefoneArray, function(i, obj) {
             if (+$('#sequencialTel').val() === obj.sequencialTel) {
@@ -716,6 +733,7 @@ include("inc/scripts.php");
 
         $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));
         fillTableTelefone();
+        clearFormTelefone();
 
     }
 
@@ -725,14 +743,15 @@ include("inc/scripts.php");
 
         for (var i = 0; i < jsonTelefoneArray.length; i++) {
             if (jsonTelefoneArray[i].telefone !== null && jsonTelefoneArray[i].telefone != '') {
+
                 var row = $('<tr />');
+
                 let auxPrincipal = 'Não';
 
                 if (jsonTelefoneArray[i].principal === true) {
                     auxPrincipal = 'Sim'
                 }
 
-                var row = $('<tr />');
                 let auxWhats = 'Não';
 
                 if (jsonTelefoneArray[i].whats === 1) {
@@ -743,18 +762,10 @@ include("inc/scripts.php");
                 $("#tableTelefone tbody").append(row);
                 row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonTelefoneArray[i].sequencialTel + '"><i></i></label></td>'));
                 row.append($('<td class="text-nowrap" onclick="carregaTelefone(' + jsonTelefoneArray[i].sequencialTel + ');">' + jsonTelefoneArray[i].telefone + '</td>'));
+
                 row.append($('<td class="text-nowrap">' + auxPrincipal + '</td>'));
                 row.append($('<td class="text-nowrap">' + auxWhats + '</td>'));
             }
-        }
-    }
-
-    //apagar áreas
-    function clearFormTelefone() {
-
-        if (arr.length > 0) {
-            var item = arr[0];
-            $("#telefoneId").val(item.telefoneId);
         }
     }
 
@@ -802,6 +813,21 @@ include("inc/scripts.php");
         var arr = jQuery.grep(jsonTelefoneArray, function(item, i) {
             return (item.sequencialTel === sequencialTel);
         });
+
+        clearFormTelefone();
+        if (arr.length > 0) {
+            var item = arr[0];
+            $("#sequencialTel").val(item.sequencialTel);
+            $("#telefoneId").val(item.telefoneId);
+            $("#telefone").val(item.telefone);
+        }
+    }
+
+    function clearFormTelefone() {
+        $("#sequencialTel").val("");
+        $("#telefoneId").val("");
+        $("#telefone").val("");
+        return true;
     }
 
     //exclusão 
@@ -823,8 +849,9 @@ include("inc/scripts.php");
             smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
     }
 
+    //EMAIL
+
     function adicionaEmail() {
-        debugger
         var item = $("#formEmail").toObject({
             mode: 'combine',
             skipEmpty: false,
@@ -844,7 +871,8 @@ include("inc/scripts.php");
             item["sequencialEmail"] = +item["sequencialEmail"];
         }
 
-        //
+        $('#email').val("");
+
         var index = -1;
         $.each(jsonEmailArray, function(i, obj) {
             if (+$('#sequencialEmail').val() === obj.sequencialEmail) {
@@ -860,35 +888,28 @@ include("inc/scripts.php");
 
         $("#jsonEmail").val(JSON.stringify(jsonEmailArray));
         fillTableEmail();
+        clearFormEmail();
 
     }
 
     function fillTableEmail() {
-        $("#tableTelefone tbody").empty();
+        $("#tableEmail tbody").empty();
 
         for (var i = 0; i < jsonEmailArray.length; i++) {
             if (jsonEmailArray[i].email !== null && jsonEmailArray[i].email != '') {
                 var row = $('<tr />');
-                let auxPrincipal = 'Não';
+                let auxPrincipalEmail = 'Não';
 
-                if (jsonEmailArray[i].principal === true) {
-                    auxPrincipal = 'Sim'
+                if (jsonEmailArray[i].principalEmail === true) {
+                    auxPrincipalEmail = 'Sim'
                 }
 
                 $("#tableEmail tbody").append(row);
                 row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonEmailArray[i].sequencialEmail + '"><i></i></label></td>'));
                 row.append($('<td class="text-nowrap" onclick="carregaEmail(' + jsonEmailArray[i].sequencialEmail + ');">' + jsonEmailArray[i].email + '</td>'));
-                row.append($('<td class="text-nowrap">' + auxPrincipal + '</td>'));
+                row.append($('<td class="text-nowrap">' + auxPrincipalEmail + '</td>'));
 
             }
-        }
-    }
-
-    function clearFormEmail() {
-
-        if (arr.length > 0) {
-            var item = arr[0];
-            $("#emailId").val(item.emailId);
         }
     }
 
@@ -923,6 +944,21 @@ include("inc/scripts.php");
         var arr = jQuery.grep(jsonEmailArray, function(item, i) {
             return (item.sequencialEmail === sequencialEmail);
         });
+
+        clearFormEmail();
+        if (arr.length > 0) {
+            var item = arr[0];
+            $("#sequencialEmail").val(item.sequencialEmail);
+            $("#emailId").val(item.emailId);
+            $("#email").val(item.email);
+        }
+    }
+
+    function clearFormEmail() {
+        $("#sequencialEmail").val("");
+        $("#emailId").val("");
+        $("#email").val("");
+        return true;
     }
 
     //exclusão 
@@ -943,9 +979,4 @@ include("inc/scripts.php");
         } else
             smartAlert("Erro", "Selecione pelo menos 1 Email para excluir.", "error");
     }
-
-    // validaEmail
-    // const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-
-    // pattern.test(aqui vai o email digitado pelo usuario)
 </script>

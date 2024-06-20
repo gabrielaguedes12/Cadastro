@@ -97,7 +97,7 @@ include("inc/nav.php");
                                                             <section class="col col-4">
                                                                 <label class="label">Nome Completo</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="nome" maxlength="255" name="nome" class="required" type="text" placeholder=" " value="">
+                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
 
@@ -302,45 +302,126 @@ include("inc/nav.php");
                                                                     </thead>
                                                                     <tbody>
 
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
                                                         </div>
                                                     </fieldset>
-
-
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <footer>
-                                            <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
-                                                <span class="fa fa-trash"></span>
-                                            </button>
+                                        <div class="panel-group smart-accordion-default" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseEndereço" class="" id="accordionEndereço">
+                                                        <i class="fa fa-lg fa-angle-down pull-right"></i>
+                                                        <i class="fa fa-lg fa-angle-up pull-right"></i>
+                                                        Endereço
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                                <div id="collapseEndereço" class="panel-collapse collapse in">
+                                                    <div class="panel-body no-padding">
+                                                        <fieldset>
+                                                            <div id="form">
+                                                                <div class="row">
+                                                                <section class="col col-3">
+                                                                <label class="label">CEP</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input class="cep" maxlength="20" id="cep" type="text" class="required" placeholder="99999-999" value="" style="background-color: rgb(255, 255, 192);">
+                                                                </label>
+                                                            </section>
 
-                                            <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
-                                                <span class="fa fa-floppy-o"></span>
-                                            </button>
-                                            <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
-                                                <span class="fa fa-file-o"></span>
-                                            </button>
-                                            <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
-                                                <span class="fa fa-backward "></span>
-                                            </button>
-                                        </footer>
-                                        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
-                                            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-                                                <span id="ui-id-2" class="ui-dialog-title">
-                                                </span>
-                                            </div>
-                                            <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
-                                                <p>CONFIRMA A EXCLUSÃO ? </p>
-                                            </div>
-                                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                                <div class="ui-dialog-buttonset">
+                                                            <div class="row">
+                                                            <section class="col col-2">
+                                                                <label class="label">Logradouro</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+
+                                                            <div class="row">
+                                                            <section class="col col-1">
+                                                                <label class="label">Número</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input id="nome" maxlength="6" name="nome" class="" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+
+                                                            <div class="row">
+                                                            <section class="col col-2">
+                                                                <label class="label">Complemento</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input id="nome" maxlength="255" name="nome" class="" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+
+                                                            <section class="col col-1">
+                                                                <label class="label">UF</label>
+                                                                <label class="input">
+                                                                    <input id="uf" name="uf" maxlength="2" type="text" class="required" readonly>
+                                                                </label>
+                                                            </section>
+
+                                                            <div class="row">
+                                                            <section class="col col-2">
+                                                                <label class="label">Bairro</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input id="bairro" maxlength="50" name="bairro" class="required" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+
+                                                            <div class="row">
+                                                            <section class="col col-2">
+                                                                <label class="label">Cidade</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input id="cidade" maxlength="50" name="cidade" class="required" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+                                                            
+
+                                                                
+                                                            </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                                                    <footer>
+                                                                        <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                                                            <span class="fa fa-trash"></span>
+                                                                        </button>
+
+                                                                        <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                                                            <span class="fa fa-floppy-o"></span>
+                                                                        </button>
+                                                                        <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
+                                                                            <span class="fa fa-file-o"></span>
+                                                                        </button>
+                                                                        <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
+                                                                            <span class="fa fa-backward "></span>
+                                                                        </button>
+                                                                    </footer>
+                                                                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
+                                                                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                                                                            <span id="ui-id-2" class="ui-dialog-title">
+                                                                            </span>
+                                                                        </div>
+                                                                        <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
+                                                                            <p>CONFIRMA A EXCLUSÃO ? </p>
+                                                                        </div>
+                                                                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                                                            <div class="ui-dialog-buttonset">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -398,7 +479,7 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
@@ -436,17 +517,22 @@ include("inc/scripts.php");
         });
 
         //telefone
-        $("#telefone").inputmask("(99) 99999-9999");
-
-        $("#telefone").on('change', function() {
-            mascaraTelefone()
-        });
-
         $("#principal").prop('checked', false);
         $("#whats").prop('checked', false);
         $("#principalEmail").prop('checked', false);
 
+        var SPMaskBehavior = function(val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
+            },
+            spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
 
+        $('#telefone').mask(SPMaskBehavior, spOptions);
+
+        //email
 
         carregaPagina();
     })
@@ -560,9 +646,6 @@ include("inc/scripts.php");
         var descricao = $("#descricao").val();
         var telefone = $("#telefone").val();
         var email = $("#email").val();
-
-        debugger
-
 
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
@@ -703,6 +786,8 @@ include("inc/scripts.php");
             nodeCallback: processDataTel
         });
 
+
+
         if (item["sequencialTel"] === '') {
             if (jsonTelefoneArray.length === 0) {
                 item["sequencialTel"] = 1;
@@ -748,7 +833,7 @@ include("inc/scripts.php");
 
                 let auxPrincipal = 'Não';
 
-                if (jsonTelefoneArray[i].principal === true) {
+                if (jsonTelefoneArray[i].principal === 1) {
                     auxPrincipal = 'Sim'
                 }
 
@@ -784,14 +869,14 @@ include("inc/scripts.php");
                 value: valTelefone
             };
         }
-        if (fieldName !== '' && (fieldId === "telefonePrincipal")) {
-            var telefonePrincipal = 0;
-            if ($("#telefonePrincipal").is(':checked') === true) {
-                telefonePrincipal = 1;
+        if (fieldName !== '' && (fieldId === "principal")) {
+            var principal = 0;
+            if ($("#principal").is(':checked') === true) {
+                principal = 1;
             }
             return {
                 name: fieldName,
-                value: telefonePrincipal
+                value: principal
             };
         }
         if (fieldName !== '' && (fieldId === "whats")) {
@@ -900,7 +985,7 @@ include("inc/scripts.php");
                 var row = $('<tr />');
                 let auxPrincipalEmail = 'Não';
 
-                if (jsonEmailArray[i].principalEmail === true) {
+                if (jsonEmailArray[i].principalEmail === 1) {
                     auxPrincipalEmail = 'Sim'
                 }
 
@@ -927,14 +1012,14 @@ include("inc/scripts.php");
                 value: valEmail
             };
         }
-        if (fieldName !== '' && (fieldId === "emailPrincipal")) {
-            var emailPrincipal = 0;
-            if ($("#emailPrincipal").is(':checked') === true) {
-                emailPrincipal = 1;
+        if (fieldName !== '' && (fieldId === "principalEmail")) {
+            var principalEmail = 0;
+            if ($("#principalEmail").is(':checked') === true) {
+                principalEmail = 1;
             }
             return {
                 name: fieldName,
-                value: emailPrincipal
+                value: principalEmail
             };
         }
         return false;

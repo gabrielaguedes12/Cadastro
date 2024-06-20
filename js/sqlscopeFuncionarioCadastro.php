@@ -58,50 +58,41 @@ function grava()
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
     $descricao = $utils->formatarString($_POST['descricao']);
-    $telefone = $_POST['telefone'];
+    $telefone = $_POST['jsonTelefoneArray'];
     $email = $_POST['email'];
 
 
-    $nomeXml = "ArrayOfFilepondAta";
-    $nomeTabela = "ataUpload";
-    if (sizeof($arrayCaminhosFilepondAta) > 0) {
-        $xmlJsonAta = '<?xml version="1.0"?>';
-        $xmlJsonAta = $xmlJsonAta . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
-        foreach ($arrayCaminhosFilepondAta as $chave) {
-            $xmlJsonAta = $xmlJsonAta . "<" . $nomeTabela . ">";
+    $nomeXml = "ArrayTelefone";
+    $nomeTabela = "TabelaTelefone";
+    if (sizeof($telefone) > 0) {
+        $xmlJsonTelefone = '<?xml version="1.0"?>';
+        $xmlJsonTelefone = $xmlJsonTelefone . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        foreach ($telefone as $chave) {
+            $xmlJsonTelefone = $xmlJsonTelefone . "<" . $nomeTabela . ">";
             foreach ($chave as $campo => $valor) {
-                if (($campo === "sequencialFilepond")) {
-                    continue;
-                }
-                if (($campo === "FilepondValor")) {
-                    $valor = $valor;
-                }
-                $xmlJsonAta = $xmlJsonAta . "<" . $campo . ">" . $valor . "</" . $campo . ">";
+                
+                $xmlJsonTelefone = $xmlJsonTelefone . "<" . $campo . ">" . $valor . "</" . $campo . ">";
             }
-            $xmlJsonAta = $xmlJsonAta . "</" . $nomeTabela . ">";
+            $xmlJsonTelefone = $xmlJsonTelefone . "</" . $nomeTabela . ">";
         }
-        $xmlJsonAta = $xmlJsonAta . "</" . $nomeXml . ">";
-    } else {
-        $sqlDelete = "DELETE FROM [Ntl].[ataUpload]
-         WHERE campo = '$nomeCampo'  AND ata = $codigo and caminho = $caminho";
-        $reposit = new reposit();
-        $girComum = new comum();
 
-        $result = $reposit->Execprocedure($sqlDelete);
-        $xmlJsonAta = '<?xml version="1.0"?>';
-        $xmlJsonAta = $xmlJsonAta . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
-        $xmlJsonAta = $xmlJsonAta . "</" . $nomeXml . ">";
+        $xmlJsonTelefone = $xmlJsonTelefone . "</" . $nomeXml . ">";
+    } else {
+       
+        $xmlJsonTelefone = '<?xml version="1.0"?>';
+        $xmlJsonTelefone = $xmlJsonTelefone . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        $xmlJsonTelefone = $xmlJsonTelefone . "</" . $nomeXml . ">";
     }
-    $xml = simplexml_load_string($xmlJsonAta);
+    $xml = simplexml_load_string($xmlJsonTelefone);
     if ($xml === false) {
-        $mensagem = "Erro na criação do XML de Solicitação";
+        $mensagem = "Erro na criação do XML de Telefone";
         echo "failed#" . $mensagem . ' ';
         return;
     }
-    $xmlJsonAta = "'" . $xmlJsonAta . "'";
+   
+    $xmlJsonTelefone = "'" . $xmlJsonTelefone . "'";
 
-
-
+ 
     $sql = "dbo.funcionario_atualiza 
         $id,
         $nome,

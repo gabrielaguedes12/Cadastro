@@ -1,9 +1,9 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, telefone, email) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, email) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil : estadoCivil, descricao: descricao, telefone: telefone, email: email},
+        data: { funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, email: email },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
@@ -131,7 +131,7 @@ function recuperaFuncionario(id) {
                 var estadoCivil = piece[6];
                 var descricao = piece[7];
                 var telefone = piece[8];
-                var email = piece [9];
+                var email = piece[9];
 
 
                 $("#codigo").val(codigo);
@@ -144,7 +144,7 @@ function recuperaFuncionario(id) {
                 $("#descricao").val(descricao);
                 $("#telefone").val(telefone);
                 $("#email").val(email);
-                
+
                 //atribuindo valor 
                 if (ativo === 1) {
                     $('#ativo').prop('checked', true);
@@ -154,7 +154,7 @@ function recuperaFuncionario(id) {
                 idade($("#dataNascimento").val());
                 return;
             }
-                      },
+        },
         error: function (xhr, er) {
             //tratamento de erro
         }

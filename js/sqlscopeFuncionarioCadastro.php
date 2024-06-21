@@ -59,8 +59,7 @@ function grava()
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
     $descricao = $utils->formatarString($_POST['descricao']);
     $telefone = $_POST['jsonTelefoneArray'];
-    $email = $_POST['email'];
-
+    $email = $_POST['jsonEmailArray'];
 
     $nomeXml = "ArrayTelefone";
     $nomeTabela = "TabelaTelefone";
@@ -92,6 +91,36 @@ function grava()
    
     $xmlJsonTelefone = "'" . $xmlJsonTelefone . "'";
 
+    // XML DO EMAIL AQUI - Cuidado com o CTRL C / CTRL V -> verifica os nomes certinho - Atenciosamente, a Diretoria!
+    //email
+    $nomeXml = "ArrayEmail";
+    $nomeTabela = "TabelaEmail";
+    if (sizeof($email) > 0) {
+        $xmlJsonEmail = '<?xml version="1.0"?>';
+        $xmlJsonEmail = $xmlJsonEmail . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        foreach ($email as $chave) {
+            $xmlJsonEmail = $xmlJsonEmail . "<" . $nomeTabela . ">";
+            foreach ($chave as $campo => $valor) {
+
+                $xmlJsonEmail = $xmlJsonEmail . "<" . $campo . ">" . $valor . "</" . $campo . ">";
+            }
+            $xmlJsonEmail = $xmlJsonEmail . "</" . $nomeTabela . ">";
+        }
+
+        $xmlJsonEmail = $xmlJsonEmail . "</" . $nomeXml . ">";
+    } else {
+
+        $xmlJsonEmail = '<?xml version="1.0"?>';
+        $xmlJsonEmail = $xmlJsonEmail . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        $xmlJsonEmail = $xmlJsonEmail . "</" . $nomeXml . ">";
+    }
+    $xml = simplexml_load_string($xmlJsonEmail);
+    if ($xml === false) {
+        $mensagem = "Erro na criação do XML de Email";
+        echo "failed#" . $mensagem . ' ';
+        return;
+    }
+    $xmlJsonEmail = "'" . $xmlJsonEmail . "'";
  
     $sql = "dbo.funcionario_atualiza 
         $id,
@@ -102,8 +131,8 @@ function grava()
         $dataNascimento,
         $estadoCivil,
         $descricao,
-        $telefone,
-        $email";
+        $xmlJsonTelefone
+        $xmlJsonEmail";
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -262,3 +291,4 @@ function verificaRg()
     echo $ret;
     return;
 }
+

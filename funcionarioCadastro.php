@@ -377,9 +377,6 @@ include("inc/nav.php");
                                                                                             <input id="cidade" maxlength="50" name="cidade" class="required" type="text" placeholder=" " value="">
                                                                                         </label>
                                                                                     </section>
-
-
-
                                                                                     </tbody>
                                                                                     </table>
                                                                                 </div>
@@ -489,6 +486,7 @@ include("inc/scripts.php");
         $("#cpf").on('focusout', function() {
             validaCpf()
         });
+
         $("#cpf").on('change', function() {
             verificaCpf()
         });
@@ -501,8 +499,9 @@ include("inc/scripts.php");
         });
 
         //data de nascimento
-        $(".dataNascimento").inputmask("99/99/9999");
+        $(".dataNascimento").inputmask("99/99/9999"); //classe--> geral
 
+        //id--> input unico
         $("#dataNascimento").on('change', function() {
             idade($("#dataNascimento").val());
         });
@@ -514,10 +513,8 @@ include("inc/scripts.php");
             }
         });
 
-        //telefone
-        $("#principal").prop('checked', false);
-        $("#whats").prop('checked', false);
-        
+
+        //mascara celular e telefone
         var SPMaskBehavior = function(val) {
                 return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
             },
@@ -532,9 +529,13 @@ include("inc/scripts.php");
         //email
         $("#principalEmail").prop('checked', false);
 
+        //telefone
+        $("#principal").prop('checked', false);
+        $("#whats").prop('checked', false);
 
         carregaPagina();
     })
+
 
     //caixa de diálogo
     $('#dlgSimpleExcluir').dialog({
@@ -610,10 +611,11 @@ include("inc/scripts.php");
             var idd = idx[1];
             if (idd !== "") {
                 recuperaFuncionario(idd);
+                fillTableEmail();
+                fillTableTelefone();
             }
         }
         $("#nome").focus();
-
     }
 
     function novo() {
@@ -675,7 +677,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Gênero não preenchido.", "error")
             descricao = $("#descricao").focus();
         }
-       
+
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray);
     }
 
@@ -773,14 +775,14 @@ include("inc/scripts.php");
     //CONTATO
     //adiciona telefone
     function adicionaTelefone() {
+        //só um principal
+        
+
         var item = $("#formTelefone").toObject({
             mode: 'combine',
             skipEmpty: false,
             nodeCallback: processDataTel
         });
-         
-
-
 
         if (item["sequencialTel"] === '') {
             if (jsonTelefoneArray.length === 0) {

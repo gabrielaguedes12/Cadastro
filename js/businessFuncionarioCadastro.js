@@ -21,8 +21,7 @@ function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil,
         }
     });
 
-
-    return '';
+       return '';
 }
 
 function verificarCpf(cpf) {
@@ -98,8 +97,6 @@ function verificarRg(rg) {
     });
 }
 
-
-
 function recuperaFuncionario(id) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php', //caminho do arquivo a ser executado
@@ -121,7 +118,11 @@ function recuperaFuncionario(id) {
 
                 var mensagem = piece[0];
                 var out = piece[1];
+                var strarrayTelefone = piece[2];
+                var strarrayEmail = piece[3];
+
                 piece = out.split("^");
+
                 var codigo = +piece[0];
                 var nome = piece[1];
                 var ativo = +piece[2];
@@ -130,8 +131,6 @@ function recuperaFuncionario(id) {
                 var dataNascimento = piece[5];
                 var estadoCivil = piece[6];
                 var descricao = piece[7];
-                var telefone = piece[8];
-                var email = piece[9];
 
 
                 $("#codigo").val(codigo);
@@ -142,8 +141,6 @@ function recuperaFuncionario(id) {
                 $("#dataNascimento").val(dataNascimento);
                 $("#estadoCivil").val(estadoCivil);
                 $("#descricao").val(descricao);
-                $("#telefone").val(telefone);
-                $("#email").val(email);
 
                 //atribuindo valor 
                 if (ativo === 1) {
@@ -151,7 +148,16 @@ function recuperaFuncionario(id) {
                 } else {
                     $('#ativo').prop('checked', false);
                 }
+
                 idade($("#dataNascimento").val());
+
+                $("#jsonTelefone").val(strarrayTelefone)
+                jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
+                fillTableTelefone();
+
+                $("#jsonEmail").val(strarrayEmail)
+                jsonEmailArray = JSON.parse($("#jsonEmail").val());
+                fillTableEmail();
                 return;
             }
         },
@@ -159,7 +165,6 @@ function recuperaFuncionario(id) {
             //tratamento de erro
         }
     });
-
     return;
 }
 

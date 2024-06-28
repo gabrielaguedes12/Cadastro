@@ -97,33 +97,34 @@ include("inc/nav.php");
                                                             <section class="col col-4">
                                                                 <label class="label">Nome Completo</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" placeholder=" " value="">
+                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" placeholder=" " value="" pattern="([aA-zZ]+)" />
+
                                                                 </label>
                                                             </section>
 
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="999.999.999-99" value="" style="background-color: rgb(255, 255, 192);">
+                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
 
                                                             <section class="col col-2">
                                                                 <label class="label">RG</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input class="rg" maxlength="20" id="rg" type="text" class="required" placeholder="99.999.999-9" value="" style="background-color: rgb(255, 255, 192);">
+                                                                    <input class="rg" maxlength="20" id="rg" type="text" class="required" placeholder="XX.XXX.XXX-X" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
 
                                                             <section class="col col-2">
                                                                 <label class="label">Data de Nascimento</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                                                                    <input id="dataNascimento" name="dataNascimento" type="text" class="datepicker required" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataNascimento" name="dataNascimento" type="text" class="datepicker required" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="XX/XX/XXXX" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
 
                                                             <section class="col col-1">
-                                                                <label class="label">Idade:</label>
+                                                                <label class="label">Idade</label>
                                                                 <label class="input">
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
@@ -133,6 +134,7 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
+                                                                        <option hidden select value> Selecione </option>
                                                                         <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
@@ -149,20 +151,11 @@ include("inc/nav.php");
                                                                 </label>
                                                             </section>
 
-                                                            <section class="col col-1">
-                                                                <label class="label">Ativo</label>
-                                                                <label class="select">
-                                                                    <select id="ativo" name="ativo">
-                                                                        <option></option>
-                                                                        <option value="1">Sim</option>
-                                                                        <option value="0">Não</option>
-                                                                    </select><i></i>
-                                                            </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">Gênero</label>
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
+                                                                        <option hidden select value> Selecione </option>
                                                                         <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
@@ -174,14 +167,45 @@ include("inc/nav.php");
 
                                                                             echo "<option value='$codigo'>$descricao</option>";
                                                                         }
+
                                                                         ?>
                                                                     </select>
                                                                 </label>
                                                             </section>
+
+                                                            <section class="col col-1">
+                                                                <label class="label">Ativo</label>
+                                                                <label class="select">
+                                                                    <select id="ativo" name="ativo">
+                                                                        <option></option>
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="0">Não</option>
+                                                                    </select><i></i>
+                                                            </section>
+
+                                                            <section class="col col-2">
+                                                                <label class="label">Primeiro emprego</label>
+                                                                <label class="select">
+                                                                    <select id="emprego" name="emprego">
+                                                                        <option></option>
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="0">Não</option>
+                                                                    </select><i></i>
+                                                            </section>
+
+                                                            <section class="col col-1">
+                                                                <label class="label">PIS/PASEP</label>
+                                                                <label class="input">
+                                                                    <input id="pis" name="pis" maxlength="2" type="text">
+                                                                </label>
+                                                            </section>
+
+
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
@@ -207,6 +231,7 @@ include("inc/nav.php");
                                                                         <input id="telefone" maxlength="15" name="telefone" class="required" placeholder="(99) 99999-9999" value="">
                                                                     </label>
                                                                 </section>
+
 
                                                                 <section class="col col-2">
                                                                     <label class="label">&nbsp;</label>
@@ -294,12 +319,9 @@ include("inc/nav.php");
                                                                             <th></th>
                                                                             <th class="text-center" style="min-width: 500%;">Email</th>
                                                                             <th class="text-center" style="min-width: 500%;">Principal</th>
-
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-
-
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -319,117 +341,115 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
+
                                             <div id="collapseEndereço" class="panel-collapse collapse">
                                                 <div class="panel-body no-padding">
-                                                    <fieldset>
-                                                        <div id="formEndereço">
+                                                    <section class="col col-2">
+                                                        <label class="label">CEP</label>
+                                                        <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                            <input class="cep" maxlength="20" id="cep" type="text" class="required" placeholder="99999-999" value="" style="background-color: rgb(255, 255, 192);">
+                                                        </label>
+                                                    </section>
+
+                                                    <div class="row">
+                                                        <section class="col col-2">
+                                                            <label class="label">Logradouro</label>
+                                                            <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                <input id="logradouro" maxlength="50" name="logradouro" class="required" type="text" placeholder=" " value="">
+                                                            </label>
+                                                        </section>
+
+                                                        <div class="row">
+                                                            <section class="col col-1">
+                                                                <label class="label">Número</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
+                                                                    <input id="numero" maxlength="6" name="numero" class="" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+
                                                             <div class="row">
-                                                                <section class="col col-3">
-                                                                    <label class="label">CEP</label>
+                                                                <section class="col col-2">
+                                                                    <label class="label">Complemento</label>
                                                                     <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                        <input class="cep" maxlength="20" id="cep" type="text" class="required" placeholder="99999-999" value="" style="background-color: rgb(255, 255, 192);">
+                                                                        <input id="complemento" maxlength="255" name="complemento" class="" type="text" placeholder=" " value="">
                                                                     </label>
                                                                 </section>
 
+                                                                <section class="col col-1">
+                                                                    <label class="label">UF</label>
+                                                                    <label class="input">
+                                                                        <input id="uf" name="uf" maxlength="2" type="text" class="required">
+                                                                    </label>
+                                                                </section>
                                                                 <div class="row">
                                                                     <section class="col col-2">
-                                                                        <label class="label">Logradouro</label>
+                                                                        <label class="label">Bairro</label>
                                                                         <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                            <input id="logradouro" maxlength="50" name="logradouro" class="required" type="text" placeholder=" " value="">
+                                                                            <input id="bairro" maxlength="50" name="bairro" class="required" type="text" placeholder=" " value="">
                                                                         </label>
                                                                     </section>
-
                                                                     <div class="row">
-                                                                        <section class="col col-1">
-                                                                            <label class="label">Número</label>
+                                                                        <section class="col col-2">
+                                                                            <label class="label">Cidade</label>
                                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                                <input id="numero" maxlength="6" name="numero" class="" type="text" placeholder=" " value="">
+                                                                                <input id="cidade" maxlength="50" name="cidade" class="required" type="text" placeholder=" " value="">
                                                                             </label>
                                                                         </section>
 
-                                                                        <div class="row">
-                                                                            <section class="col col-2">
-                                                                                <label class="label">Complemento</label>
-                                                                                <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                                    <input id="complemento" maxlength="255" name="complemento" class="" type="text" placeholder=" " value="">
-                                                                                </label>
-                                                                            </section>
+                                                                        </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                                            <section class="col col-1">
-                                                                                <label class="label">UF</label>
-                                                                                <label class="input">
-                                                                                    <input id="uf" name="uf" maxlength="2" type="text" class="required" readonly>
-                                                                                </label>
-                                                                            </section>
 
-                                                                            <div class="row">
-                                                                                <section class="col col-2">
-                                                                                    <label class="label">Bairro</label>
-                                                                                    <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                                        <input id="bairro" maxlength="50" name="bairro" class="required" type="text" placeholder=" " value="">
-                                                                                    </label>
-                                                                                </section>
+                                            <footer>
+                                                <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                                    <span class="fa fa-trash"></span>
+                                                </button>
 
-                                                                                <div class="row">
-                                                                                    <section class="col col-2">
-                                                                                        <label class="label">Cidade</label>
-                                                                                        <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                                            <input id="cidade" maxlength="50" name="cidade" class="required" type="text" placeholder=" " value="">
-                                                                                        </label>
-                                                                                    </section>
-                                                                                    </tbody>
-                                                                                    </table>
-                                                                                </div>
-                                                                            </div>
-                                                    </fieldset>
+                                                <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                                    <span class="fa fa-floppy-o"></span>
+                                                </button>
+                                                <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
+                                                    <span class="fa fa-file-o"></span>
+                                                </button>
+                                                <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
+                                                    <span class="fa fa-backward "></span>
+                                                </button>
+                                            </footer>
+                                            <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
+                                                <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                                                    <span id="ui-id-2" class="ui-dialog-title">
+                                                    </span>
+                                                </div>
+                                                <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
+                                                    <p>CONFIRMA A EXCLUSÃO ? </p>
+                                                </div>
+                                                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                                    <div class="ui-dialog-buttonset">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-
-                                    <footer>
-                                        <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
-                                            <span class="fa fa-trash"></span>
-                                        </button>
-
-                                        <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
-                                            <span class="fa fa-floppy-o"></span>
-                                        </button>
-                                        <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
-                                            <span class="fa fa-file-o"></span>
-                                        </button>
-                                        <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
-                                            <span class="fa fa-backward "></span>
-                                        </button>
-                                    </footer>
-                                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
-                                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-                                            <span id="ui-id-2" class="ui-dialog-title">
-                                            </span>
-                                        </div>
-                                        <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
-                                            <p>CONFIRMA A EXCLUSÃO ? </p>
-                                        </div>
-                                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                            <div class="ui-dialog-buttonset">
-                                            </div>
-                                        </div>
-                                    </div>
+                                </form>
                             </div>
-                            </form>
                         </div>
                     </div>
+                </article>
             </div>
-            </article>
+        </section>
+
+
+        <!-- end widget grid -->
+
     </div>
-    </section>
-
-
-    <!-- end widget grid -->
-
-</div>
-<!-- END MAIN CONTENT -->
+    <!-- END MAIN CONTENT -->
 
 </div>
 <!-- END MAIN PANEL -->
@@ -480,6 +500,9 @@ include("inc/scripts.php");
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
 
+        //nome
+
+
         //cpf
         $(".cpf").inputmask("999.999.999-99");
 
@@ -510,9 +533,9 @@ include("inc/scripts.php");
             validaData()
             if (!validaData($("#dataNascimento").val())) {
                 smartAlert("Atenção", "Data Inválida,por favor tentar novamente.", "error");
+                $('#dataNascimento').val("");
             }
         });
-
 
         //mascara celular e telefone
         var SPMaskBehavior = function(val) {
@@ -583,6 +606,10 @@ include("inc/scripts.php");
         voltar();
     });
 
+    $("#btnGravar").on("click", function() {
+        gravar();
+    });
+
     //telefone
     $('#btnAddSolicitacao').on("click", function() {
         adicionaTelefone();
@@ -648,10 +675,12 @@ include("inc/scripts.php");
         var descricao = $("#descricao").val();
         var telefone = $("#telefone").val();
         var email = $("#email").val();
+        var emprego = $('#emprego').val();
+        var pis = $('#pis').val();
 
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
-            $("#nome").focus();
+            nome = $("#nome").focus();
             return
         }
 
@@ -768,15 +797,25 @@ include("inc/scripts.php");
         verificarRg(rg)
     }
 
+    function validaTelefone() {
+        var telefone = $('.telefone').val()
+        validarTelefone(telefone)
+    }
+
+
     function mascaraTelefone() {
         var telefone = $('#telefone').val()
     }
+
+    
 
     //CONTATO
     //adiciona telefone
     function adicionaTelefone() {
         //só um principal
-        
+
+
+
 
         var item = $("#formTelefone").toObject({
             mode: 'combine',
@@ -930,9 +969,41 @@ include("inc/scripts.php");
             smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
     }
 
-    //EMAIL
+    function validarEmail() {
+        var email = $('#Email').val();
+        var er = new RegExp(/^[A-Za-z0-9-.]+@[A-Za-z0-9-.]{2,}.[A-Za-z0-9]{2,}(.[A-Za-z0-9])?/);
+       
+        if (!er.test(email)) {
+            smartAlert("Erro", "Email Inválido!", "error");
+            var controleEmail = 1;
+            return false;
+        } else {
+            validaEmail();
+        }
+        return true;
+    }
 
+    //EMAIL
     function adicionaEmail() {
+
+        var email = $('#email').val();
+        validarEmail(email);
+
+        //só um email principal
+        var principalEmail = false;
+        for (var i = 0; i < jsonEmailArray.length; i++) {
+            if (jsonEmailArray[i].email == true) {
+                principalEmail = true;
+            }
+        }
+        if (principalEmail != true) {
+            smartAlert("Atenção", "Adicione somente um email como principal!", "error");
+            $("#email").focus();
+            return;
+
+        }
+        //não podem ser iguais 
+
         var item = $("#formEmail").toObject({
             mode: 'combine',
             skipEmpty: false,
@@ -970,7 +1041,6 @@ include("inc/scripts.php");
         $("#jsonEmail").val(JSON.stringify(jsonEmailArray));
         fillTableEmail();
         clearFormEmail();
-
     }
 
     function fillTableEmail() {

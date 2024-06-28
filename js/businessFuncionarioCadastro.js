@@ -40,6 +40,7 @@ function verificarCpf(cpf) {
                     validaCpf()
                 } else {
                     smartAlert("Atenção", "CPF já cadastrado", "error");
+                    $('#cpf').val("");
                 }
             }
         },
@@ -64,6 +65,8 @@ function validarCpf(cpf) {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
                     smartAlert("Atenção", "CPF inválido", "error");
+                    $('#cpf').val("");
+
                 }
             }
         },
@@ -88,6 +91,8 @@ function verificarRg(rg) {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
                     smartAlert("Atenção", "RG já cadastrado", "error");
+                    $('#rg').val("");
+
                 }
             }
         },
@@ -96,6 +101,7 @@ function verificarRg(rg) {
         }
     });
 }
+
 
 function recuperaFuncionario(id) {
     $.ajax({

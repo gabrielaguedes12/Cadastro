@@ -36,6 +36,10 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
+if($funcao=='validaEmail'){
+    call_user_func($funcao);
+}
+
 return;
 
 
@@ -88,7 +92,6 @@ function grava()
         echo "failed#" . $mensagem . ' ';
         return;
     }
-
     $xmlJsonTelefone = "'" . $xmlJsonTelefone . "'";
 
     //email
@@ -200,7 +203,7 @@ function recupera()
 
     foreach ($result as $row) {
 
-         $out = "";
+        $out = "";
         if ($row = $result[0]) {
             $sequencialTel = $row['sequencialTel'];
             $telefone = $row['telefone'];
@@ -220,7 +223,7 @@ function recupera()
             "idFuncio"  => $idFuncio
         );
     }
-  
+
     $strarrayTelefone = json_encode($arrayTelefone);
 
 
@@ -274,8 +277,8 @@ function recupera()
         echo "failed#";
         return;
     }
-        echo "sucess#" . $out . "#" . $strarrayTelefone . "#" . $strarrayEmail;
-       
+    echo "sucess#" . $out . "#" . $strarrayTelefone . "#" . $strarrayEmail;
+
     return;
 }
 
@@ -338,7 +341,7 @@ function verificaCpf()
         $ret = 'failed# CPF já cadastrado';
     }
     echo $ret;
-    
+
     return;
 }
 

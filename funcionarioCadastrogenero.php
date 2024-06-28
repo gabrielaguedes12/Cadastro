@@ -100,7 +100,7 @@ include("inc/nav.php");
                                                             </section>
 
                                                         </div>
-                                                    </fieldset>    
+                                                    </fieldset>
                                                 </div>
                                             </div>
                                         </div>
@@ -256,6 +256,10 @@ include("inc/scripts.php");
         novo();
     });
 
+    $("$btnGravar").on("click", function() {
+        gravar();
+    });
+
     $("#btnVoltar").on("click", function() {
         voltar();
     });;
@@ -275,12 +279,17 @@ include("inc/scripts.php");
 
     }
 
+    function voltar() {
+        $(location).attr('href', 'funcionarioFiltro.php');
+    }
+
     function novo() {
         $(location).attr('href', 'funcionarioCadastro.php');
     }
 
-    function voltar() {
-        $(location).attr('href', 'funcionarioFiltro.php');
+    function gravar() {
+        $(location).attr('href', 'funcionarioCadastro.php');
+
     }
 
     function excluir() {
@@ -299,7 +308,7 @@ include("inc/scripts.php");
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
 
-        gravaFuncionario(id,descricao,ativo);
+        gravaFuncionario(id, descricao, ativo);
 
         // var ativo = 0;
         // if ($("#ativo").is(':checked')) {

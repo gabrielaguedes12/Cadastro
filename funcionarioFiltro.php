@@ -206,4 +206,10 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'usuarioCadastro.php');
 }
+
+document.getElementById("nome").onkeypress = function(e) {
+         var chr = String.fromCharCode(e.which);
+         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
+           return false;
+       };
 </script>

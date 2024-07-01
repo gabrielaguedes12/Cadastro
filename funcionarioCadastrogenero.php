@@ -189,29 +189,6 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-
-        // $(".cpf").inputmask("999.999.999-99");
-        // $(".dataNascimento").inputmask("99/99/9999");
-        // $("#dataNascimento").on('change', function() {
-        //     idade($("#dataNascimento").val());
-        // });
-
-        // $("#dataNascimento").on('focusout', function() {
-        //     validaData()
-        //     if (!validaData($("#dataNascimento").val())) {
-        //         alert("Data Inválida,por favor tentar novamente.");
-        //     }
-
-        // });
-
-        // $("#cpf").on('focusout', function() {
-        //     validaCpf()
-        // });
-
-        // $("#cpf").on('change', function() {
-        //     verificaCpf()
-        // });
-
         carregaPagina();
     })
 
@@ -309,111 +286,12 @@ include("inc/scripts.php");
         var ativo = $("#ativo").val();
 
         gravaFuncionario(id, descricao, ativo);
-
-        // var ativo = 0;
-        // if ($("#ativo").is(':checked')) {
-        //     ativo = 1;
-        // }
-        // var nome = $("#nome").val(); //pegando valor da variavel
-        // var cpf = $("#cpf").val();
-        // var dataNascimento = $("#dataNascimento").val();
-
-        // if (nome == "") {
-        //     smartAlert("Atenção", "Nome não preenchido.", "error")
-        //     $("#nome").focus();
-        //     return
-        // }
-
-        // if (cpf == "") {
-        //     smartAlert("Atenção", "CPF não preenchido.", "error")
-        //     cpf = $("#cpf").focus();
-        //     return
-        // }
-        // if (dataNascimento == "") {
-        //     smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
-        //     dataNascimento = $("#dataNascimento").focus();
-        // }
-
     }
 
-    //data na ordem e contagem de idade
-    // function idade(dataNascimento) {
-    //     const data = dataNascimento.split("/") //
-    //     dataNascimento = data[1] + "-" + data[0] + "-" + data[2];
-    //     const today = new Date();
-    //     const birthDate = new Date(dataNascimento);
-    //     let age = today.getFullYear() - birthDate.getFullYear();
-    //     const m = today.getMonth() - birthDate.getMonth();
+    document.getElementById("descricao").onkeypress = function(e) {
+         var chr = String.fromCharCode(e.which);
+         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
+           return false;
+       };
 
-    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    //         age--;
-    //     }
-    //     $("#idade").val(age)
-    //     return age;
-    // }
-
-    // //data de nascimento válido
-    // function validaData(dataNascimento) {
-
-    //     var verificaData = document.getElementById('dataNascimento').value;
-    //     var hoje = new Date().getFullYear().value;
-
-    //     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
-    //         return false
-    //     }
-
-    //     //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
-    //     if (typeof dataNascimento != 'string') {
-    //         return false
-    //     }
-
-    //     //split é oq divide os algorismos em XX//X/XXXX
-    //     const dataDiv = dataNascimento.split('/')
-    //     const data = {
-    //         dias: dataDiv[0],
-    //         mes: dataDiv[1],
-    //         ano: dataDiv[2]
-    //     }
-
-    //     //parseint --> para converter strings em número inteiro
-    //     const dias = parseInt(data.dias)
-    //     const mes = parseInt(data.mes)
-    //     const ano = parseInt(data.ano)
-
-    //     //dias para cada mês
-    //     const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-    //     //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
-    //     if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
-    //         dataDias[2] == 29
-    //     }
-
-    //     if (hoje > new Date().getFullYear()) {
-    //         return false;
-    //     }
-
-    //     //para restringir os meses de 1 a 12
-    //     if (mes < 1 || mes > 12 || dias < 1) {
-    //         return false
-    //     }
-
-    //     //para restringir número de dias no mês
-    //     else if (dias > dataDias[mes]) {
-    //         return false
-    //     }
-
-    //     return true
-    // }
-
-    // //validar cpf(exem: 111.111.111-11)
-    // function validaCpf() {
-    //     var cpf = $('#cpf').val()
-    //     validarCpf(cpf)
-    // }
-
-    // //verificar se já foi cadastrado
-    // function verificaCpf() {
-    //     var cpf = $("#cpf").val()
-    //     verificarCpf(cpf) //variável "passa" nesse ()
-    // }
 </script>

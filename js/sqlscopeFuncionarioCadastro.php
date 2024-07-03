@@ -36,10 +36,6 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
-if($funcao=='validaEmail'){
-    call_user_func($funcao);
-}
-
 return;
 
 
@@ -62,8 +58,18 @@ function grava()
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
     $descricao = $utils->formatarString($_POST['descricao']);
+    $emprego = $utils->formatarString($_POST['emprego']);
+    $pis = $utils->formatarString($_POST['pis']);
     $telefone = $_POST['jsonTelefoneArray'];
     $email = $_POST['jsonEmailArray'];
+    $cep = $utils->formatarString($_POST['cep']);
+    $logradouro = $utils->formatarString($_POST['logradouro']);
+    $numero = $utils->formatarString($_POST['numero']);
+    $complemento = $utils->formatarString($_POST['complemento']);
+    $uf = $utils->formatarString($_POST['uf']);
+    $bairro = $utils->formatarString($_POST['bairro']);
+    $cidade = $utils->formatarString($_POST['cidade']);
+
 
     $nomeXml = "ArrayTelefone";
     $nomeTabela = "TabelaTelefone";
@@ -170,7 +176,7 @@ function recupera()
     $id = $_POST["id"];
 
 
-    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero 
+    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero,emprego,pis,cep,logradouro,numero,complemento,uf,bairro,cidade
     from dbo.funcionario WHERE (0 = 0) and codigo = $id ";
 
     $reposit = new reposit();
@@ -187,6 +193,15 @@ function recupera()
         $dataNascimento = $utils->validaData($row['dataNascimento']);
         $estadoCivil = $row['estadoCivil'];
         $idGenero = $row['idGenero'];
+        $emprego = $row['emprego'];
+        $pis = $row['pis'];
+        $cep = $row['cep'];
+        $logradouro = $row['logradouro'];
+        $numero = $row['numero'];
+        $complemento= $row['complemento'];
+        $uf= $row['uf'];
+        $bairro= $row['bairro'];
+        $cidade = $row['cidade'];
     }
 
 

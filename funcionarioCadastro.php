@@ -88,7 +88,6 @@ include("inc/nav.php");
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
                                                         <div class="row">
-
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Código</label>
                                                                 <label class="input">
@@ -189,17 +188,17 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">Primeiro emprego</label>
                                                                 <label class="select">
-                                                                    <select id="emprego" name="emprego">
+                                                                    <select id="emprego" name="emprego"  >
                                                                         <option></option>
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
 
-                                                            <section class="col col-1">
+                                                            <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
-                                                                    <input id="pis" name="pis" maxlength="10" type="text">
+                                                                    <input id="pis" name="pis" maxlength="20" type="text"  placeholder="XXX. XXXXX. XX-X">
                                                                 </label>
                                                             </section>
                                                     </fieldset>
@@ -372,7 +371,7 @@ include("inc/nav.php");
                                                                 <input id="complemento" maxlength="255" name="complemento" class="" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
-                                                        
+
                                                         <section class="col col-1">
                                                             <label class="label">UF</label>
                                                             <label class="input">
@@ -478,54 +477,47 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/moment/moment.min.js"></script>
 <!-- <script src="/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script> -->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/fullcalendar.js"></script>
-<!--<script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>-->
+<script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>
 
 
 
 <!-- Form to json -->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/form2js.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
-<script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+
+
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
 
         //cpf
-        $(".cpf").inputmask("999.999.999-99");
+        $(".cpf").mask("999.999.999-99");
+        $(".rg").mask("99.999.999-9");
+        $(".dataNascimento").mask("99/99/9999"); //classe--> geral
+        $("#cep").mask("99999-999");
+        $("#pis").mask("999.99999.99-9");
+
 
         $("#cpf").on('focusout', function() {
             validaCpf()
-            // if (!validaCpf($("#cpf").val())) {
-            //     smartAlert("Atenção", "CPF inválido,por favor tentar novamente.", "error");
-            //     $('#cpf').val("");
-            // }
         });
 
         $("#cpf").on('change', function() {
             verificaCpf()
-            // if (!verificaCpf($("#cpf").val())) {
-            //     smartAlert("Atenção", "CPF já cadastrado,por favor tentar novamente.", "error");
-            //     $('#cpf').val("");
-            // }
+
         });
 
         //rg
-        $(".rg").inputmask("99.999.999-9");
-
         $(".rg").on('change', function() {
             verificaRg()
-            // if (!verificaRg($("#rg").val())) {
-            //     smartAlert("Atenção", "RG inválido,por favor tentar novamente.", "error");
-            //     $('#rg').val("");
-            // }
+
         });
 
         //data de nascimento
-        $(".dataNascimento").inputmask("99/99/9999"); //classe--> geral
-
         //id--> input unico
         $("#dataNascimento").on('change', function() {
             idade($("#dataNascimento").val());
@@ -539,7 +531,7 @@ include("inc/scripts.php");
             }
         });
 
-        //mascara celular e telefone
+          //mascara celular e telefone
         var SPMaskBehavior = function(val) {
                 return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
             },
@@ -548,8 +540,8 @@ include("inc/scripts.php");
                     field.mask(SPMaskBehavior.apply({}, arguments), options);
                 }
             };
-
         $('#telefone').mask(SPMaskBehavior, spOptions);
+
 
         //email
         $("#principalEmail").prop('checked', false);
@@ -559,8 +551,54 @@ include("inc/scripts.php");
         $("#whats").prop('checked', false);
 
         //cep
-        $(".cep").inputmask("99999-999");
+        $("#cep").blur(function() {
 
+            //Nova variável "cep" somente com dígitos.
+            var cep = $(this).val().replace(/\D/g, '');
+
+            //Verifica se campo cep possui valor informado.
+            if (cep != "") {
+
+                var validacep = /^[0-9]{8}$/;
+
+                //Valida o formato do CEP.
+                if (validacep.test(cep)) {
+
+                    //Preenche os campos com "..." enquanto consulta webservice.
+                    $("#logradouro").val("...");
+                    $("#uf").val("...");
+                    $("#bairro").val("...");
+                    $("#cidade").val("...");
+
+                    //Consulta o webservice viacep.com.br/
+                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
+
+                        if (!("erro" in dados)) {
+                            //Atualiza os campos com os valores da consulta.
+                            $("#logradouro").val(dados.logradouro);
+                            $("#uf").val(dados.uf);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                        } //end if.
+                        else {
+                            //CEP pesquisado não foi encontrado.
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
+                } //end if.
+                else {
+                    //cep é inválido.
+                    limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
+                }
+            } //end if.
+            else {
+                //cep sem valor, limpa formulário.
+                limpa_formulário_cep();
+            }
+        });
+       
         carregaPagina();
     })
 
@@ -617,7 +655,7 @@ include("inc/scripts.php");
 
     //telefone
     $('#btnAddSolicitacao').on("click", function() {
-        validaTelefone();
+        // validaTelefone();
         adicionaTelefone();
     });
 
@@ -628,7 +666,8 @@ include("inc/scripts.php");
 
     //Email
     $('#btnAddSolicitacaoEmail').on("click", function() {
-        adicionaEmail()
+        // validaEmail();
+        adicionaEmail();
     })
 
     $('#btnRemoverSolicitacaoEmail').on("click", function() {
@@ -671,6 +710,7 @@ include("inc/scripts.php");
     }
 
     function gravar() {
+        //cadastro
         var id = +($("#codigo").val());
         var ativo = $("#ativo").val();
         var nome = $("#nome").val(); //pegando valor da variavel
@@ -679,10 +719,23 @@ include("inc/scripts.php");
         var dataNascimento = $("#dataNascimento").val();
         var estadoCivil = $("#estadoCivil").val();
         var descricao = $("#descricao").val();
+        var emprego = $("#emprego").val();
+        var pis = $("#pis").val();
+
+
+        //contato
         var telefone = $("#telefone").val();
         var email = $("#email").val();
-        var emprego = $('#emprego').val();
-        var pis = $('#pis').val();
+
+        //endereço
+        var cep = $('#cep').val();
+        var logradouro = $('#logradouro').val();
+        var numero = $('#numero').val();
+        var complemento = $('#complemento').val();
+        var uf = $('#uf').val();
+        var bairro = $('#bairro').val();
+        var cidade = $('#cidade').val();
+
 
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
@@ -713,9 +766,44 @@ include("inc/scripts.php");
             descricao = $("#descricao").focus();
         }
 
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray);
+        if (emprego == "") {
+            smartAlert("Atenção", "Primeiro emprego não preenchido.", "error")
+            emprego = $("#emprego").focus();
+        }
+
+        if (pis == "") {
+            smartAlert("Atenção", "PIS não preenchido.", "error")
+            pis = $("#pis").focus();
+        }
+
+        if (cep == "") {
+            smartAlert("Atenção", "CEP não preenchido.", "error")
+            cep = $("#cep").focus();
+        }
+
+        if (logradouro == "") {
+            smartAlert("Atenção", "Logradouro não preenchido.", "error")
+            logradouro = $("#logradouro").focus();
+        }
+                   
+        if (uf == "") {
+            smartAlert("Atenção", "UF não preenchido.", "error")
+            uf = $("#uf").focus();
+        }
+
+        if (bairro == "") {
+            smartAlert("Atenção", "Bairro não preenchido.", "error")
+            bairro = $("#bairro").focus();
+        }
+
+        if (cidade == "") {
+            smartAlert("Atenção", "Cidade não preenchido.", "error")
+            cidade = $("#cidade").focus();
+        }
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao,emprego, pis, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade);
     }
 
+    //sem caracteres especiais
     document.getElementById("nome").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
@@ -751,8 +839,6 @@ include("inc/scripts.php");
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
             return false;
     };
-
-
 
     //data na ordem e contagem de idade
     function idade(dataNascimento) {
@@ -841,66 +927,61 @@ include("inc/scripts.php");
         verificarRg(rg)
     }
 
-
-
-
     function mascaraTelefone() {
         var telefone = $('#telefone').val()
     }
 
     //CONTATO
     //
-    function validaTelefone() {
+    // function validaTelefone() {
 
-        var telefoneCadastrado = false;
-        var telefoneCadastradoPrincipal = false;
-        var telefonePrincipal = '';
+    //     var telefoneCadastrado = false;
+    //     var telefoneCadastradoPrincipal = false;
+    //     var telefonePrincipal = '';
 
-        if ($('#telefonePrincipal').is(':checked')) {
-            telefonePrincipal = true;
-        } else {
-            telefonePrincipal = false;
-        }
+    //     if ($('#telefonePrincipal').is(':checked')) {
+    //         telefonePrincipal = true;
+    //     } else {
+    //         telefonePrincipal = false;
+    //     }
 
-        var sequencial = +$('#sequencialTel').val();
-        var telefone = $('#telefone').val();
+    //     var sequencial = +$('#sequencialTel').val();
+    //     var telefone = $('#telefone').val();
 
 
-        for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
-            if (telefonePrincipal == true) {
-                if ((jsonTelefoneArray[i].telefonePrincipal == telefonePrincipal) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-                    telefoneCadastradoPrincipal = true;
-                    break;
-                }
-            }
+    //     for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
+    //         if (telefonePrincipal == true) {
+    //             if ((jsonTelefoneArray[i].telefonePrincipal == telefonePrincipal) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
+    //                 telefoneCadastradoPrincipal = true;
+    //                 break;
+    //             }
+    //         }
 
-            if (telefone !== "") {
-                if ((jsonTelefoneArray[i].telefone === telefone) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-                    telefoneCadastrado = true;
-                    break;
-                }
-            }
-        }
+    //         if (telefone !== "") {
+    //             if ((jsonTelefoneArray[i].telefone === telefone) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
+    //                 telefoneCadastrado = true;
+    //                 break;
+    //             }
+    //         }
+    //     }
 
-        if (telefoneCadastrado === true) {
-            smartAlert("Erro", "Este número já está na lista.", "error");
-            clearFormTelefone();
-            return false;
-        }
-        
-        if (telefoneCadastradoPrincipal === true) {
-            smartAlert("Erro", "Já existe telefone principal na lista.", "error");
-            clearFormTelefone();
-            return false;
-        }
+    //     if (telefoneCadastrado === true) {
+    //         smartAlert("Erro", "Este número já está na lista.", "error");
+    //         clearFormTelefone();
+    //         return false;
+    //     }
 
-        return true;
-    }
+    //     if (telefoneCadastradoPrincipal === true) {
+    //         smartAlert("Erro", "Já existe telefone principal na lista.", "error");
+    //         clearFormTelefone();
+    //         return false;
+    //     }
+
+    //     return true;
+    // }
 
     //adiciona telefone
     function adicionaTelefone() {
-
-
 
         var item = $("#formTelefone").toObject({
             mode: 'combine',
@@ -1053,49 +1134,66 @@ include("inc/scripts.php");
             smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
     }
 
+
     //EMAIL
-    function validaEmail() {
+    // function validaEmail() {
 
-        var emailCadastrado = false;
-        var emailCadastradoPrincipal = false;
-        var emailPrincipal = '';
+    //     var emailCadastrado = false;
+    //     var emailCadastradoPrincipal = false;
+    //     var emailPrincipal = '';
 
-        if ($('#emailPrincipal').is(':checked')) {
-            emailPrincipal = true;
-        } else {
-            emailPrincipal = false;
-        }
+    //     if ($('#emailPrincipal').is(':checked')) {
+    //         emailPrincipal = true;
+    //     } else {
+    //         emailPrincipal = false;
+    //     }
 
-        var sequencial = +$('#sequencialEmail').val();
-        var email = $('#email').val();
+    //     var sequencial = +$('#sequencialEmail').val();
+    //     var email = $('#email').val();
 
 
-        for (i = jsonEmailArray.length - 1; i >= 0; i--) {
-            if (emailPrincipal == true) {
-                if ((jsonEmailArray[i].emailPrincipal == emailPrincipal) && (jsonEmailArray[i].sequencialEmail !== sequencial)) {
-                    emailCadastradoPrincipal = true;
-                    break;
-                }
-            }
-            if (email !== "") {
-                if ((jsonEmailArray[i].email === email) && (jsonEmailArray[i].sequencialEmail !== sequencial)) {
-                    emailCadastrado = true;
-                    break;
-                }
-            }
-        }
-        if (emailCadastrado === true) {
-            smartAlert("Erro", "Este email já está na lista.", "error");
-            clearFormTelefone();
-            return false;
-        }
-        if (emailCadastradoPrincipal === true) {
-            smartAlert("Erro", "Já existe um email principal na lista.", "error");
-            clearFormTelefone();
-            return false;
-        }
-        return true;
-    }
+    //     for (i = jsonEmailArray.length - 1; i >= 0; i--) {
+    //         if (emailPrincipal == true) {
+    //             if ((jsonEmailArray[i].emailPrincipal == emailPrincipal) && (jsonEmailArray[i].sequencialEmail !== sequencial)) {
+    //                 emailCadastradoPrincipal = true;
+    //                 break;
+    //             }
+    //         }
+
+    //         if (email !== "") {
+    //             if ((jsonEmailArray[i].email === email) && (jsonEmailArray[i].sequencialEmail !== sequencial)) {
+    //                 emailCadastrado = true;
+    //                 break;
+    //             }
+    //         }
+    //     }
+
+    //     if (emailCadastrado === true) {
+    //         smartAlert("Erro", "Este email já está na lista.", "error");
+    //         clearFormEmail();
+    //         return false;
+    //     }
+
+    //     if (emailCadastradoPrincipal === true) {
+    //         smartAlert("Erro", "Já existe email principal na lista.", "error");
+    //         clearFormEmail();
+    //         return false;
+    //     }
+
+    //     return true;
+    // }
+
+    // function validarEmail() {
+    //     var email = $('#email').val();
+    //     var er = new RegExp(/^[A-Za-z0-9-.]+@[A-Za-z0-9-.]{2,}.[A-Za-z0-9]{2,}(.[A-Za-z0-9])?/);
+    //     if (!er.test(email)) {
+    //         smartAlert("Erro", "Email Inválido!", "error");
+    //         return false;
+    //     } else {
+    //         adicionaEmail();
+    //     }
+    //     return true;
+    // }
 
     function adicionaEmail() {
 

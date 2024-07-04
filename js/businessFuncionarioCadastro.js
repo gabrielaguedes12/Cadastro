@@ -1,11 +1,11 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, emprego, pis, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao,  jsonTelefoneArray, jsonEmailArray,emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: {
-            funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, emprego: emprego, pis: pis,
-            jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray, cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade
+            funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray, 
+            emprego: emprego, pis: pis, cep: cep, logradouro: logradouro, numero: numero,complemento: complemento, uf: uf, bairro: bairro, cidade: cidade
         },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
@@ -140,15 +140,15 @@ function recuperaFuncionario(id) {
                 var dataNascimento = piece[5];
                 var estadoCivil = piece[6];
                 var descricao = piece[7];
-                var emprego = piece[8];
-                var pis = piece[9];
-                var cep = piece[10];
-                var logradouro = piece[11];
-                var numero = piece[12];
-                var complemento = piece[13];
-                var uf = piece[14];
-                var bairro = piece[15];
-                var cidade = piece[16];
+                var emprego = piece[10];
+                var pis = piece[11];
+                var cep = piece[12];
+                var logradouro = piece[13];
+                var numero = piece[14];
+                var complemento = piece[15];
+                var uf = piece[16];
+                var bairro = piece[17];
+                var cidade = piece[18];
 
                 $("#codigo").val(codigo);
                 $("#nome").val(nome);
@@ -178,7 +178,6 @@ function recuperaFuncionario(id) {
 
                 idade($("#dataNascimento").val());
 
-                
                 $("#jsonTelefone").val(strarrayTelefone)
                 jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
                 fillTableTelefone();

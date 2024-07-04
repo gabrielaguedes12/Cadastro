@@ -99,7 +99,7 @@ include("inc/nav.php");
                                                             <section class="col col-4">
                                                                 <label class="label">Nome Completo</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" placeholder=" " value="" pattern="([aA-zZ]+)" />
+                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" value="" />
 
                                                                 </label>
                                                             </section>
@@ -188,7 +188,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">Primeiro emprego</label>
                                                                 <label class="select">
-                                                                    <select id="emprego" name="emprego"  >
+                                                                    <select id="emprego" name="emprego" class="required">
                                                                         <option></option>
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
@@ -198,7 +198,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
-                                                                    <input id="pis" name="pis" maxlength="20" type="text"  placeholder="XXX. XXXXX. XX-X">
+                                                                    <input id="pis" name="pis" maxlength="20" type="text" placeholder="XXX. XXXXX. XX-X">
                                                                 </label>
                                                             </section>
                                                     </fieldset>
@@ -531,7 +531,7 @@ include("inc/scripts.php");
             }
         });
 
-          //mascara celular e telefone
+        //mascara celular e telefone
         var SPMaskBehavior = function(val) {
                 return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00000';
             },
@@ -598,7 +598,7 @@ include("inc/scripts.php");
                 limpa_formulário_cep();
             }
         });
-       
+
         carregaPagina();
     })
 
@@ -728,13 +728,13 @@ include("inc/scripts.php");
         var email = $("#email").val();
 
         //endereço
-        var cep = $('#cep').val();
-        var logradouro = $('#logradouro').val();
-        var numero = $('#numero').val();
-        var complemento = $('#complemento').val();
-        var uf = $('#uf').val();
-        var bairro = $('#bairro').val();
-        var cidade = $('#cidade').val();
+        var cep = $("#cep").val();
+        var logradouro = $("#logradouro").val();
+        var numero = $("#numero").val();
+        var complemento = $("#complemento").val();
+        var uf = $("#uf").val();
+        var bairro = $("#bairro").val();
+        var cidade = $("#cidade").val();
 
 
         if (nome == "") {
@@ -771,11 +771,6 @@ include("inc/scripts.php");
             emprego = $("#emprego").focus();
         }
 
-        if (pis == "") {
-            smartAlert("Atenção", "PIS não preenchido.", "error")
-            pis = $("#pis").focus();
-        }
-
         if (cep == "") {
             smartAlert("Atenção", "CEP não preenchido.", "error")
             cep = $("#cep").focus();
@@ -785,7 +780,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Logradouro não preenchido.", "error")
             logradouro = $("#logradouro").focus();
         }
-                   
+
         if (uf == "") {
             smartAlert("Atenção", "UF não preenchido.", "error")
             uf = $("#uf").focus();
@@ -800,7 +795,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Cidade não preenchido.", "error")
             cidade = $("#cidade").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao,emprego, pis, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray,emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade);
     }
 
     //sem caracteres especiais

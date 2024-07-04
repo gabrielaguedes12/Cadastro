@@ -58,8 +58,6 @@ function grava()
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
     $descricao = $utils->formatarString($_POST['descricao']);
-    $emprego = $utils->formatarString($_POST['emprego']);
-    $pis = $utils->formatarString($_POST['pis']);
     $telefone = $_POST['jsonTelefoneArray'];
     $email = $_POST['jsonEmailArray'];
     $cep = $utils->formatarString($_POST['cep']);
@@ -69,7 +67,9 @@ function grava()
     $uf = $utils->formatarString($_POST['uf']);
     $bairro = $utils->formatarString($_POST['bairro']);
     $cidade = $utils->formatarString($_POST['cidade']);
-
+    $emprego = $_POST['emprego'];
+    $pis = $utils->formatarString($_POST['pis']);
+    
 
     $nomeXml = "ArrayTelefone";
     $nomeTabela = "TabelaTelefone";
@@ -140,7 +140,16 @@ function grava()
         $estadoCivil,
         $descricao,
         $xmlJsonTelefone,
-        $xmlJsonEmail";
+        $xmlJsonEmail,
+        $emprego,
+        $pis,
+        $cep,
+        $logradouro,
+        $numero,
+        $complemento,
+        $uf,
+        $bairro,
+        $cidade";
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -198,9 +207,9 @@ function recupera()
         $cep = $row['cep'];
         $logradouro = $row['logradouro'];
         $numero = $row['numero'];
-        $complemento= $row['complemento'];
-        $uf= $row['uf'];
-        $bairro= $row['bairro'];
+        $complemento = $row['complemento'];
+        $uf = $row['uf'];
+        $bairro = $row['bairro'];
         $cidade = $row['cidade'];
     }
 
@@ -286,7 +295,16 @@ function recupera()
         $estadoCivil . "^" .
         $idGenero . "^" .
         $telefone . "^" .
-        $email;
+        $email. "^" .
+        $emprego . "^" .
+        $pis . "^" .
+        $cep. "^" .
+        $logradouro. "^" .
+        $numero. "^" .
+        $complemento. "^" .
+        $uf. "^" .
+        $bairro. "^" .
+        $cidade;
 
     if ($out == "") {
         echo "failed#";
@@ -324,6 +342,7 @@ function excluir()
     echo 'sucess#' . $result;
     return;
 }
+
 //validar cpf(exem: 111.111.111-11)
 function validaCpf()
 {

@@ -42,7 +42,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["configuracao"]["sub"]["usuarios"]["active"] = true;
+$page_nav["Etapas"]["sub"]["Gênero"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -85,6 +85,12 @@ include("inc/nav.php");
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
                                                         <div class="row">
+                                                        <section class="col col-1 hidden">
+                                                            <label class="label">Código</label>
+                                                            <label class="input">
+                                                                <input id="codigo" name="codigo" type="text" class="readonly" readonly>
+                                                            </label>
+                                                        </section>
 
                                                             <section class="col col-4">
                                                                 <label class="select">Descrição</label>

@@ -100,7 +100,6 @@ include("inc/nav.php");
                                                                 <label class="label">Nome Completo</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                     <input id="nome" maxlength="50" name="nome" class="required" type="text" value="" />
-
                                                                 </label>
                                                             </section>
 
@@ -398,6 +397,70 @@ include("inc/nav.php");
                                             </div>
                                         </div>
 
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseDependente" class="" id="accordionDependente">
+                                                        <i class="fa fa-lg fa-angle-down pull-right"></i>
+                                                        <i class="fa fa-lg fa-angle-up pull-right"></i>
+                                                        Dependente
+                                                    </a>
+                                                </h4>
+                                            </div>
+
+                                            <div id="collapseDependente" class="panel-collapse collapse">
+                                                <div class="panel-body no-padding">
+                                                    <fieldset>
+
+                                                        <section class="col col-3">
+                                                            <label class="label">Nome Completo</label>
+                                                            <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                <input id="nome" maxlength="50" name="nome" type="text" value="" />
+                                                            </label>
+                                                                   
+                                                        </section>
+
+                                                        <section class="col col-2">
+                                                            <label class="label">CPF</label>
+                                                            <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                <input class="cpf" maxlength="20" id="cpf" type="text"  placeholder="XXX.XXX.XXX-XX" value="">
+                                                            </label>
+                                                            
+                                                        </section>
+
+                                                        <section class="col col-3">
+                                                            <label class="label">Tipo</label>
+                                                            <label class="select">
+                                                                <select id="dependentes" name="dependentes" >
+                                                                    <option hidden select value> Selecione </option>
+                                                                    <option></option>
+                                                                    <?php
+                                                                        $reposit = new reposit();
+                                                                        $sql = "SELECT codigo, dependentes, ativo FROM dbo.dependentes WHERE ativo = 1 ORDER BY dependentes";
+                                                                        $result = $reposit->RunQuery($sql);
+                                                                        foreach ($result as $row) {
+                                                                            $codigo = (int) $row['codigo'];
+                                                                            $dependentes = htmlspecialchars($row['dependentes'], ENT_QUOTES); //evitando caracteres especiais
+
+                                                                            echo "<option value='$codigo'>$dependentes</option>";
+                                                                        }
+
+                                                                        ?>
+
+                                                                </select>
+                                                            </label>
+                                                        </section>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
 
 
                                         <footer>
@@ -602,6 +665,10 @@ include("inc/scripts.php");
         carregaPagina();
     })
 
+    $("#btnGravar").on("click", function() {
+        gravar();
+    });
+
 
     //caixa de diálogo
     $('#dlgSimpleExcluir').dialog({
@@ -795,7 +862,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Cidade não preenchido.", "error")
             cidade = $("#cidade").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray,emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade);
     }
 
     //sem caracteres especiais

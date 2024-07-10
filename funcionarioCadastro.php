@@ -44,7 +44,6 @@ include("inc/header.php");
 //follow the tree in inc/config.ui.php
 $page_nav["Passo a Passo"]["sub"]["Cadastro"]["active"] = true;
 
-
 include("inc/nav.php");
 ?>
 <!-- ==========================CONTENT STARTS HERE ========================== -->
@@ -127,7 +126,7 @@ include("inc/nav.php");
                                                             <section class="col col-1">
                                                                 <label class="label">Idade</label>
                                                                 <label class="input">
-                                                                    <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
+                                                                    <input id="idade" name="idade" maxlength="2" type="text" class="readonly">
                                                                 </label>
                                                             </section>
 
@@ -188,7 +187,7 @@ include("inc/nav.php");
                                                                 <label class="label">Primeiro emprego</label>
                                                                 <label class="select">
                                                                     <select id="emprego" name="emprego" class="required">
-                                                                        <option></option>
+
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
@@ -197,7 +196,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
-                                                                    <input id="pis" name="pis" maxlength="20" type="text" placeholder="XXX. XXXXX. XX-X">
+                                                                    <input id="pis" name="pis" maxlength="20" type="text" placeholder="XXX. XXXXX. XX-X" class="readonly" readonly>
                                                                 </label>
                                                             </section>
                                                     </fieldset>
@@ -415,53 +414,70 @@ include("inc/nav.php");
                                                         <section class="col col-3">
                                                             <label class="label">Nome Completo</label>
                                                             <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                <input id="nome" maxlength="50" name="nome" type="text" value="" />
+                                                                <input id="nomeDependentes" maxlength="50" name="nome" type="text" value="" />
                                                             </label>
-                                                                   
+
                                                         </section>
 
                                                         <section class="col col-2">
                                                             <label class="label">CPF</label>
                                                             <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                <input class="cpf" maxlength="20" id="cpf" type="text"  placeholder="XXX.XXX.XXX-XX" value="">
+                                                                <input class="cpfDependentes" maxlength="20" id="cpf" type="text" placeholder="XXX.XXX.XXX-XX" value="">
                                                             </label>
-                                                            
+                                                        </section>
+
+                                                        <section class="col col-2">
+                                                            <label class="label">Data de Nascimento</label>
+                                                            <label class="input"><i class="icon-prepend fa fa-calendar"></i>
+                                                                <input id="dataNascimentoDependentes" name="dataNascimento" type="text" class="datepicker" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="XX/XX/XXXX" style="text-align: center" autocomplete="off">
+                                                            </label>
                                                         </section>
 
                                                         <section class="col col-3">
                                                             <label class="label">Tipo</label>
                                                             <label class="select">
-                                                                <select id="dependentes" name="dependentes" >
+                                                                <select id="dependentes" name="dependentes">
                                                                     <option hidden select value> Selecione </option>
                                                                     <option></option>
                                                                     <?php
-                                                                        $reposit = new reposit();
-                                                                        $sql = "SELECT codigo, dependentes, ativo FROM dbo.dependentes WHERE ativo = 1 ORDER BY dependentes";
-                                                                        $result = $reposit->RunQuery($sql);
-                                                                        foreach ($result as $row) {
-                                                                            $codigo = (int) $row['codigo'];
-                                                                            $dependentes = htmlspecialchars($row['dependentes'], ENT_QUOTES); //evitando caracteres especiais
+                                                                    $reposit = new reposit();
+                                                                    $sql = "SELECT codigo, dependentes, ativo FROM dbo.dependentes WHERE ativo = 1 ORDER BY dependentes";
+                                                                    $result = $reposit->RunQuery($sql);
+                                                                    foreach ($result as $row) {
+                                                                        $codigo = (int) $row['codigo'];
+                                                                        $dependentes = htmlspecialchars($row['dependentes'], ENT_QUOTES); //evitando caracteres especiais
 
-                                                                            echo "<option value='$codigo'>$dependentes</option>";
-                                                                        }
-
-                                                                        ?>
-
+                                                                        echo "<option value='$codigo'>$dependentes</option>";
+                                                                    }
+                                                                    ?>
                                                                 </select>
                                                             </label>
                                                         </section>
+
+                                                        <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
+                                                            <table id="tableDependentes" class="table table-bordered table-striped table-condensed table-hover dataTable">
+                                                                <thead>
+                                                                    <tr role="row">
+                                                                        <th></th>
+                                                                        <th class="text-center" style="min-width: 400%;">Nome</th>
+                                                                        <th class="text-center" style="min-width: 200%;">CPF</th>
+                                                                        <th class="text-center" style="min-width: 200%;">Data de Nascimento</th>
+                                                                        <th class="text-center" style="min-width: 400%;">Tipo</th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+
+
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
-
-
-
-
 
                                         <footer>
                                             <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
@@ -542,8 +558,6 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/fullcalendar.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>
 
-
-
 <!-- Form to json -->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/form2js.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
@@ -556,6 +570,7 @@ include("inc/scripts.php");
     $(document).ready(function() {
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
+        // jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
 
         //cpf
         $(".cpf").mask("999.999.999-99");
@@ -563,6 +578,8 @@ include("inc/scripts.php");
         $(".dataNascimento").mask("99/99/9999"); //classe--> geral
         $("#cep").mask("99999-999");
         $("#pis").mask("999.99999.99-9");
+        $(".cpfDependentes").mask("999.999.999-99");
+        $(".dataNascimentoDependentes").mask("99/99/9999");
 
 
         $("#cpf").on('focusout', function() {
@@ -574,7 +591,6 @@ include("inc/scripts.php");
 
         });
 
-        //rg
         $(".rg").on('change', function() {
             verificaRg()
 
@@ -603,13 +619,11 @@ include("inc/scripts.php");
                     field.mask(SPMaskBehavior.apply({}, arguments), options);
                 }
             };
+
         $('#telefone').mask(SPMaskBehavior, spOptions);
 
-
-        //email
+        //-------------check-------------//
         $("#principalEmail").prop('checked', false);
-
-        //telefone
         $("#principal").prop('checked', false);
         $("#whats").prop('checked', false);
 
@@ -662,15 +676,27 @@ include("inc/scripts.php");
             }
         });
 
+
+        // function verificaPis(emprego) {
+        //     var emprego = document.getElementById("verificaPis").value
+        //     if (emprego == 1 ){
+        //     result } else{
+
+        //     }
+        // }
+
         carregaPagina();
     })
 
-    $("#btnGravar").on("click", function() {
-        gravar();
-    });
+    //---------------->permitir caracteres<------------------//
+    document.getElementById("nome").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM     ".indexOf(chr) < 0)
+            return false;
+    };
 
 
-    //caixa de diálogo
+    //------------------------------>BOTÕES<--------------------------//
     $('#dlgSimpleExcluir').dialog({
 
         autoOpen: false,
@@ -741,6 +767,8 @@ include("inc/scripts.php");
         excluirEmail()
     })
 
+
+
     function carregaPagina() {
         var urlx = window.document.URL.toString();
         var params = urlx.split("?");
@@ -752,6 +780,7 @@ include("inc/scripts.php");
                 recuperaFuncionario(idd);
                 fillTableEmail();
                 fillTableTelefone();
+                // fillTableDependentes();
             }
         }
         $("#nome").focus();
@@ -865,43 +894,6 @@ include("inc/scripts.php");
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade);
     }
 
-    //sem caracteres especiais
-    document.getElementById("nome").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("pis").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("0123456789".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("numero").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("0123456789".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("uf").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("bairro").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("cidade").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-            return false;
-    };
-
     //data na ordem e contagem de idade
     function idade(dataNascimento) {
         const data = dataNascimento.split("/") //
@@ -971,6 +963,9 @@ include("inc/scripts.php");
         return true
     }
 
+
+
+
     //validar cpf(exem: 111.111.111-11)
     function validaCpf() {
         var cpf = $('#cpf').val()
@@ -993,54 +988,8 @@ include("inc/scripts.php");
         var telefone = $('#telefone').val()
     }
 
-    //CONTATO
-    //
-    // function validaTelefone() {
 
-    //     var telefoneCadastrado = false;
-    //     var telefoneCadastradoPrincipal = false;
-    //     var telefonePrincipal = '';
-
-    //     if ($('#telefonePrincipal').is(':checked')) {
-    //         telefonePrincipal = true;
-    //     } else {
-    //         telefonePrincipal = false;
-    //     }
-
-    //     var sequencial = +$('#sequencialTel').val();
-    //     var telefone = $('#telefone').val();
-
-
-    //     for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
-    //         if (telefonePrincipal == true) {
-    //             if ((jsonTelefoneArray[i].telefonePrincipal == telefonePrincipal) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-    //                 telefoneCadastradoPrincipal = true;
-    //                 break;
-    //             }
-    //         }
-
-    //         if (telefone !== "") {
-    //             if ((jsonTelefoneArray[i].telefone === telefone) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-    //                 telefoneCadastrado = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     if (telefoneCadastrado === true) {
-    //         smartAlert("Erro", "Este número já está na lista.", "error");
-    //         clearFormTelefone();
-    //         return false;
-    //     }
-
-    //     if (telefoneCadastradoPrincipal === true) {
-    //         smartAlert("Erro", "Já existe telefone principal na lista.", "error");
-    //         clearFormTelefone();
-    //         return false;
-    //     }
-
-    //     return true;
-    // }
+    //------------------------------->TELEFONE<----------------------------------//
 
     //adiciona telefone
     function adicionaTelefone() {
@@ -1196,80 +1145,8 @@ include("inc/scripts.php");
             smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
     }
 
-
-    //EMAIL
-    // function validaEmail() {
-
-    //     var emailCadastrado = false;
-    //     var emailCadastradoPrincipal = false;
-    //     var emailPrincipal = '';
-
-    //     if ($('#emailPrincipal').is(':checked')) {
-    //         emailPrincipal = true;
-    //     } else {
-    //         emailPrincipal = false;
-    //     }
-
-    //     var sequencial = +$('#sequencialEmail').val();
-    //     var email = $('#email').val();
-
-
-    //     for (i = jsonEmailArray.length - 1; i >= 0; i--) {
-    //         if (emailPrincipal == true) {
-    //             if ((jsonEmailArray[i].emailPrincipal == emailPrincipal) && (jsonEmailArray[i].sequencialEmail !== sequencial)) {
-    //                 emailCadastradoPrincipal = true;
-    //                 break;
-    //             }
-    //         }
-
-    //         if (email !== "") {
-    //             if ((jsonEmailArray[i].email === email) && (jsonEmailArray[i].sequencialEmail !== sequencial)) {
-    //                 emailCadastrado = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     if (emailCadastrado === true) {
-    //         smartAlert("Erro", "Este email já está na lista.", "error");
-    //         clearFormEmail();
-    //         return false;
-    //     }
-
-    //     if (emailCadastradoPrincipal === true) {
-    //         smartAlert("Erro", "Já existe email principal na lista.", "error");
-    //         clearFormEmail();
-    //         return false;
-    //     }
-
-    //     return true;
-    // }
-
-    // function validarEmail() {
-    //     var email = $('#email').val();
-    //     var er = new RegExp(/^[A-Za-z0-9-.]+@[A-Za-z0-9-.]{2,}.[A-Za-z0-9]{2,}(.[A-Za-z0-9])?/);
-    //     if (!er.test(email)) {
-    //         smartAlert("Erro", "Email Inválido!", "error");
-    //         return false;
-    //     } else {
-    //         adicionaEmail();
-    //     }
-    //     return true;
-    // }
-
+    //------------------------------>EMAIL<------------//
     function adicionaEmail() {
-
-        // var principalEmail = false;
-        // for (var i = 0; i < jsonEmailArray.length; i++) {
-        //     if (jsonEmailArray[i].principalEmail == true) {
-        //         principalEmail = true;
-        //     }
-        // }
-        // if (principalEmail != true) {
-        //     smartAlert("Atenção", "Adicione um Email como principal!", "error");
-        //     $("#email").focus();
-        //     return;
-        // }
 
         var item = $("#formEmail").toObject({
             mode: 'combine',

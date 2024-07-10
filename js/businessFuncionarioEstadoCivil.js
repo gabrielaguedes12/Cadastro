@@ -64,78 +64,6 @@ function gravaEstadoCivil(id, estadoCivil, ativo) {
 
 }
 
-// function verificarCpf(cpf) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioCadastro.php',
-//         dataType: ' html',
-//         type: 'post',
-//         data: { funcao: 'verificaCpf', cpf: cpf },
-//         success: function (data, textStatus) {
-//             if (data.indexOf('failed') > -1) {
-//                 var piece = data.split("#");
-//                 var mensagem = piece[1];
-
-//                 if (mensagem !== "") {
-//                     smartAlert("Atenção", mensagem, "error");
-//                     validaCpf()
-//                 } else {
-//                     smartAlert("Atenção", "CPF já cadastrado", "error");
-//                 }
-//             }
-//         },
-//         error: function (xhr, er) {
-//             //tratamento de erro
-//         }
-//     });
-// }
-
-// function validarCpf(cpf) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioCadastro.php',
-//         dataType: ' html',
-//         type: 'post',
-//         data: { funcao: 'validaCpf', cpf: cpf },
-//         success: function (data, textStatus) {
-//             if (data.indexOf('failed') > -1) {
-//                 var piece = data.split("#");
-//                 var mensagem = piece[1];
-
-//                 if (mensagem !== "") {
-//                     smartAlert("Atenção", mensagem, "error");
-//                 } else {
-//                     smartAlert("Atenção", "CPF inválido", "error");
-//                 }
-//             }
-//         },
-//         error: function (xhr, er) {
-//             //tratamento de erro
-//         }
-//     });
-// }
-
-// function verificarRg(rg) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioCadastro.php',
-//         dataType: ' html',
-//         type: 'post',
-//         data: { funcao: 'verificaRg', rg: rg },
-//         success: function (data, textStatus) {
-//             if (data.indexOf('failed') > -1) {
-//                 var piece = data.split("#");
-//                 var mensagem = piece[1];
-
-//                 if (mensagem !== "") {
-//                     smartAlert("Atenção", mensagem, "error");
-//                 } else {
-//                     smartAlert("Atenção", "RG já cadastrado", "error");
-//                 }
-//             }
-//         },
-//         error: function (xhr, er) {
-//             //tratamento de erro
-//         }
-//     });
-// }
 
 function recuperaFuncionario(estadoCivil) {
     $.ajax({
@@ -162,21 +90,16 @@ function recuperaFuncionario(estadoCivil) {
                 var id = +piece[0];
                 var estadoCivil = piece[1];
                 var ativo = +piece[2];
-                // var cpf = piece[3];
-                // var dataNascimento = piece[4];
-
-                // $("#codigo").val(codigo);
+                
                 $("#id").val(id);
                 $("#estadoCivil").val(estadoCivil);
                 $("#ativo").val(ativo);
-                // $("#dataNascimento").val(dataNascimento);
-                //
-                //atribuindo valor 
+               
                 return;
             }
         },
         error: function (xhr, er) {
-            //tratamento de erro
+            
         }
     });
 

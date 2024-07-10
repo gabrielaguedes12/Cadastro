@@ -61,9 +61,10 @@ include("inc/nav.php");
                     <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false" style="">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
-                            <h2>Usuário</h2>
+                            <h2>Funcionário</h2>
                         </header>
                         <div>
+
                             <div class="widget-body no-padding">
                                 <form action="javascript:gravar()" class="smart-form client-form" id="formUsuarioFiltro" method="post">
                                     <div class="panel-group smart-accordion-default" id="accordion">
@@ -77,9 +78,11 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
+
                                             <div id="collapseFiltro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
+
                                                         <div class="row">
                                                             <section class="col col-3">
                                                                 <label class="label">Nome</label>
@@ -117,30 +120,38 @@ include("inc/nav.php");
                                                         </div>
                                                     </fieldset>
                                                 </div>
-                                                <footer>
-                                                    <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
-                                                        <span class="fa fa-search"></span>
-                                                    </button>
-                                                    <?php if ($condicaoGravarOK) { ?>
-                                                        <button id="btnNovo" type="button" class="btn btn-primary pull-left" title="Novo">
-                                                            <span class="fa fa-file"></span>
-                                                        </button>
-                                                    <?php } ?>
-                                                </footer>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+
+
+
+                                    <footer>
+                                        <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
+                                            <span class="fa fa-search"></span>
+                                        </button>
+                                        <?php if ($condicaoGravarOK) { ?>
+                                            <button id="btnNovo" type="button" class="btn btn-primary pull-left" title="Novo">
+                                                <span class="fa fa-file"></span>
+                                            </button>
+                                        <?php } ?>
+                                    </footer>
                             </div>
-                            <div id="resultadoBusca"></div>
                         </div>
                     </div>
+                    </form>
                 </article>
             </div>
+            <div id="resultadoBusca"></div>
         </section>
-        <!-- end widget grid -->
     </div>
-    <!-- END MAIN CONTENT -->
+</div>
+</article>
+</div>
+</section>
+<!-- end widget grid -->
+</div>
+<!-- END MAIN CONTENT -->
 </div>
 <!-- END MAIN PANEL -->
 
@@ -182,6 +193,7 @@ include("inc/scripts.php");
         $('#btnSearch').on("click", function() {
             listarFiltro();
         });
+        
         $('#btnNovo').on("click", function() {
             novo();
         });
@@ -205,11 +217,6 @@ include("inc/scripts.php");
 
     function novo() {
         $(location).attr('href', 'usuarioCadastro.php');
-}
+    }
 
-document.getElementById("nome").onkeypress = function(e) {
-         var chr = String.fromCharCode(e.which);
-         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-           return false;
-       };
 </script>

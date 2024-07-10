@@ -77,32 +77,35 @@ include("inc/nav.php");
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseCadastro" class="" id="accordionCadastro">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
-
+                                                        Descrição
                                                     </a>
                                                 </h4>
                                             </div>
+
                                             <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
 
-                                                        <section class="col col-1 hidden">
-                                                            <label class="label">Código</label>
-                                                            <label class="input">
-                                                                <input id="codigo" name="codigo" type="text" class="readonly" readonly>
-                                                            </label>
-                                                        </section>
-                                                        <section class="col col-4">
-                                                            <label class="select">Descrição</label>
-                                                            <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                <input id="dependentes" maxlength="255" name="dependentes" class="required" type="text" placeholder=" " value="">
-                                                            </label>
-                                                        </section>
-                                                        <section class="col col-2 hidden">
-                                                            <label class="label">Ativo</label>
-                                                            <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                <input id="ativo" maxlength="255" name="ativo" class="" type="text" placeholder=" " value="">
-                                                            </label>
-                                                        </section>
+                                                        <div class="row">
+                                                            <section class="col col-1 hidden">
+                                                                <label class="label">Código</label>
+                                                                <label class="input">
+                                                                    <input id="codigo" name="codigo" type="text" class="readonly" readonly>
+                                                                </label>
+                                                            </section>
+                                                            <section class="col col-4">
+                                                                <label class="select">Descrição</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="dependentes" maxlength="255" name="dependentes" class="required" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+                                                            <section class="col col-2 hidden">
+                                                                <label class="label">Ativo</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="ativo" maxlength="255" name="ativo" class="" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+                                                        </div>
 
 
                                                     </fieldset>
@@ -110,6 +113,7 @@ include("inc/nav.php");
                                             </div>
                                         </div>
                                     </div>
+
                                     <footer>
                                         <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                             <span class="fa fa-trash"></span>
@@ -118,13 +122,18 @@ include("inc/nav.php");
                                         <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                             <span class="fa fa-floppy-o"></span>
                                         </button>
+
                                         <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
                                             <span class="fa fa-file-o"></span>
                                         </button>
+
                                         <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
                                             <span class="fa fa-backward "></span>
                                         </button>
+
                                     </footer>
+
+
                                     <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
                                         <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
                                             <span id="ui-id-2" class="ui-dialog-title">
@@ -244,11 +253,7 @@ include("inc/scripts.php");
 
     $("#btnVoltar").on("click", function() {
         voltar();
-    });;
-
-    $("#btnGravar").on("click", function() {
-        gravar();
-    });;
+    });
 
     function carregaPagina() {
         var urlx = window.document.URL.toString();
@@ -261,7 +266,7 @@ include("inc/scripts.php");
                 recuperaDependentes(codigo);
             }
         }
-       
+        $("#nome").focus();
     }
 
     function novo() {
@@ -280,7 +285,7 @@ include("inc/scripts.php");
             return;
         }
 
-        excluirFuncionario(id);
+        excluirDependentes(id);
     }
 
     function gravar() {
@@ -289,13 +294,11 @@ include("inc/scripts.php");
         var ativo = $("#ativo").val();
 
         gravaDependentes(codigo, dependentes, ativo);
-
-
     }
 
-    // document.getElementById("dependentes").onkeypress = function(e) {
-    //      var chr = String.fromCharCode(e.which);
-    //      if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-    //        return false;
-    //    };
+    document.getElementById("dependentes").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM        ".indexOf(chr) < 0)
+            return false;
+    };
 </script>

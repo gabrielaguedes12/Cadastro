@@ -71,7 +71,7 @@ include("inc/nav.php");
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFiltro" class="">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFiltroDependentes" class="">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
                                                         Filtro
@@ -79,7 +79,7 @@ include("inc/nav.php");
                                                 </h4>
                                             </div>
 
-                                            <div id="collapseFiltro" class="panel-collapse collapse in">
+                                            <div id="collapseFiltroDependentes" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
 
@@ -116,34 +116,38 @@ include("inc/nav.php");
                                                                     </select><i></i>
                                                                 </label>
                                                             </section>
-                                                            
+
                                                         </div>
                                                     </fieldset>
                                                 </div>
                                             </div>
-
-                                            <footer>
-                                                <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
-                                                    <span class="fa fa-search"></span>
-                                                </button>
-                                                <?php if ($condicaoGravarOK) { ?>
-                                                    <button id="btnNovo" type="button" class="btn btn-primary pull-left" title="Novo">
-                                                        <span class="fa fa-file"></span>
-                                                    </button>
-                                                <?php } ?>
-                                            </footer>
                                         </div>
                                     </div>
+
+                                    <footer>
+                                        <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
+                                            <span class="fa fa-search"></span>
+                                        </button>
+                                        <?php if ($condicaoGravarOK) { ?>
+                                            <button id="btnNovo" type="button" class="btn btn-primary pull-left" title="Novo">
+                                                <span class="fa fa-file"></span>
+                                            </button>
+                                        <?php } ?>
+                                    </footer>
                             </div>
-                            </form>
                         </div>
-                        <div id="resultadoBusca"></div>
                     </div>
+                    </form>
+                </article>
             </div>
-            </article>
+            <div id="resultadoBusca"></div>
+        </section>
     </div>
-    </section>
-    <!-- end widget grid -->
+</div>
+</article>
+</div>
+</section>
+<!-- end widget grid -->
 </div>
 <!-- END MAIN CONTENT -->
 </div>
@@ -207,11 +211,11 @@ include("inc/scripts.php");
         $(location).attr('href', 'funcionarioDependentes.php');
     }
 
-    
 
-            // document.getElementById("nome").onkeypress = function(e) {
-            //     var chr = String.fromCharCode(e.which);
-            //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-            //         return false;
-            // };
+
+    // document.getElementById("nome").onkeypress = function(e) {
+    //     var chr = String.fromCharCode(e.which);
+    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
+    //         return false;
+    // };
 </script>

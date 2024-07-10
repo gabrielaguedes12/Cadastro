@@ -8,18 +8,13 @@ if ($funcao == 'grava') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'recupera') {
+if ($funcao == 'recuperaDependentes') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'excluir') {
+if ($funcao == 'excluirDependentes') {
     call_user_func($funcao);
 }
-
-if ($funcao == 'recuperarDadosUsuario') {
-    call_user_func($funcao);
-}
-
 
 return;
 
@@ -59,30 +54,18 @@ function grava()
     return;
 }
 
-function recupera()
+function recuperaDependentes()
 {
     $utils = new comum();
 
     $condicaoId = !((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])));
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
-    if (($condicaoId === false) && ($condicaoLogin === false)) {
-        $mensagem = "Nenhum parâmetro de pesquisa foi informado.";
-        echo "failed#" . $mensagem . ' ';
-        return;
-    }
-
-    if (($condicaoId === true) && ($condicaoLogin === true)) {
-        $mensagem = "Somente 1 parâmetro de pesquisa deve ser informado.";
-        echo "failed#" . $mensagem . ' ';
-        return;
-    }
+   
+    $codigo = $_POST["codigo"];
 
 
-    $id = $_POST["id"];
-
-
-    $sql = " SELECT codigo,dependentes,ativo from dbo.dependentes WHERE (0 = 0) and codigo = $id ";
+    $sql = " SELECT codigo,dependentes,ativo from dbo.dependentes WHERE (0 = 0) and codigo = $codigo ";
 
 
     $reposit = new reposit();
@@ -90,14 +73,14 @@ function recupera()
 
     $out = "";
     if ($row = $result[0]) {
-        $id = $row['codigo'];
+        $codigo = $row['codigo'];
         $dependentes = $row['dependentes'];
         $ativo = $row['ativo'];
         }
 
     $out =
-        $id . "^" .
-        $dependentes. "^" .
+        $codigo . "^" .
+        $dependentes . "^" .
         $ativo;
 
     if ($out == "") {
@@ -109,13 +92,12 @@ function recupera()
 }
 
 
-function excluir()
+function excluirDependentes()
 {
-
     $reposit = new reposit();
 
 
-    $id = $_POST["id"];
+    $codigo = $_POST["codigo"];
 
     if ((empty($_POST['id']) || (!isset($_POST['id'])) || (is_null($_POST['id'])))) {
         $mensagem = "Selecione um usuário.";
@@ -125,7 +107,7 @@ function excluir()
 
     $reposit = new reposit();
 
-    $result = $reposit->update('dbo.dependentes' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $id);
+    $result = $reposit->update('dbo.dependentes' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 
     if ($result < 1) {
         echo ('failed#');

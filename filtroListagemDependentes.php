@@ -8,7 +8,7 @@ include "js/girComum.php";
         <table id="tableSearchResult" class="table table-bordered table-striped table-condensed table-hover dataTable">
             <thead>
                 <tr role="row">
-                    <th class="text-left" style="min-width:10px;">Codigo</th>
+                   
                     <th class="text-left" style="min-width:35px;">Dependentes</th>
                     <th class="text-left" style="min-width:10px;">Ativo</th>
 
@@ -22,13 +22,9 @@ include "js/girComum.php";
                 $sql = " SELECT  codigo, dependentes, ativo from dbo.dependentes ";
                 $where = "WHERE (0 = 0)";
 
-                $codigo = $_POST["codigo"];
+
                 $dependentes = $_POST["dependentes"];
                 $ativo =  $_POST["ativo"];
-
-                if ($codigo != "") {
-                    $where = $where . " AND (codigo like '%" . $codigo . "%')";
-                }
 
                 if ($dependentes != "") {
                     $where = $where . " AND (dependentes like '%" . $dependentes . "%')";
@@ -55,7 +51,6 @@ include "js/girComum.php";
                     }
 
                     echo '<tr >';
-                    echo '<td class="text-left">' . $codigo . '</td>';
                     echo '<td class="text-left">  <a href="funcionarioDependentes.php?id=' . $codigo . '">' . $dependentes;
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';
                     echo '</tr >';

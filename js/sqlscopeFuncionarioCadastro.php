@@ -36,6 +36,14 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
+if ($funcao == 'verificaCpfDependentes') {
+    call_user_func($funcao);
+}
+
+if ($funcao == 'validaCpfDependentes') {
+    call_user_func($funcao);
+}
+
 return;
 
 
@@ -378,6 +386,42 @@ function verificaCpf()
 
     return;
 }
+
+//validar cpf(exem: 111.111.111-11)
+// function validaCpfDependentes()
+// {
+//     $utils = new comum();
+
+//     $result = $utils->validaCpfDependentes($_POST['cpfDependentes']);
+
+//     if ($result) {
+//         echo 'sucess#';
+//     } else {
+//         echo 'failed#';
+//     }
+// }
+
+// //verificar se já foi cadastrado
+// function verificaCpfDependentes()
+// {
+//     $reposit = new reposit();
+//     $utils = new comum();
+
+//     $cpfDependentes = $utils->formatarString($_POST['cpfDependentes']);
+
+//     $sql = "SELECT cpfDependentes from dbo.funcionario where cpfDependentes = $cpfDependentes";
+
+//     $reposit = new reposit();
+//     $result = $reposit->RunQuery($sql);
+
+//     $ret = 'sucess# CPF ok';
+//     if (count($result) > 0) {
+//         $ret = 'failed# CPF já cadastrado';
+//     }
+//     echo $ret;
+
+//     return;
+// }
 
 function verificaRg()
 {

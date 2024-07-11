@@ -274,7 +274,7 @@ include("inc/scripts.php");
     }
 
     function voltar() {
-        $(location).attr('href', 'funcionarioFiltro.php');
+        $(location).attr('href', 'filtroDependentes.php');
     }
 
     function excluir() {

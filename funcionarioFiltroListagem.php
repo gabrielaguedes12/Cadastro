@@ -10,8 +10,6 @@ include "js/girComum.php";
                 <tr role="row">
                     <th class="text-left" style="min-width:35px;">Nome</th>
                     <th class="text-left" style="min-width:30px;">CPF</th>
-                    <th class="text-left" style="min-width:30px;">Data Inicial</th>
-                    <th class="text-left" style="min-width:30px;">Data Final</th>
                     <th class="text-left" style="min-width:10px;">Ativo</th>
 
                 </tr>
@@ -67,8 +65,6 @@ include "js/girComum.php";
                     echo '<tr >';
                     echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
                     echo '<td class="text-left">' . $cpf . '</td>';
-                    echo '<td class="text-left">' . $dataInicial . '</td>';
-                    echo '<td class="text-left">' . $dataFinal . '</td>';
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';
                     echo '</tr >';
                 }

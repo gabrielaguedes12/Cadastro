@@ -49,6 +49,53 @@ class comum {
             return true;
         }
     }
+        function validaCpfDependentes($cpfDependentes = null) {
+    
+            // Verifica se um número foi informado
+            if(empty($cpfDependentes)) {
+                return false;
+            }
+    
+            // Elimina possivel mascara
+            $caracterMascara = array(".", "-");
+            $cpfDependentes = str_replace($caracterMascara, '', $cpfDependentes);
+            $cpfDependentes = str_pad($cpfDependentes, 11, '0', STR_PAD_LEFT);
+    
+            // Verifica se o numero de digitos informados é igual a 11 
+            if (strlen($cpfDependentes) != 11) {
+                return false;
+            }
+            // Verifica se nenhuma das sequências invalidas abaixo 
+            // foi digitada. Caso afirmativo, retorna falso
+            else if ($cpfDependentes == '00000000000' || 
+                $cpfDependentes == '11111111111' || 
+                $cpfDependentes == '22222222222' || 
+                $cpfDependentes == '33333333333' || 
+                $cpfDependentes == '44444444444' || 
+                $cpfDependentes == '55555555555' || 
+                $cpfDependentes == '66666666666' || 
+                $cpfDependentes == '77777777777' || 
+                $cpfDependentes == '88888888888' || 
+                $cpfDependentes == '99999999999') {
+                return false;
+             // Calcula os digitos verificadores para verificar se o
+             // CPF é válido
+             } else {   
+    
+                for ($t = 9; $t < 11; $t++) {
+    
+                    for ($d = 0, $c = 0; $c < $t; $c++) {
+                        $d += $cpfDependentes[$c] * (($t + 1) - $c);
+                    }
+                    $d = ((10 * $d) % 11) % 10;
+                    if ($cpfDependentes[$c] != $d) {
+                        return false;
+                    }
+                }
+    
+                return true;
+            }
+        }
 
     function validaCNPJ($cnpj)
     {

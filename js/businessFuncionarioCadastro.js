@@ -79,6 +79,59 @@ function validarCpf(cpf) {
     });
 }
 
+// function verificarCpfDependentes(cpf) {
+//     $.ajax({
+//         url: 'js/sqlscopeFuncionarioCadastro.php',
+//         dataType: ' html',
+//         type: 'post',
+//         data: { funcao: 'verificaCpfDependentes', cpf: cpf },
+//         success: function (data, textStatus) {
+//             if (data.indexOf('failed') > -1) {
+//                 var piece = data.split("#");
+//                 var mensagem = piece[1];
+
+//                 if (mensagem !== "") {
+//                     smartAlert("Atenção", mensagem, "error");
+//                     validaCpf()
+//                 } else {
+//                     smartAlert("Atenção", "CPF já cadastrado", "error");
+//                     $('#cpfDependentes').val("");
+//                 }
+//             }
+//         },
+//         error: function (xhr, er) {
+//             //tratamento de erro
+//         }
+//     });
+// }
+
+// function validarCpfDependentes(cpf) {
+//     $.ajax({
+//         url: 'js/sqlscopeFuncionarioCadastro.php',
+//         dataType: ' html',
+//         type: 'post',
+//         data: { funcao: 'validaCpfDependentes', cpf: cpf },
+//         success: function (data, textStatus) {
+//             if (data.indexOf('failed') > -1) {
+//                 var piece = data.split("#");
+//                 var mensagem = piece[1];
+
+//                 if (mensagem !== "") {
+//                     smartAlert("Atenção", mensagem, "error");
+//                 } else {
+//                     smartAlert("Atenção", "CPF inválido", "error");
+//                     $('#cpfDependentes').val("");
+
+//                 }
+//             }
+//         },
+//         error: function (xhr, er) {
+//             //tratamento de erro
+//         }
+//     });
+// }
+
+
 function verificarRg(rg) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
@@ -104,7 +157,6 @@ function verificarRg(rg) {
         }
     });
 }
-
 
 function recuperaFuncionario(id) {
     $.ajax({

@@ -3,7 +3,7 @@
 require_once("inc/init.php");
 
 //require UI configuration (nav, ribbon, etc.)
-// require_once("inc/config.ui.php");
+require_once("inc/config.ui.php");
 
 //colocar o tratamento de permissão sempre abaixo de require_once("inc/config.ui.php");
 $condicaoAcessarOK = true;
@@ -42,7 +42,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["Etapas"]["sub"]["Gênero"]["active"] = true;
+$page_nav["filtro"]["sub"]["genero"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -52,7 +52,7 @@ include("inc/nav.php");
     <?php
     //configure ribbon (breadcrumbs) array("name"=>"url"), leave url empty if no url
     //$breadcrumbs["New Crumb"] => "http://url.com"
-    $breadcrumbs["Configurações"] = "";
+    $breadcrumbs["Tabela Básica"] = "";
     include("inc/ribbon.php");
     ?>
 

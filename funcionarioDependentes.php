@@ -42,7 +42,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["Etapas"]["sub"]["Dependentes"]["active"] = true;
+$page_nav["filtro"]["sub"]["dependentes"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -52,7 +52,7 @@ include("inc/nav.php");
     <?php
     //configure ribbon (breadcrumbs) array("name"=>"url"), leave url empty if no url
     //$breadcrumbs["New Crumb"] => "http://url.com"
-    $breadcrumbs["Configurações"] = "";
+    $breadcrumbs["Tabela Básica"] = "";
     include("inc/ribbon.php");
     ?>
 

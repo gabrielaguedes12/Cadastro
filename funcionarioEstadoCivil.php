@@ -42,7 +42,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["Etapas"]["sub"]["Estado Civil"]["active"] = true;
+$page_nav["filtro"]["sub"]["estadoCivil"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -52,7 +52,7 @@ include("inc/nav.php");
     <?php
     //configure ribbon (breadcrumbs) array("name"=>"url"), leave url empty if no url
     //$breadcrumbs["New Crumb"] => "http://url.com"
-    $breadcrumbs["Configurações"] = "";
+    $breadcrumbs["Tabela Básica"] = "";
     include("inc/ribbon.php");
     ?>
 
@@ -252,9 +252,9 @@ include("inc/scripts.php");
         if (params.length === 2) {
             var id = params[1];
             var idx = id.split("=");
-            var idd = idx[1];
-            if (idd !== "") {
-                recuperaFuncionario(idd);
+            var codigo = idx[1];
+            if (codigo !== "") {
+                recuperaEstadoCivil(codigo);
             }
         }
         $("#nome").focus();
@@ -281,18 +281,14 @@ include("inc/scripts.php");
     }
 
     function gravar() {
-        var id = +($("#codigo").val());
+        var codigo = +($("#codigo").val());
         var estadoCivil = $("#estadoCivil").val();
         var ativo = $("#ativo").val();
 
-        gravaEstadoCivil(id, estadoCivil, ativo);
+        gravaEstadoCivil(codigo, estadoCivil, ativo);
 
 
     }
 
-    document.getElementById("estadoCivil").onkeypress = function(e) {
-         var chr = String.fromCharCode(e.which);
-         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM     ".indexOf(chr) < 0)
-           return false;
-       };
+  
 </script>

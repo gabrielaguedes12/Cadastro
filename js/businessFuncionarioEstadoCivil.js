@@ -1,30 +1,3 @@
-// function gravaFuncionario(id, estadoCivil) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioGenero.php',
-//         dataType: 'html', //tipo do retorno
-//         type: 'post', //metodo de envio
-//         data: { funcao: "grava", id: id, estadoCivil : estadi},
-//         success: function (data, textStatus) {
-//             if (data.indexOf('sucess') < 0) {
-//                 var piece = data.split("#");
-//                 var mensagem = piece[1];
-//                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-//                 return '';
-//             } else {
-//                 smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-//                 setInterval(novo(), 1500)
-//             }
-//             //retorno dos dados
-//         },
-//         error: function (xhr, er) {
-//             //tratamento de erro
-//         }
-//     });
-
-
-//     return '';
-// }
-
 function gravaEstadoCivil(id, estadoCivil, ativo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioEstadoCivil.php',
@@ -65,12 +38,12 @@ function gravaEstadoCivil(id, estadoCivil, ativo) {
 }
 
 
-function recuperaFuncionario(estadoCivil) {
+function recuperaEstadoCivil(codigo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioEstadoCivil.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'recupera', id: id}, //valores enviados ao script     
+        data: { funcao: 'recuperaEstadoCivil', codigo: codigo}, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -87,11 +60,11 @@ function recuperaFuncionario(estadoCivil) {
                 var mensagem = piece[0];
                 var out = piece[1];
                 piece = out.split("^");
-                var id = +piece[0];
+                var codigo = +piece[0];
                 var estadoCivil = piece[1];
                 var ativo = +piece[2];
                 
-                $("#id").val(id);
+                $("#codigo").val(codigo);
                 $("#estadoCivil").val(estadoCivil);
                 $("#ativo").val(ativo);
                
@@ -154,19 +127,3 @@ function recuperaDadosUsuario(callback) {
 
     return
 }
-
-// function gravaNovaSenha(senha, senhaConfirma, callback) {
-//     $.ajax({
-//         url: 'js/sqlscopeUsuario.php',
-//         dataType: 'html', //tipo do retorno
-//         type: 'post', //metodo de envio
-//         data: {
-//             funcao: 'gravarNovaSenha',
-//             senha: senha,
-//             senhaConfirma: senhaConfirma,
-//         }, //valores enviados ao script
-//         success: function (data) {
-//             callback(data)
-//         },
-//     })
-// }

@@ -24,7 +24,7 @@ if ($condicaoGravarOK === false) {
   YOU CAN SET CONFIGURATION VARIABLES HERE BEFORE IT GOES TO NAV, RIBBON, ETC.
   E.G. $page_title = "Custom Title" */
 
-$page_title = "Funcionário";
+$page_title = "Estado Civil";
 
 /* ---------------- END PHP Custom Scripts ------------- */
 
@@ -36,7 +36,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["filtro"]["sub"]["funcionario"]["active"] = true;
+$page_nav["filtro"]["sub"]["estadoCivil"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -58,10 +58,10 @@ include("inc/nav.php");
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable centerBox">
-                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false" style="">
+                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
-                            <h2>Funcionário</h2>
+                            <h2>Estado Civil</h2>
                         </header>
                         <div>
 
@@ -71,7 +71,7 @@ include("inc/nav.php");
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFiltro" class="">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFiltroEstadoCivil" class="">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
                                                         Filtro
@@ -79,35 +79,33 @@ include("inc/nav.php");
                                                 </h4>
                                             </div>
 
-                                            <div id="collapseFiltro" class="panel-collapse collapse in">
+                                            <div id="collapseFiltroEstadoCivil" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
 
                                                         <div class="row">
                                                             <section class="col col-3">
-                                                                <label class="label">Nome</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="nome" maxlength="255" name="nome" type="text" placeholder=" " value="">
+                                                                <label class="label">Tipo</label>
+                                                                <label class="select">
+                                                                    <select id="estadoCivil" name="estadoCivil">
+                                                                        <option hidden select value> Selecione </option>
+                                                                        <option></option>
+                                                                        <?php
+                                                                        $reposit = new reposit();
+                                                                        $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
+                                                                        $result = $reposit->RunQuery($sql);
+                                                                        foreach ($result as $row) {
+                                                                            $codigo = (int) $row['codigo'];
+                                                                            $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
+
+                                                                            echo "<option value='$codigo'>$estadoCivil</option>";
+                                                                        }
+                                                                        ?>
+
+                                                                    </select>
                                                                 </label>
                                                             </section>
-                                                            <section class="col col-2">
-                                                                <label class="label">CPF</label>
-                                                                <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" class=required type="text" placeholder="999.999.999-99" value="">
-                                                                </label>
-                                                            </section>
-                                                            <section class="col col-2">
-                                                                <label class="label">Data inicial</label>
-                                                                <label class="input">
-                                                                    <input id="dataInicial" name="dataInicial" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
-                                                                </label>
-                                                            </section>
-                                                            <section class="col col-2">
-                                                                <label class="label">Data final</label>
-                                                                <label class="input">
-                                                                    <input id="dataFinal" name="dataFinal" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
-                                                                </label>
-                                                            </section>
+
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
@@ -116,15 +114,15 @@ include("inc/nav.php");
                                                                         <option value="1" selected>Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
+                                                                </label>
                                                             </section>
+
                                                         </div>
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-
 
                                     <footer>
                                         <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
@@ -188,35 +186,36 @@ include("inc/scripts.php");
 
 
 <script>
-    $(".cpf").inputmask("999.999.999-99");
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
             listarFiltro();
         });
-        
+
         $('#btnNovo').on("click", function() {
             novo();
         });
+
     });
 
     function listarFiltro() {
-        var nome = $('#nome').val();
-        var cpf = $('#cpf').val();
-        var dataInicial = $('#dataInicial').val();
-        var dataFinal = $('#dataFinal').val();
+        var estadoCivil = $('#estadoCivil').val();
         var ativo = $('#ativo').val();
 
-        $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
-            nome: nome,
-            cpf: cpf,
-            dataInicial: dataInicial,
-            dataFinal: dataFinal,
+        $('#resultadoBusca').load('filtroListagemEstadoCivil.php?', {
+            estadoCivil: estadoCivil,
             ativo: ativo
         });
     }
 
     function novo() {
-        $(location).attr('href', 'funcionarioCadastro.php');
+        $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
 
+
+
+    // document.getElementById("nome").onkeypress = function(e) {
+    //     var chr = String.fromCharCode(e.which);
+    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
+    //         return false;
+    // };
 </script>

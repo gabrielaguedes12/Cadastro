@@ -63,31 +63,26 @@ $condicaoConfiguracoesOK = (in_array('USUARIO_ACESSAR', $arrayPermissao, true));
 $condicaoConfiguracoesOK = (($condicaoConfiguracoesOK) or in_array('PERMISSAOUSUARIO_ACESSAR', $arrayPermissao, true));
 $condicaoConfiguracoesOK = (($condicaoConfiguracoesOK) or in_array('PARAMETRO_ACESSAR', $arrayPermissao, true));
 
-if ($condicaoConfiguracoesOK) {
-    $page_nav['configuracao'] = array("title" => "Configurações", "icon" => "fa-gear fa-spin");
-    $page_nav['configuracao']['sub'] = array();
+//------------cadastro-----------//
+$page_nav['cadastro'] = array("title" => "Cadastro");
+$page_nav['cadastro']['sub'] = array();
 
-    if (in_array('USUARIO_ACESSAR', $arrayPermissao, true)) {
-        $page_nav['configuracao']['sub'] += array("usuarios" => array("title" => "Usuário", "url" => APP_URL . "/usuarioFiltro.php"));
-    }
-    if (in_array('USUARIO_ACESSAR', $arrayPermissao, true)) {
-        $page_nav['configuracao']['sub'] += array("grupo" => array("title" => "Grupo", "url" => APP_URL . "/usuarioGrupoFiltro.php"));
-    }
-    if (in_array('PERMISSAOUSUARIO_ACESSAR', $arrayPermissao, true)) {
-        $page_nav['configuracao']['sub'] += array("permissoesUsuarios" => array("title" => "Permissões do Usuário", "url" => APP_URL . "/usuarioFuncionalidadeFiltro.php"));
-    }
-    if (in_array('PERMISSAOUSUARIO_ACESSAR', $arrayPermissao, true)) {
-        $page_nav['configuracao']['sub'] += array("permissoesGrupoUsuarios" => array("title" => "Permissões do Grupo", "url" => APP_URL . "/usuarioGrupoFuncionalidadeFiltro.php"));
-    }
-    // if (in_array('PERMISSAOUSUARIO_ACESSAR', $arrayPermissao, true)) {
-    //     $page_nav['configuracao']['sub'] += array("permissoesGrupoUsuarios" => array("title" => "Permissões do Grupo", "url" => APP_URL . "/usuarioGrupoFuncionalidadeFiltro.php"));
-    // }
-    if (in_array('PARAMETRO_ACESSAR', $arrayPermissao, true)) {
-        $page_nav['configuracao']['sub'] += array("parametro" => array("title" => "Parâmetros", "url" => APP_URL . "/parametros.php"));
-    }
-}
+$page_nav['cadastro']['sub'] += array("funcionario" => array("title" => "Funcionário", "url" => APP_URL . "/funcionarioCadastro.php"));
+
+
+//------------------filtro---------------//
+$page_nav['filtro'] = array("title" => "Tabela Básica");
+$page_nav['filtro']['sub'] = array();
+
+$page_nav['filtro']['sub'] += array("funcionario" => array("title" => "Funcionário","url" => APP_URL . "/funcionarioFiltro.php"));
+$page_nav['filtro']['sub'] += array("estadoCivil" => array("title" => "Estado Civil","url" => APP_URL . "/funcionarioEstadoCivil.php"));
+$page_nav['filtro']['sub'] += array("genero" => array("title" => "Gênero","url" => APP_URL . "/funcionarioCadastrogenero.php"));
+$page_nav['filtro']['sub'] += array("dependentes" => array("title" => "Dependentes","url" => APP_URL . "/filtroDependentes.php"));
+
+
 
 $condicaoOperacaoOk = true;
+
 
 // TABELAS BÁSICAS
 $condicaoTabelaBasicaOk = (in_array('TABELABASICA_ACESSAR', $arrayPermissao, true));
@@ -546,7 +541,7 @@ if ($condicaoFuncionarioOk) {
     if (array_intersect(array('FUNCIONARIOSOLICITACAOFOLHA_ACESSAR', 'GESTORSOLICITACAOFOLHA_ACESSAR'), $arrayPermissao)) {
         $page_nav['funcionario']['sub'] += array("solicitacaoFolha" => array("title" => "Solicitação de alteração", "url" => APP_URL . "/funcionario_solicitacaoFolha.php"));
     }
-    
+
     if (in_array('TRIAGEMPONTOELETRONICOMENSALGESTOR_ACESSAR', $arrayPermissao, true)) {
         $page_nav['funcionario']['sub'] += array("triagemPontoEletronicoGestorFiltro" => array("title" => "Triagem Ponto Eletrônico Filtro", "url" => APP_URL . "/funcionario_triagemPontoMensalGestorFiltro.php"));
     }

@@ -62,7 +62,7 @@ include("inc/nav.php");
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable centerBox">
-                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false" style="">
+                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
                             <h2>Gênero</h2>
@@ -247,10 +247,7 @@ include("inc/scripts.php");
         novo();
     });
 
-    $("$btnGravar").on("click", function() {
-        gravar();
-    });
-
+  
     $("#btnVoltar").on("click", function() {
         voltar();
     });;
@@ -261,27 +258,24 @@ include("inc/scripts.php");
         if (params.length === 2) {
             var id = params[1];
             var idx = id.split("=");
-            var idd = idx[1];
-            if (idd !== "") {
-                recuperaFuncionario(idd);
+            var codigo = idx[1];
+            if (codigo !== "") {
+                recuperaGenero(codigo);
             }
         }
         $("#nome").focus();
 
     }
 
-    function voltar() {
-        $(location).attr('href', 'funcionarioFiltro.php');
-    }
-
+    
     function novo() {
-        $(location).attr('href', 'funcionarioCadastro.php');
+        $(location).attr('href', 'funcionarioCadastroGenero.php');
     }
 
-    function gravar() {
-        $(location).attr('href', 'funcionarioCadastro.php');
-
+    function voltar() {
+        $(location).attr('href', 'filtroGenero.php');
     }
+
 
     function excluir() {
         var id = +$("#codigo").val();
@@ -291,15 +285,15 @@ include("inc/scripts.php");
             return;
         }
 
-        excluirFuncionario(id);
+        excluirGenero(codigo);
     }
 
     function gravar() {
-        var id = +($("#codigo").val());
+        var codigo = +($("#codigo").val());
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
 
-        gravaFuncionario(id, descricao, ativo);
+        gravaGenero(codigo, descricao, ativo);
     }
 
     document.getElementById("descricao").onkeypress = function(e) {

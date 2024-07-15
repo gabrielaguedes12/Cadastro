@@ -75,8 +75,8 @@ $page_nav['filtro'] = array("title" => "Tabela Básica");
 $page_nav['filtro']['sub'] = array();
 
 $page_nav['filtro']['sub'] += array("funcionario" => array("title" => "Funcionário","url" => APP_URL . "/funcionarioFiltro.php"));
-$page_nav['filtro']['sub'] += array("estadoCivil" => array("title" => "Estado Civil","url" => APP_URL . "/funcionarioEstadoCivil.php"));
-$page_nav['filtro']['sub'] += array("genero" => array("title" => "Gênero","url" => APP_URL . "/funcionarioCadastrogenero.php"));
+$page_nav['filtro']['sub'] += array("estadoCivil" => array("title" => "Estado Civil","url" => APP_URL . "/filtroEstadocivil.php"));
+$page_nav['filtro']['sub'] += array("genero" => array("title" => "Gênero","url" => APP_URL . "/filtroGenero.php"));
 $page_nav['filtro']['sub'] += array("dependentes" => array("title" => "Dependentes","url" => APP_URL . "/filtroDependentes.php"));
 
 

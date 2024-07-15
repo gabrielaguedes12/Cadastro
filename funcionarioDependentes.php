@@ -285,7 +285,7 @@ include("inc/scripts.php");
             return;
         }
 
-        excluirDependentes(id);
+        excluirDependentes(codigo);
     }
 
     function gravar() {

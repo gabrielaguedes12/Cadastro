@@ -262,11 +262,11 @@ include("inc/scripts.php");
     }
 
     function novo() {
-        $(location).attr('href', 'funcionarioCadastro.php');
+        $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
 
     function voltar() {
-        $(location).attr('href', 'funcionarioFiltro.php');
+        $(location).attr('href', 'filtroEstadoCivil.php');
     }
 
     function excluir() {

@@ -16,14 +16,6 @@ if ($funcao == 'excluir') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'recuperarDadosUsuario') {
-    call_user_func($funcao);
-}
-
-if ($funcao == 'gravarNovaSenha') {
-    call_user_func($funcao);
-}
-
 if ($funcao == 'verificaCpf') {
     call_user_func($funcao);
 }
@@ -36,13 +28,13 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'verificaCpfDependentes') {
-    call_user_func($funcao);
-}
+// if ($funcao == 'verificaCpfDependentes') {
+//     call_user_func($funcao);
+// }
 
-if ($funcao == 'validaCpfDependentes') {
-    call_user_func($funcao);
-}
+// if ($funcao == 'validaCpfDependentes') {
+//     call_user_func($funcao);
+// }
 
 return;
 
@@ -292,7 +284,7 @@ function recupera()
     }
 
     $strarrayEmail = json_encode($arrayEmail);
-
+//---------------------------------------->>-------------------------------------//
     $out =
         $id . "^" .
         $nome . "^" .

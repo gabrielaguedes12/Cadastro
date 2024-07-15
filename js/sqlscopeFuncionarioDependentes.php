@@ -4,7 +4,7 @@ include "girComum.php";
 
 $funcao = $_POST["funcao"];
 
-if ($funcao == 'grava') {
+if ($funcao == 'gravaDependentes') {
     call_user_func($funcao);
 }
 
@@ -19,7 +19,7 @@ if ($funcao == 'excluirDependentes') {
 return;
 
 
-function grava()
+function gravaDependentes()
 {
      $reposit = new reposit();
 

@@ -4,15 +4,15 @@ include "girComum.php";
 
 $funcao = $_POST["funcao"];
 
-if ($funcao == 'grava') {
+if ($funcao == 'gravaEstadoCivil') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'recupera') {
+if ($funcao == 'recuperaEstadoCivil') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'excluir') {
+if ($funcao == 'excluirEstadoCivil') {
     call_user_func($funcao);
 }
 
@@ -23,7 +23,7 @@ if ($funcao == 'recuperarDadosUsuario') {
 return;
 
 
-function grava()
+function gravaEstadoCivil()
 {
      $reposit = new reposit();
 
@@ -66,10 +66,10 @@ function recuperaEstadoCivil()
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
     
-    $id = $_POST["codigo"];
+    $codigo = $_POST["codigo"];
 
 
-    $sql = " SELECT codigo,estadoCivil,ativo from dbo.estadoCivil WHERE (0 = 0) and codigo = $id ";
+    $sql = " SELECT codigo,estadoCivil,ativo from dbo.estadoCivil WHERE (0 = 0) and codigo = $codigo ";
 
 
     $reposit = new reposit();
@@ -77,13 +77,13 @@ function recuperaEstadoCivil()
 
     $out = "";
     if ($row = $result[0]) {
-        $id = $row['codigo'];
+        $codigo = $row['codigo'];
         $estadoCivil = $row['estadoCivil'];
         $ativo = $row['ativo'];
         }
 
     $out =
-        $id . "^" .
+        $codigo . "^" .
         $estadoCivil. "^" .
         $ativo;
 
@@ -96,13 +96,13 @@ function recuperaEstadoCivil()
 }
 
 
-function excluir()
+function excluirEstadoCivil()
 {
 
     $reposit = new reposit();
 
 
-    $id = $_POST["id"];
+    $codigo = $_POST["codigo"];
 
     if ((empty($_POST['id']) || (!isset($_POST['id'])) || (is_null($_POST['id'])))) {
         $mensagem = "Selecione um usuário.";
@@ -112,7 +112,7 @@ function excluir()
 
     $reposit = new reposit();
 
-    $result = $reposit->update('dbo.estadoCivil' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $id);
+    $result = $reposit->update('dbo.estadoCivil' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 
     if ($result < 1) {
         echo ('failed#');

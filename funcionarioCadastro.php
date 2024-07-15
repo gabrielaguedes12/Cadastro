@@ -248,11 +248,11 @@ include("inc/nav.php");
 
                                                                 <section class="col col-md-2">
                                                                     <label class="label">&nbsp;</label>
-                                                                    <button id="btnAddSolicitacao" type="button" class="btn btn-primary">
+                                                                    <button id="btnAddTelefone" type="button" class="btn btn-primary">
                                                                         <i class="fa fa-plus"></i>
                                                                     </button>
 
-                                                                    <button id="btnRemoverSolicitacao" type="button" class="btn btn-danger">
+                                                                    <button id="btnRemoverTelefone" type="button" class="btn btn-danger">
                                                                         <i class="fa fa-minus"></i>
                                                                     </button>
                                                                 </section>
@@ -300,11 +300,11 @@ include("inc/nav.php");
 
                                                                 <section class="col col-md-2">
                                                                     <label class="label">&nbsp;</label>
-                                                                    <button id="btnAddSolicitacaoEmail" type="button" class="btn btn-primary">
+                                                                    <button id="btnAddEmail" type="button" class="btn btn-primary">
                                                                         <i class="fa fa-plus"></i>
                                                                     </button>
 
-                                                                    <button id="btnRemoverSolicitacaoEmail" type="button" class="btn btn-danger">
+                                                                    <button id="btnRemoverEmail" type="button" class="btn btn-danger">
                                                                         <i class="fa fa-minus"></i>
                                                                     </button>
                                                                 </section>
@@ -457,11 +457,11 @@ include("inc/nav.php");
 
                                                         <section class="col col-md-2">
                                                             <label class="label">&nbsp;</label>
-                                                            <button id="btnAddSolicitacaoDependentes" type="button" class="btn btn-primary">
+                                                            <button id="btnAddDependentes" type="button" class="btn btn-primary">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
 
-                                                            <button id="btnRemoverSolicitacaoDependentes" type="button" class="btn btn-danger">
+                                                            <button id="btnRemoverDependentes" type="button" class="btn btn-danger">
                                                                 <i class="fa fa-minus"></i>
                                                             </button>
                                                         </section>
@@ -582,7 +582,7 @@ include("inc/scripts.php");
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
         // jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
 
-        //cpf
+        //mascaras
         $(".cpf").mask("999.999.999-99");
         $(".rg").mask("99.999.999-9");
         $(".dataNascimento").mask("99/99/9999"); //classe--> geral
@@ -592,6 +592,7 @@ include("inc/scripts.php");
         $(".dataNascimentoDependentes").mask("99/99/9999");
 
 
+        //funçoes
         $("#cpf").on('focusout', function() {
             validaCpf()
         });
@@ -601,22 +602,11 @@ include("inc/scripts.php");
 
         });
 
-        // $("#cpfDependentes").on('focusout', function() {
-        //     validaCpfDependentes()
-        // });
-
-        // $("#cpfDependentes").on('change', function() {
-        //     verificaCpfDependentes()
-
-        // });
-
         $(".rg").on('change', function() {
             verificaRg()
 
         });
-
-        //data de nascimento
-        //id--> input unico
+       
         $("#dataNascimento").on('change', function() {
             idade($("#dataNascimento").val());
         });
@@ -628,6 +618,8 @@ include("inc/scripts.php");
                 $('#dataNascimento').val("");
             }
         });
+
+        //id--> input unico
 
         //mascara celular e telefone
         var SPMaskBehavior = function(val) {
@@ -641,7 +633,7 @@ include("inc/scripts.php");
 
         $('#telefone').mask(SPMaskBehavior, spOptions);
 
-        //-------------check-------------//
+        //------------- caixa de check-------------//
         $("#principalEmail").prop('checked', false);
         $("#principal").prop('checked', false);
         $("#whats").prop('checked', false);
@@ -695,17 +687,8 @@ include("inc/scripts.php");
             }
         });
 
+        //condição com readondly
         $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
-
-
-        // function verificaPis(emprego) {
-        //     var emprego = document.getElementById("verificaPis").value
-        //     if (emprego == 1) {
-        //         result
-        //     } else {
-
-        //     }
-        // }
 
         carregaPagina();
     })
@@ -716,7 +699,6 @@ include("inc/scripts.php");
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM     ".indexOf(chr) < 0)
             return false;
     };
-
 
     //------------------------------>BOTÕES<--------------------------//
     $('#dlgSimpleExcluir').dialog({
@@ -769,24 +751,24 @@ include("inc/scripts.php");
     });
 
     //telefone
-    $('#btnAddSolicitacao').on("click", function() {
+    $('#btnAddTelefone').on("click", function() {
         validaTelefone();
         adicionaTelefone();
     });
 
 
-    $('#btnRemoverSolicitacao').on("click", function() {
+    $('#btnRemoverTelefone').on("click", function() {
         excluirContato();
     });
 
     //Email
-    $('#btnAddSolicitacaoEmail').on("click", function() {
+    $('#btnAddEmail').on("click", function() {
         validaEmail();
         formataEmail();
         
     })
 
-    $('#btnRemoverSolicitacaoEmail').on("click", function() {
+    $('#btnRemoverEmail').on("click", function() {
         excluirEmail()
     })
 
@@ -999,18 +981,6 @@ include("inc/scripts.php");
         var cpf = $('#cpf').val()
         verificarCpf(cpf) //variável "passa" nesse ()
     }
-
-    //validar cpf(exem: 111.111.111-11)
-    // function validaCpfDependentes() {
-    //     var cpf = $('#cpfDependentes').val()
-    //     validarCpfDependentes(cpf)
-    // }
-
-    // //verificar se já foi cadastrado
-    // function verificaCpfDependentes() {
-    //     var cpf = $('#cpfDependentes').val()
-    //     verificarCpfDependentes(cpf) //variável "passa" nesse ()
-    // }
 
     //verificar se já foi cadastrado
     function verificaRg() {

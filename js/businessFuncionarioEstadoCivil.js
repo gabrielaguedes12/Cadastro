@@ -1,9 +1,9 @@
-function gravaEstadoCivil(id, estadoCivil, ativo) {
+function gravaEstadoCivil(codigo, estadoCivil, ativo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioEstadoCivil.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, estadoCivil: estadoCivil, ativo: ativo}, //valores enviados ao script
+        data: { funcao: "grava", codigo: codigo, estadoCivil: estadoCivil, ativo: ativo}, //valores enviados ao script
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -25,7 +25,7 @@ function gravaEstadoCivil(id, estadoCivil, ativo) {
             } else {
                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
                 voltar();
-                //gravar();
+               
             }
             //retorno dos dados
         },
@@ -79,12 +79,12 @@ function recuperaEstadoCivil(codigo) {
     return;
 }
 
-function excluirFuncionario(id) {
+function excluirFuncionario(codigo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioEstadoCivil.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'excluir', id: id}, //valores enviados ao script     
+        data: { funcao: 'excluir', codigo: codigo}, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },

@@ -1,11 +1,11 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao,  jsonTelefoneArray, jsonEmailArray,emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: {
-            funcao: "gravar", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray, 
-            emprego: emprego, pis: pis, cep: cep, logradouro: logradouro, numero: numero,complemento: complemento, uf: uf, bairro: bairro, cidade: cidade
+            funcao: "gravar", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray,
+            emprego: emprego, pis: pis, cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade
         },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
@@ -79,57 +79,32 @@ function validarCpf(cpf) {
     });
 }
 
-// function verificarCpfDependentes(cpf) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioCadastro.php',
-//         dataType: ' html',
-//         type: 'post',
-//         data: { funcao: 'verificaCpfDependentes', cpf: cpf },
-//         success: function (data, textStatus) {
-//             if (data.indexOf('failed') > -1) {
-//                 var piece = data.split("#");
-//                 var mensagem = piece[1];
 
-//                 if (mensagem !== "") {
-//                     smartAlert("Atenção", mensagem, "error");
-//                     validaCpf()
-//                 } else {
-//                     smartAlert("Atenção", "CPF já cadastrado", "error");
-//                     $('#cpfDependentes').val("");
-//                 }
-//             }
-//         },
-//         error: function (xhr, er) {
-//             //tratamento de erro
-//         }
-//     });
-// }
+function validarCpfDependentes(cpfDependentes) {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioCadastro.php',
+        dataType: ' html',
+        type: 'post',
+        data: { funcao: 'validaCpfDependentes', cpfDependentes: cpfDependentes },
+        success: function (data, textStatus) {
+            if (data.indexOf('failed') > -1) {
+                var piece = data.split("#");
+                var mensagem = piece[1];
 
-// function validarCpfDependentes(cpf) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioCadastro.php',
-//         dataType: ' html',
-//         type: 'post',
-//         data: { funcao: 'validaCpfDependentes', cpf: cpf },
-//         success: function (data, textStatus) {
-//             if (data.indexOf('failed') > -1) {
-//                 var piece = data.split("#");
-//                 var mensagem = piece[1];
+                if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error");
+                } else {
+                    smartAlert("Atenção", "CPF inválido", "error");
+                    $('#cpfDependentes').val("");
 
-//                 if (mensagem !== "") {
-//                     smartAlert("Atenção", mensagem, "error");
-//                 } else {
-//                     smartAlert("Atenção", "CPF inválido", "error");
-//                     $('#cpfDependentes').val("");
-
-//                 }
-//             }
-//         },
-//         error: function (xhr, er) {
-//             //tratamento de erro
-//         }
-//     });
-// }
+                }
+            }
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
+}
 
 
 function verificarRg(rg) {

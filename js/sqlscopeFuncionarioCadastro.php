@@ -372,18 +372,18 @@ function verificaCpf()
 }
 
 //validar cpf(exem: 111.111.111-11)
-// function validaCpfDependentes()
-// {
-//     $utils = new comum();
+function validaCpfDependentes()
+{
+    $utils = new comum();
 
-//     $result = $utils->validaCpfDependentes($_POST['cpfDependentes']);
+    $result = $utils->validaCpfDependentes($_POST['cpfDependentes']);
 
-//     if ($result) {
-//         echo 'sucess#';
-//     } else {
-//         echo 'failed#';
-//     }
-// }
+    if ($result) {
+        echo 'sucess#';
+    } else {
+        echo 'failed#';
+    }
+}
 
 // //verificar se já foi cadastrado
 // function verificaCpfDependentes()

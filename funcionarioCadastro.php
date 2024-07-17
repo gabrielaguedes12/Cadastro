@@ -134,7 +134,7 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
-                                                                        <option hidden select > Selecione </option>
+                                                                        <option hidden select> Selecione </option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -607,12 +607,16 @@ include("inc/scripts.php");
             // }
         });
 
+        $("#cpfDependentes").on('focusout', function() {
+            validaCpfDependentes()
+        });
+
 
         $(".rg").on('change', function() {
             verificaRg()
 
         });
-       
+
         $("#dataNascimento").on('change', function() {
             idade($("#dataNascimento").val());
         });
@@ -666,7 +670,7 @@ include("inc/scripts.php");
 
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-
+                        
                         if (!("erro" in dados)) {
                             //Atualiza os campos com os valores da consulta.
                             $("#logradouro").val(dados.logradouro);
@@ -677,21 +681,26 @@ include("inc/scripts.php");
                         else {
                             //CEP pesquisado não foi encontrado.
                             limpa_formulário_cep();
-                            alert("CEP não encontrado.");
+                            smartAlert("CEP não encontrado.", "error");
                         }
                     });
                 } //end if.
                 else {
                     //cep é inválido.
                     limpa_formulário_cep();
-                    alert("Formato de CEP inválido.");
+                    smartAlert("Formato de CEP inválido.","eror");
                 }
             } //end if.
             else {
                 //cep sem valor, limpa formulário.
                 limpa_formulário_cep();
             }
+            
+            function  limpa_formulário_cep() {
+            $('#cep').val("");
+        }
         });
+       
 
         //condição com readondly
         $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
@@ -770,7 +779,7 @@ include("inc/scripts.php");
     $('#btnAddEmail').on("click", function() {
         validaEmail();
         formataEmail();
-        
+
     })
 
     $('#btnRemoverEmail').on("click", function() {
@@ -790,7 +799,7 @@ include("inc/scripts.php");
                 recuperaFuncionario(idd);
                 fillTableEmail();
                 fillTableTelefone();
-                // fillTableDependentes();
+                fillTableDependentes();
             }
         }
         $("#nome").focus();
@@ -841,6 +850,9 @@ include("inc/scripts.php");
         var uf = $("#uf").val();
         var bairro = $("#bairro").val();
         var cidade = $("#cidade").val();
+
+        //dependentes
+        var dependente = $("#dependentes").val();
 
 
         if (nome == "") {
@@ -901,7 +913,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Cidade não preenchido.", "error")
             cidade = $("#cidade").focus();
         }
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade, jsonDependentesArray);
     }
 
     //------------------>valida data e idade<---------------//
@@ -956,9 +968,7 @@ include("inc/scripts.php");
         if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
             dataDias[2] == 29
         }
-        
-        
-       
+
         if (ano > new Date().getFullYear()) {
             return false;
         }
@@ -989,10 +999,68 @@ include("inc/scripts.php");
         verificarCpf(cpf) //variável "passa" nesse ()
     }
 
+    function validaCpfDependentes() {
+        var cpfDependentes = $('#cpfDependentes').val()
+        validarCpfDependentes(cpfDependentes)
+    }
+
     //verificar se já foi cadastrado
     function verificaRg() {
         var rg = $('#rg').val()
         verificarRg(rg)
+    }
+
+    //valida data nascimento dependente
+    function validaDatas(dataNascimentoDependentes) {
+
+        var verificaData = document.getElementById('dataNascimentoDependentes').value;
+        var hoje = new Date().getFullYear().value;
+
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
+            return false
+        }
+
+        //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
+        if (typeof dataNascimentoDependentes != 'string') {
+            return false
+        }
+
+        //split é oq divide os algorismos em XX//X/XXXX
+        const dataDiv = dataNascimentoDependentes.split('/')
+        const data = {
+            dias: dataDiv[0],
+            mes: dataDiv[1],
+            ano: dataDiv[2]
+        }
+
+        //parseint --> para converter strings em número inteiro
+        const dias = parseInt(data.dias)
+        const mes = parseInt(data.mes)
+        const ano = parseInt(data.ano)
+
+        //dias para cada mês
+        const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+        //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
+        if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
+            dataDias[2] == 29
+        }
+
+        if (ano > new Date().getFullYear()) {
+            return false;
+        }
+
+        //para restringir os meses de 1 a 12
+        if (mes < 1 || mes > 12 || dias < 1) {
+            return false
+        }
+
+        //para restringir número de dias no mês
+        else if (dias > dataDias[dias]) {
+            return false
+        }
+
+        return true
     }
 
     //------------------------------->TELEFONE<----------------------------------//
@@ -1202,7 +1270,7 @@ include("inc/scripts.php");
 
         if (!er.test(email)) {
             smartAlert("Erro", "Email Inválido!", "error");
-            clearFormEmail();           
+            clearFormEmail();
             return false;
         } else {
             adicionaEmail();

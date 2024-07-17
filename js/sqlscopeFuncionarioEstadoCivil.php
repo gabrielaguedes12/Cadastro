@@ -102,15 +102,8 @@ function excluirEstadoCivil()
     $reposit = new reposit();
 
 
-    $codigo = $_POST["codigo"];
+    $codigo = (int)$_POST["codigo"];
 
-    if ((empty($_POST['id']) || (!isset($_POST['id'])) || (is_null($_POST['id'])))) {
-        $mensagem = "Selecione um usuário.";
-        echo "failed#" . $mensagem . ' ';
-        return;
-    }
-
-    $reposit = new reposit();
 
     $result = $reposit->update('dbo.estadoCivil' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 

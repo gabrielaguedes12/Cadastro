@@ -92,11 +92,12 @@ include("inc/nav.php");
                                                                         <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
-                                                                        $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY genero";
+                                                                        $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
                                                                         $result = $reposit->RunQuery($sql);
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
-                                                                            $descricao = htmlspecialchars($row['descricao'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            // $descricao = htmlspecialchars($row['descricao'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            $descricao = $row['descricao'];
 
                                                                             echo "<option value='$codigo'>$descricao</option>";
                                                                         }

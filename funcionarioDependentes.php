@@ -69,7 +69,7 @@ include("inc/nav.php");
                         </header>
                         <div>
                             <div class="widget-body no-padding">
-                                <form action="javascript:gravar()" class="smart-form client-form" id="formUsuario" method="post">
+                                <form  class="smart-form client-form" id="formUsuario" method="post">
                                     <div class="panel-group smart-accordion-default" id="accordion">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
@@ -123,7 +123,7 @@ include("inc/nav.php");
                                             <span class="fa fa-floppy-o"></span>
                                         </button>
 
-                                        <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
+                                        <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnNovo ?>">
                                             <span class="fa fa-file-o"></span>
                                         </button>
 
@@ -208,8 +208,6 @@ include("inc/scripts.php");
         carregaPagina();
     })
 
-
-
     //caixa de diálogo
     $('#dlgSimpleExcluir').dialog({
         autoOpen: false,
@@ -232,12 +230,24 @@ include("inc/scripts.php");
             }
         }]
     });
+    
+    $("#btnVoltar").on("click", function() {
+        voltar();
+    });
+    
+    $("#btnNovo").on("click", function() {
+        novo();
+    });
+    
+    $("#btnGravar").on("click", function(){
+        gravar();
+    });
 
     $("#btnExcluir").on("click", function() {
         var id = +$("#codigo").val();
 
         if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir !", "error");
+            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
             $("#nome").focus();
             return;
         }
@@ -247,13 +257,6 @@ include("inc/scripts.php");
         }
     });
 
-    $("#btnNovo").on("click", function() {
-        novo();
-    });
-
-    $("#btnVoltar").on("click", function() {
-        voltar();
-    });
 
     function carregaPagina() {
         var urlx = window.document.URL.toString();
@@ -267,7 +270,10 @@ include("inc/scripts.php");
             }
         }
         $("#nome").focus();
+        
     }
+
+    
 
     function novo() {
         $(location).attr('href', 'funcionarioDependentes.php');
@@ -285,7 +291,7 @@ include("inc/scripts.php");
             return;
         }
 
-        excluirDependentes(codigo);
+        excluirDependentes(id);
     }
 
     function gravar() {
@@ -293,12 +299,13 @@ include("inc/scripts.php");
         var dependentes = $("#dependentes").val();
         var ativo = $("#ativo").val();
 
-        gravaDependentes(codigo, dependentes, ativo);
+        gravarDependentes(codigo, dependentes, ativo);
     }
 
+    
     document.getElementById("dependentes").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM        ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
             return false;
     };
 </script>

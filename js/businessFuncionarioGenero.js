@@ -1,9 +1,9 @@
-function gravaGenero(id, descricao, ativo) {
+function gravaGenero(codigo, descricao, ativo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioGenero.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, descricao: descricao, ativo: ativo}, //valores enviados ao script
+        data: { funcao: 'gravaGenero', codigo: codigo, descricao: descricao, ativo: ativo}, //valores enviados ao script
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -83,7 +83,7 @@ function excluirGenero(codigo) {
         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'excluir', codigo: codigo}, //valores enviados ao script     
+        data: { funcao: 'excluirGenero', codigo: codigo}, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -112,17 +112,17 @@ function excluirGenero(codigo) {
     });
 }
 
-function recuperaDadosUsuario(callback) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
-        dataType: 'html', //tipo do retorno
-        type: 'post', //metodo de envio
-        data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
+// function recuperaDadosUsuario(callback) {
+//     $.ajax({
+//         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
+//         dataType: 'html', //tipo do retorno
+//         type: 'post', //metodo de envio
+//         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
 
-        success: function (data) {
-            callback(data)
-        },
-    })
+//         success: function (data) {
+//             callback(data)
+//         },
+//     })
 
-    return
-}
+//     return
+// }

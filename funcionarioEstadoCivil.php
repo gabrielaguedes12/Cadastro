@@ -277,7 +277,7 @@ include("inc/scripts.php");
             return;
         }
 
-        excluirFuncionario(id);
+        excluirEstadoCivil(id);
     }
 
     function gravar() {
@@ -287,8 +287,12 @@ include("inc/scripts.php");
 
         gravaEstadoCivil(codigo, estadoCivil, ativo);
 
-
     }
 
+    document.getElementById("estadoCivil").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
   
 </script>

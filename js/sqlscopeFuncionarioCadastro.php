@@ -4,7 +4,7 @@ include "girComum.php";
 
 $funcao = $_POST["funcao"];
 
-if ($funcao == 'grava') {
+if ($funcao == 'gravar') {
     call_user_func($funcao);
 }
 
@@ -28,18 +28,10 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
-// if ($funcao == 'verificaCpfDependentes') {
-//     call_user_func($funcao);
-// }
-
-// if ($funcao == 'validaCpfDependentes') {
-//     call_user_func($funcao);
-// }
-
 return;
 
 
-function grava()
+function gravar()
 {
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
         $mensagem = "Nenhum parâmetro de pesquisa foi informado.";

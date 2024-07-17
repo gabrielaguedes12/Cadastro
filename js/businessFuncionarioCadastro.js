@@ -4,7 +4,7 @@ function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil,
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: {
-            funcao: "grava", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray, 
+            funcao: "gravar", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray, 
             emprego: emprego, pis: pis, cep: cep, logradouro: logradouro, numero: numero,complemento: complemento, uf: uf, bairro: bairro, cidade: cidade
         },
         success: function (data, textStatus) {

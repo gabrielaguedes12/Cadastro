@@ -95,21 +95,13 @@ function recuperaGenero()
 }
 
 
-function excluir()
+function excluirGenero()
 {
 
     $reposit = new reposit();
 
 
-    $codigo = $_POST["codigo"];
-
-    if ((empty($_POST['id']) || (!isset($_POST['id'])) || (is_null($_POST['id'])))) {
-        $mensagem = "Selecione um usuário.";
-        echo "failed#" . $mensagem . ' ';
-        return;
-    }
-
-    $reposit = new reposit();
+    $codigo =(int) $_POST["codigo"];
 
     $result = $reposit->update('dbo.genero' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 

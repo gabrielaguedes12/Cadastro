@@ -134,8 +134,7 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
-                                                                        <option hidden select value> Selecione </option>
-                                                                        <option></option>
+                                                                        <option hidden select > Selecione </option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -155,8 +154,7 @@ include("inc/nav.php");
                                                                 <label class="label">Gênero</label>
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
-                                                                        <option hidden select value> Selecione </option>
-                                                                        <option></option>
+                                                                        <option hidden select>Selecione</option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
@@ -187,7 +185,7 @@ include("inc/nav.php");
                                                                 <label class="label">Primeiro emprego</label>
                                                                 <label class="select">
                                                                     <select id="emprego" name="emprego" class="required" onpaste="return false" ondrop="return">
-                                                                        <option></option>
+                                                                        <option hidden select>Selecione</option>
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
@@ -497,7 +495,7 @@ include("inc/nav.php");
                                             <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                                 <span class="fa fa-floppy-o"></span>
                                             </button>
-                                            <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
+                                            <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnNovo ?>">
                                                 <span class="fa fa-file-o"></span>
                                             </button>
                                             <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
@@ -595,12 +593,20 @@ include("inc/scripts.php");
         //funçoes
         $("#cpf").on('focusout', function() {
             validaCpf()
+            // if (!validaCpf($("#cpf").val())) {
+            //     smartAlert("Atenção", "CPF Inválido,por favor tentar novamente.", "error");
+            //     $('#cpf').val("");
+            // 
         });
 
         $("#cpf").on('change', function() {
             verificaCpf()
-
+            // if (!verificaCpf($("#cpf").val())) {
+            //     smartAlert("Atenção", "CPF já cadastrado,por favor tentar novamente.", "error");
+            //     $('#cpf').val("");
+            // }
         });
+
 
         $(".rg").on('change', function() {
             verificaRg()
@@ -696,10 +702,9 @@ include("inc/scripts.php");
     //---------------->não permitir caracteres especiais e numeros<------------------//
     document.getElementById("nome").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM     ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
             return false;
     };
-
     //------------------------------>BOTÕES<--------------------------//
     $('#dlgSimpleExcluir').dialog({
 
@@ -728,7 +733,7 @@ include("inc/scripts.php");
         var id = +$("#codigo").val();
 
         if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir !", "error");
+            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
             $("#nome").focus();
             return;
         }
@@ -951,7 +956,9 @@ include("inc/scripts.php");
         if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
             dataDias[2] == 29
         }
-
+        
+        
+       
         if (ano > new Date().getFullYear()) {
             return false;
         }
@@ -962,7 +969,7 @@ include("inc/scripts.php");
         }
 
         //para restringir número de dias no mês
-        else if (dias > dataDias[mes]) {
+        else if (dias > dataDias[dias]) {
             return false
         }
 
@@ -1188,7 +1195,7 @@ include("inc/scripts.php");
     }
 
 
-    //------------------------------>EMAIL<------------//
+    //--------------------------------------------------------------->EMAIL<----------------------------------------------------------//
     function formataEmail() {
         var email = $('#email').val();
         var er = new RegExp(/^[A-Za-z0-9-.]+@[A-Za-z0-9-.]{2,}.[A-Za-z0-9]{2,}(.[A-Za-z0-9])?/);

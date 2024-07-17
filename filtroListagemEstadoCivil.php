@@ -23,11 +23,11 @@ include "js/girComum.php";
                 $where = "WHERE (0 = 0)";
 
 
-                $estadoCivil = $_POST["estadoCivil"];
+                $codigo = $_POST["estadoCivil"];
                 $ativo =  $_POST["ativo"];
 
-                if ($estadoCivil != "") {
-                    $where = $where . " AND (estadoCivil like '%" . $estadoCivil . "%')";
+                if ($codigo != "") {
+                    $where = $where . " AND codigo = $codigo";
                 }
 
                 if ($ativo != "") {

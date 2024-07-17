@@ -36,7 +36,6 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
-$page_nav["filtro"]["sub"]["funcionario"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -218,5 +217,11 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioCadastro.php');
     }
+
+    document.getElementById("nome").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
 
 </script>

@@ -1,9 +1,9 @@
-function gravaDependentes(id, dependentes, ativo) {
+function gravarDependentes(codigo, dependentes, ativo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioDependentes.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", id: id, dependentes: dependentes, ativo: ativo}, //valores enviados ao script
+        data: { funcao: 'gravarDependentes', codigo: codigo, dependentes: dependentes, ativo: ativo}, //valores enviados ao script
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -112,17 +112,17 @@ function excluirDependentes(codigo) {
     });
 }
 
-function recuperaDadosUsuario(callback) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioDependentes.php', //caminho do arquivo a ser executado
-        dataType: 'html', //tipo do retorno
-        type: 'post', //metodo de envio
-        data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
+// function recuperaDadosUsuario(callback) {
+//     $.ajax({
+//         url: 'js/sqlscopeFuncionarioDependentes.php', //caminho do arquivo a ser executado
+//         dataType: 'html', //tipo do retorno
+//         type: 'post', //metodo de envio
+//         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
 
-        success: function (data) {
-            callback(data)
-        },
-    })
+//         success: function (data) {
+//             callback(data)
+//         },
+//     })
 
-    return
-}
+//     return
+// }

@@ -285,7 +285,7 @@ include("inc/scripts.php");
             return;
         }
 
-        excluirGenero(codigo);
+        excluirGenero(id);
     }
 
     function gravar() {
@@ -298,7 +298,8 @@ include("inc/scripts.php");
 
     document.getElementById("descricao").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM        ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
             return false;
     };
+
 </script>

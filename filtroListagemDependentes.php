@@ -23,11 +23,11 @@ include "js/girComum.php";
                 $where = "WHERE (0 = 0)";
 
 
-                $dependentes = $_POST["dependentes"];
+                $codigo = $_POST["dependentes"];
                 $ativo =  $_POST["ativo"];
 
-                if ($dependentes != "") {
-                    $where = $where . " AND (dependentes like '%" . $dependentes . "%')";
+                if ($codigo != "") {
+                    $where = $where . " AND codigo = $codigo";
                 }
 
                 if ($ativo != "") {

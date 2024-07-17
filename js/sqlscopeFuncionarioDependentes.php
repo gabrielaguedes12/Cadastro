@@ -4,7 +4,7 @@ include "girComum.php";
 
 $funcao = $_POST["funcao"];
 
-if ($funcao == 'gravaDependentes') {
+if ($funcao == 'gravarDependentes') {
     call_user_func($funcao);
 }
 
@@ -19,27 +19,27 @@ if ($funcao == 'excluirDependentes') {
 return;
 
 
-function gravaDependentes()
+function gravarDependentes()
 {
-     $reposit = new reposit();
+    $reposit = new reposit();
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
-      $id = 0;
-    } else{ 
+        $id = 0;
+    } else {
         $id = (int) $_POST["id"];
     }
-       
 
-   
-    $id = (int) $_POST["id"];
+
+
+    $codigo = (int) $_POST["codigo"];
     $dependentes = (string) $_POST["dependentes"];
     $ativo = 1;
-   
+
     session_start();
 
     $sql = "dbo.dependentes_atualiza 
-        $id,
-        '$dependentes',
+        $codigo,
+        $dependentes,
         $ativo
        ";
 
@@ -61,7 +61,7 @@ function recuperaDependentes()
     $condicaoId = !((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])));
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
-   
+
     $codigo = $_POST["codigo"];
 
 
@@ -76,7 +76,7 @@ function recuperaDependentes()
         $codigo = $row['codigo'];
         $dependentes = $row['dependentes'];
         $ativo = $row['ativo'];
-        }
+    }
 
     $out =
         $codigo . "^" .
@@ -96,16 +96,7 @@ function excluirDependentes()
 {
     $reposit = new reposit();
 
-
-    $codigo = $_POST["codigo"];
-
-    if ((empty($_POST['id']) || (!isset($_POST['id'])) || (is_null($_POST['id'])))) {
-        $mensagem = "Selecione um usuário.";
-        echo "failed#" . $mensagem . ' ';
-        return;
-    }
-
-    $reposit = new reposit();
+    $codigo = (int) $_POST["codigo"];
 
     $result = $reposit->update('dbo.dependentes' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 

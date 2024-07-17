@@ -3,7 +3,7 @@ function gravaEstadoCivil(codigo, estadoCivil, ativo) {
         url: 'js/sqlscopeFuncionarioEstadoCivil.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: "grava", codigo: codigo, estadoCivil: estadoCivil, ativo: ativo}, //valores enviados ao script
+        data: { funcao: 'gravaEstadoCivil', codigo: codigo, estadoCivil: estadoCivil, ativo: ativo}, //valores enviados ao script
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -79,12 +79,12 @@ function recuperaEstadoCivil(codigo) {
     return;
 }
 
-function excluirFuncionario(codigo) {
+function excluirEstadoCivil(codigo) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioEstadoCivil.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'excluir', codigo: codigo}, //valores enviados ao script     
+        data: { funcao: 'excluirEstadoCivil', codigo: codigo}, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -113,17 +113,17 @@ function excluirFuncionario(codigo) {
     });
 }
 
-function recuperaDadosUsuario(callback) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioEstadoCivil.php', //caminho do arquivo a ser executado
-        dataType: 'html', //tipo do retorno
-        type: 'post', //metodo de envio
-        data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
+// function recuperaDadosUsuario(callback) {
+//     $.ajax({
+//         url: 'js/sqlscopeFuncionarioEstadoCivil.php', //caminho do arquivo a ser executado
+//         dataType: 'html', //tipo do retorno
+//         type: 'post', //metodo de envio
+//         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
 
-        success: function (data) {
-            callback(data)
-        },
-    })
+//         success: function (data) {
+//             callback(data)
+//         },
+//     })
 
-    return
-}
+//     return
+// }

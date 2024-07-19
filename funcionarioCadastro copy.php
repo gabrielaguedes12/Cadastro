@@ -1466,42 +1466,27 @@ include("inc/scripts.php");
     function validaDependentes() {
         var adicionado = false;
         var nomeDependentes = $('#nomeDependentes').val();
-        var cpfDependentes = $('#cpfDependentes').val();
-        var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
-        var tipoDependentes = $('#tipo').val();
         var sequencial = +$('#sequencialDependentes').val();
         var valido = false;
-        // if ($("#principal").is(':checked') === true) {
-        //     telMarcado = 1;
-        // }
-        // if (telefone === '') {
-        //     smartAlert("Erro", "Informe um telefone", "error");
-        //     return false;
-        // }
 
-        // for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
-        //     if (telMarcado === 1) {
-        //         if ((jsonTelefoneArray[i].principal === 1) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-        //             existePrincipal = true;
-        //             break;
-        //         }
-        //     }
-        //     if ((jsonTelefoneArray[i].telefone === telefone) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-        //         adicionado = true;
-        //         break;
-        //     }
-        // }
-        // if (adicionado === true) {
-        //     smartAlert("Erro", "Telefone já adicionado", "error");
-        //     clearFormTelefone();
-        //     return false;
-        // }
-        // if ((existePrincipal === true) && (telMarcado === 1)) {
-        //     smartAlert("Erro", "Já existe um telefone principal", "error");
-        //     clearFormTelefone();
-        //     return false;
-        // }
-        // return true;
+        if (nomeDependentes === '') {
+            smartAlert("Erro", "Informe um dependentes", "error");
+            return false;
+        }
+
+
+        if ((jsonDependentesArray[i].nomeDependentes === nomeDependentes) && (jsonDependentesArray[i].sequencialDependentes !== sequencial)) {
+            adicionado = true;
+            return false;
+        }
+
+        if (adicionado === true) {
+            smartAlert("Erro", "Dependentes já adicionado", "error");
+            clearFormDependentes();
+            return false;
+        }
+
+        return true;
     }
 
     //adiciona dependentes
@@ -1521,7 +1506,7 @@ include("inc/scripts.php");
                     return o.sequencialDependentes;
                 })) + 1;
             }
-            item["dependentesId"] = 0;
+            item["idDependentes"] = 0;
         } else {
             item["sequencialDependentes"] = +item["sequencialDependentes"];
         }

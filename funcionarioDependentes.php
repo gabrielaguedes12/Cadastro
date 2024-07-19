@@ -273,8 +273,6 @@ include("inc/scripts.php");
 
     }
 
-
-
     function novo() {
         $(location).attr('href', 'funcionarioDependentes.php');
     }

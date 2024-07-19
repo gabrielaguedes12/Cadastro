@@ -28,6 +28,10 @@ if ($funcao == 'verificaRg') {
     call_user_func($funcao);
 }
 
+if ($funcao == 'validaCpfDependentes') {
+    call_user_func($funcao);
+}
+
 return;
 
 
@@ -61,8 +65,10 @@ function gravar()
     $cidade = $utils->formatarString($_POST['cidade']);
     $emprego = $_POST['emprego'];
     $pis = $utils->formatarString($_POST['pis']);
-    
+    $dependentes = $_POST['jsonDependentesArray'];
 
+
+    //telefone
     $nomeXml = "ArrayTelefone";
     $nomeTabela = "TabelaTelefone";
     if (sizeof($telefone) > 0) {
@@ -122,6 +128,36 @@ function gravar()
     }
     $xmlJsonEmail = "'" . $xmlJsonEmail . "'";
 
+    //dependentes
+    $nomeXml = "ArrayDependentes";
+    $nomeTabela = "TabelaDependentes";
+    if (sizeof($dependentes) > 0) {
+        $xmlJsonDependentes = '<?xml version="1.0"?>';
+        $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        foreach ($dependentes as $chave) {
+            $xmlJsonDependentes = $xmlJsonDependentes . "<" . $nomeTabela . ">";
+            foreach ($chave as $campo => $valor) {
+
+                $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $valor . "</" . $campo . ">";
+            }
+            $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeTabela . ">";
+        }
+
+        $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXml . ">";
+    } else {
+
+        $xmlJsonDependentes = '<?xml version="1.0"?>';
+        $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXml . ">";
+    }
+    $xml = simplexml_load_string($xmlJsonDependentes);
+    if ($xml === false) {
+        $mensagem = "Erro na criação do XML de Dependentes";
+        echo "failed#" . $mensagem . ' ';
+        return;
+    }
+    $xmlJsonDependentes = "'" . $xmlJsonDependentes . "'";
+
     $sql = "dbo.funcionario_atualiza 
         $id,
         $nome,
@@ -141,7 +177,8 @@ function gravar()
         $complemento,
         $uf,
         $bairro,
-        $cidade";
+        $cidade,
+        $xmlJsonDependentes";
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -276,7 +313,46 @@ function recupera()
     }
 
     $strarrayEmail = json_encode($arrayEmail);
-//---------------------------------------->>-------------------------------------//
+
+    //dependentes
+    $sql = "SELECT t.codigo, t.idUsuario, t.sequencialDependentes, t.dependentesId, t.dependentes, t.cpfDependentes, t.dataNascimentoDependentes,t.tipoDependentesId
+     FROM dependentes t
+      WHERE idUsuario = $id";
+
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+    $dependentesNum = 0;
+    $arrayDependentes = array();
+
+    foreach ($result as $row) {
+
+        $out = "";
+        if ($row = $result[0]) {
+            $sequencialDependentes = $row['sequencialDependentes'];
+            $dependentesId = $row['dependentesId'];
+            $dependentes = $row['dependentes'];
+            $cpfDependentes = $row['cpfDependentes'];
+            $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
+            $tipoDependentesId = $row['tipo'];
+            $idUsuario = $row['idUsuario'];
+        }
+
+        $dependentesNum = $dependentesNum + 1;
+        $arrayDependentes[] = array(
+            "sequencialDependentes" =>   $sequencialDependentes,
+            "dependentesId"  => $dependentesId,
+            "dependentes"  => $dependentes,
+            "cpfDependentes"  => $cpfDependentes,
+            "dataNascimentoDependentes"  => $dataNascimentoDependentes,
+            "tipoDependentesId" => $tipoDependentesId,
+            "idUsuario"  => $idUsuario
+        );
+    }
+
+    $strarrayDependentes = json_encode($arrayDependentes);
+
+    //---------------------------------------->>-------------------------------------//
     $out =
         $id . "^" .
         $nome . "^" .
@@ -287,22 +363,23 @@ function recupera()
         $estadoCivil . "^" .
         $idGenero . "^" .
         $telefone . "^" .
-        $email. "^" .
+        $email . "^" .
         $emprego . "^" .
         $pis . "^" .
-        $cep. "^" .
-        $logradouro. "^" .
-        $numero. "^" .
-        $complemento. "^" .
-        $uf. "^" .
-        $bairro. "^" .
-        $cidade;
+        $cep . "^" .
+        $logradouro . "^" .
+        $numero . "^" .
+        $complemento . "^" .
+        $uf . "^" .
+        $bairro . "^" .
+        $cidade . "^" .
+        $dependentes;
 
     if ($out == "") {
         echo "failed#";
         return;
     }
-    echo "sucess#" . $out . "#" . $strarrayTelefone . "#" . $strarrayEmail;
+    echo "sucess#" . $out . "#" . $strarrayTelefone . "#" . $strarrayEmail . "#" . $strarrayDependentes;
 
     return;
 }
@@ -384,28 +461,6 @@ function validaCpfDependentes()
         echo 'failed#';
     }
 }
-
-// //verificar se já foi cadastrado
-// function verificaCpfDependentes()
-// {
-//     $reposit = new reposit();
-//     $utils = new comum();
-
-//     $cpfDependentes = $utils->formatarString($_POST['cpfDependentes']);
-
-//     $sql = "SELECT cpfDependentes from dbo.funcionario where cpfDependentes = $cpfDependentes";
-
-//     $reposit = new reposit();
-//     $result = $reposit->RunQuery($sql);
-
-//     $ret = 'sucess# CPF ok';
-//     if (count($result) > 0) {
-//         $ret = 'failed# CPF já cadastrado';
-//     }
-//     echo $ret;
-
-//     return;
-// }
 
 function verificaRg()
 {

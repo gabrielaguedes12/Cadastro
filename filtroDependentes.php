@@ -87,18 +87,18 @@ include("inc/nav.php");
                                                             <section class="col col-3">
                                                                 <label class="label">Tipo</label>
                                                                 <label class="select">
-                                                                    <select id="dependentes" name="dependentes">
+                                                                    <select id="tipo" name="tipo">
                                                                         <option hidden select value> Selecione </option>
                                                                         <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
-                                                                        $sql = "SELECT codigo, dependentes, ativo FROM dbo.dependentes WHERE ativo = 1 ORDER BY dependentes";
+                                                                        $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
                                                                         $result = $reposit->RunQuery($sql);
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
-                                                                            $dependentes = htmlspecialchars($row['dependentes'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
 
-                                                                            echo "<option value='$codigo'>$dependentes</option>";
+                                                                            echo "<option value='$codigo'>$tipo</option>";
                                                                         }
                                                                         ?>
 
@@ -198,11 +198,11 @@ include("inc/scripts.php");
     });
 
     function listarFiltro() {
-        var dependentes = $('#dependentes').val();
+        var tipo = $('#tipo').val();
         var ativo = $('#ativo').val();
 
         $('#resultadoBusca').load('filtroListagemDependentes.php?', {
-            dependentes: dependentes,
+            tipo: tipo,
             ativo: ativo
         });
     }
@@ -213,9 +213,9 @@ include("inc/scripts.php");
 
 
 
-    // document.getElementById("nome").onkeypress = function(e) {
-    //     var chr = String.fromCharCode(e.which);
-    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-    //         return false;
-    // };
+    document.getElementById("tipo").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
 </script>

@@ -1,11 +1,11 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade,  jsonDependentesArray) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: {
             funcao: "gravar", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray,
-            emprego: emprego, pis: pis, cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade
+            emprego: emprego, pis: pis, cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade, jsonDependentesArray:jsonDependentesArray
         },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
@@ -156,7 +156,7 @@ function recuperaFuncionario(id) {
                 var out = piece[1];
                 var strarrayTelefone = piece[2];
                 var strarrayEmail = piece[3];
-
+                var strarrayDependentes = piece[4];
                 piece = out.split("^");
 
                 var codigo = +piece[0];
@@ -212,6 +212,10 @@ function recuperaFuncionario(id) {
                 $("#jsonEmail").val(strarrayEmail)
                 jsonEmailArray = JSON.parse($("#jsonEmail").val());
                 fillTableEmail();
+
+                $("#jsonDependentes").val(strarrayDependentes)
+                jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
+                fillTableDependentes();
                 return;
             }
         },

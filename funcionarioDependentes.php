@@ -69,7 +69,7 @@ include("inc/nav.php");
                         </header>
                         <div>
                             <div class="widget-body no-padding">
-                                <form  class="smart-form client-form" id="formUsuario" method="post">
+                                <form class="smart-form client-form" id="formUsuario" method="post">
                                     <div class="panel-group smart-accordion-default" id="accordion">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
@@ -96,7 +96,7 @@ include("inc/nav.php");
                                                             <section class="col col-4">
                                                                 <label class="select">Descrição</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="dependentes" maxlength="255" name="dependentes" class="required" type="text" placeholder=" " value="">
+                                                                    <input id="tipo" maxlength="255" name="tipo" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2 hidden">
@@ -230,16 +230,16 @@ include("inc/scripts.php");
             }
         }]
     });
-    
+
     $("#btnVoltar").on("click", function() {
         voltar();
     });
-    
+
     $("#btnNovo").on("click", function() {
         novo();
     });
-    
-    $("#btnGravar").on("click", function(){
+
+    $("#btnGravar").on("click", function() {
         gravar();
     });
 
@@ -270,10 +270,10 @@ include("inc/scripts.php");
             }
         }
         $("#nome").focus();
-        
+
     }
 
-    
+
 
     function novo() {
         $(location).attr('href', 'funcionarioDependentes.php');
@@ -296,14 +296,14 @@ include("inc/scripts.php");
 
     function gravar() {
         var codigo = +($("#codigo").val());
-        var dependentes = $("#dependentes").val();
+        var tipo = $("#tipo").val();
         var ativo = $("#ativo").val();
 
-        gravarDependentes(codigo, dependentes, ativo);
+        gravarDependentes(codigo, tipo, ativo);
     }
 
-    
-    document.getElementById("dependentes").onkeypress = function(e) {
+
+    document.getElementById("tipo").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
             return false;

@@ -275,6 +275,8 @@ include("inc/nav.php");
 
                                                     </fieldset>
 
+
+
                                                     <fieldset class="col col-6">
                                                         <div id="formEmail">
                                                             <input type="" id="jsonEmail" value="[]" hidden>
@@ -409,67 +411,73 @@ include("inc/nav.php");
                                             <div id="collapseDependente" class="panel-collapse collapse">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
+                                                        <div id="formDependentes">
+                                                            <input type="" id="jsonDependentes" value="[]" hidden>
+                                                            <div class="row">
+                                                                <input type="" id="sequencialDependentes" name="sequencialDependentes" value="" hidden>
+                                                                <input type="" id="dependentesId" name="dependentesId" value="" hidden>
 
-                                                        <section class="col col-3">
-                                                            <label class="label">Nome Completo</label>
-                                                            <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                <input id="nomeDependentes" maxlength="50" name="nome" type="text" value="" />
-                                                            </label>
+                                                                <section class="col col-3">
+                                                                    <label class="label">Nome Completo</label>
+                                                                    <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                        <input id="dependentes" maxlength="50" name="dependentes" type="text" value="" />
+                                                                    </label>
+                                                                </section>
 
-                                                        </section>
+                                                                <section class="col col-2">
+                                                                    <label class="label">CPF</label>
+                                                                    <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                        <input class="cpfDependentes" maxlength="20" id="cpfDependentes" type="text" placeholder="XXX.XXX.XXX-XX" value="">
+                                                                    </label>
+                                                                </section>
 
-                                                        <section class="col col-2">
-                                                            <label class="label">CPF</label>
-                                                            <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                <input class="cpfDependentes" maxlength="20" id="cpf" type="text" placeholder="XXX.XXX.XXX-XX" value="">
-                                                            </label>
-                                                        </section>
+                                                                <section class="col col-2">
+                                                                    <label class="label">Data de Nascimento</label>
+                                                                    <label class="input"><i class="icon-prepend fa fa-calendar"></i>
+                                                                        <input id="dataNascimentoDependentes" name="dataNascimentoDependentes" type="text" class="datepicker" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="XX/XX/XXXX" style="text-align: center" autocomplete="off">
+                                                                    </label>
+                                                                </section>
 
-                                                        <section class="col col-2">
-                                                            <label class="label">Data de Nascimento</label>
-                                                            <label class="input"><i class="icon-prepend fa fa-calendar"></i>
-                                                                <input id="dataNascimentoDependentes" name="dataNascimento" type="text" class="datepicker" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="XX/XX/XXXX" style="text-align: center" autocomplete="off">
-                                                            </label>
-                                                        </section>
+                                                                <section class="col col-2">
+                                                                    <label class="label">Tipo</label>
+                                                                    <label class="select">
+                                                                        <select id="tipo" name="tipo">
+                                                                            <option hidden select value> Selecione </option>
+                                                                            <option></option>
+                                                                            <?php
+                                                                            $reposit = new reposit();
+                                                                            $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
+                                                                            $result = $reposit->RunQuery($sql);
+                                                                            foreach ($result as $row) {
+                                                                                $codigo = (int) $row['codigo'];
+                                                                                $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
 
-                                                        <section class="col col-2">
-                                                            <label class="label">Tipo</label>
-                                                            <label class="select">
-                                                                <select id="dependentes" name="dependentes">
-                                                                    <option hidden select value> Selecione </option>
-                                                                    <option></option>
-                                                                    <?php
-                                                                    $reposit = new reposit();
-                                                                    $sql = "SELECT codigo, dependentes, ativo FROM dbo.dependentes WHERE ativo = 1 ORDER BY dependentes";
-                                                                    $result = $reposit->RunQuery($sql);
-                                                                    foreach ($result as $row) {
-                                                                        $codigo = (int) $row['codigo'];
-                                                                        $dependentes = htmlspecialchars($row['dependentes'], ENT_QUOTES); //evitando caracteres especiais
+                                                                                echo "<option value='$codigo'>$tipo</option>";
+                                                                            }
+                                                                            ?>
+                                                                        </select>
+                                                                    </label>
+                                                                </section>
 
-                                                                        echo "<option value='$codigo'>$dependentes</option>";
-                                                                    }
-                                                                    ?>
-                                                                </select>
-                                                            </label>
-                                                        </section>
+                                                                <section class="col col-md-2">
+                                                                    <label class="label">&nbsp;</label>
+                                                                    <button id="btnAddDependentes" type="button" class="btn btn-primary">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </button>
 
-                                                        <section class="col col-md-2">
-                                                            <label class="label">&nbsp;</label>
-                                                            <button id="btnAddDependentes" type="button" class="btn btn-primary">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-
-                                                            <button id="btnRemoverDependentes" type="button" class="btn btn-danger">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
-                                                        </section>
+                                                                    <button id="btnRemoverDependentes" type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-minus"></i>
+                                                                    </button>
+                                                                </section>
+                                                            </div>
+                                                        </div>
 
                                                         <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
                                                             <table id="tableDependente" class="table table-bordered table-striped table-condensed table-hover dataTable">
                                                                 <thead>
                                                                     <tr role="row">
                                                                         <th></th>
-                                                                        <th class="text-center">Dependente</th>
+                                                                        <th class="text-center">Nome</th>
                                                                         <th class="text-center">CPF</th>
                                                                         <th class="text-center" style="width: 25%;">Data de nascimento</th>
                                                                         <th class="text-center">Tipo</th>
@@ -480,7 +488,6 @@ include("inc/nav.php");
                                                                 </tbody>
                                                             </table>
                                                         </div>
-
 
                                                     </fieldset>
                                                 </div>
@@ -578,7 +585,7 @@ include("inc/scripts.php");
     $(document).ready(function() {
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
-        // jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
+        jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
 
         //mascaras
         $(".cpf").mask("999.999.999-99");
@@ -670,7 +677,7 @@ include("inc/scripts.php");
 
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-                        
+
                         if (!("erro" in dados)) {
                             //Atualiza os campos com os valores da consulta.
                             $("#logradouro").val(dados.logradouro);
@@ -688,28 +695,33 @@ include("inc/scripts.php");
                 else {
                     //cep é inválido.
                     limpa_formulário_cep();
-                    smartAlert("Formato de CEP inválido.","eror");
+                    smartAlert("Formato de CEP inválido.", "eror");
                 }
             } //end if.
             else {
                 //cep sem valor, limpa formulário.
                 limpa_formulário_cep();
             }
-            
-            function  limpa_formulário_cep() {
-            $('#cep').val("");
-        }
-        });
-       
 
+        });
         //condição com readondly
         $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
 
         carregaPagina();
-    })
+    });
+
+    function limpa_formulário_cep() {
+        $('#cep').val("");
+    }
 
     //---------------->não permitir caracteres especiais e numeros<------------------//
     document.getElementById("nome").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
+
+    document.getElementById("dependentes").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
             return false;
@@ -783,9 +795,18 @@ include("inc/scripts.php");
     })
 
     $('#btnRemoverEmail').on("click", function() {
-        excluirEmail()
+        excluirEmail();
     })
 
+    //dependentes
+    $('btnAddDependentes').on("click", function() {
+        validaDependentes();
+        adicionaDepedentes();
+    })
+
+    $('btnRemoverDependentes').on("click", function() {
+        excluirDependentes();
+    })
 
 
     function carregaPagina() {
@@ -1447,5 +1468,149 @@ include("inc/scripts.php");
             fillTableEmail();
         } else
             smartAlert("Erro", "Selecione pelo menos 1 Email para excluir.", "error");
+    }
+
+    //-------------------------------------------------->dependentes<---------------------------------------------//
+    function validaDependentes() {
+        var adicionado = false;
+        var dependentes = $('#dependentes').val();
+        var sequencial = +$('#sequencialDependentes').val();
+        var valido = false;
+
+        if (dependentes === '') {
+            smartAlert("Erro", "Informe um dependentes", "error");
+            return false;
+        }
+
+
+        if ((jsonDependentesArray[i].dependentes === dependentes) && (jsonDependentesArray[i].sequencialDependentes !== sequencial)) {
+            adicionado = true;
+            return false;
+        }
+
+        if (adicionado === true) {
+            smartAlert("Erro", "Dependentes já adicionado", "error");
+            clearFormDependentes();
+            return false;
+        }
+
+        return true;
+    }
+
+    //adiciona dependentes
+    function adicionaDependentes() {
+
+        var item = $("#formDependentes").toObject({
+            mode: 'combine',
+            skipEmpty: false,
+            nodeCallback: processDataDependentes
+        });
+
+        if (item["sequencialDependentes"] === '') {
+            if (jsonDependentesArray.length === 0) {
+                item["sequencialDependentes"] = 1;
+            } else {
+                item["sequencialDependentes"] = Math.max.apply(Math, jsonDependentesArray.map(function(o) {
+                    return o.sequencialDependentes;
+                })) + 1;
+            }
+            item["dependentesId"] = 0;
+        } else {
+            item["sequencialDependentes"] = +item["sequencialDependentes"];
+        }
+
+        $('#dependentes').val("");
+
+        var index = -1;
+        $.each(jsonDependentesArray, function(i, obj) {
+            if (+$('#sequencialDependentes').val() === obj.sequencialDependentes) {
+                index = i;
+                return false;
+            }
+        });
+
+        if (index >= 0)
+            jsonDependentesArray.splice(index, 1, item);
+        else
+            jsonDependentesArray.push(item);
+
+        $("#jsonDependentes").val(JSON.stringify(jsonDependentesArray));
+        fillTableDependentes();
+        clearFormDependentes();
+
+    }
+
+    //append-> adicionar um elemento no final da lista
+    function fillTableDependentes() {
+        $("#tableDependentes tbody").empty();
+
+        for (var i = 0; i < jsonDependentesArray.length; i++) {
+            if (jsonDependentesArray[i].dependentes !== null && jsonDependentesArray[i].dependentes != '') {
+
+                $("#tableDependentes tbody").append(row);
+                row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonDependentesArray[i].sequencialDependentes + '"><i></i></label></td>'));
+                row.append($('<td class="text-nowrap" onclick="carregaDependentes(' + jsonDependentesArray[i].sequencialTel + ');">' + jsonDependentesArray[i].dependentes + '</td>'));
+
+
+            }
+        }
+    }
+
+    function processDataDependentes(node) {
+        var fieldId = node.getAttribute ? node.getAttribute('id') : '';
+        var fieldName = node.getAttribute ? node.getAttribute('name') : '';
+
+        if (fieldName !== '' && (fieldId === "dependentes")) {
+            var valDependentes = $("#dependentes").val();
+            if (valDependentes !== '') {
+                fieldName = "dependentes";
+            }
+            return {
+                name: fieldName,
+                value: valDependentes
+            };
+        }
+       
+
+        return false;
+    }
+
+    function carregaDependentes(sequencialDependentes) {
+        var arr = jQuery.grep(jsonDependentesArray, function(item, i) {
+            return (item.sequencialDependentes === sequencialDependentes);
+        });
+
+        clearFormDependentes();
+        if (arr.length > 0) {
+            var item = arr[0];
+            $("#sequencialDependentes").val(item.sequencialDependentes);
+            $("#dependentesId").val(item.dependentesId);
+            $("#dependentes").val(item.dependentes);
+        }
+    }
+
+    function clearFormDependentes() {
+        $("#sequencialDependentes").val("");
+        $("#dependentesId").val("");
+        $("#dependentes").val("");
+        return true;
+    }
+
+    function excluirDependentes() {
+        var arrSequencial = [];
+        $('#tableDependentes input[type= text]:checked').each(function() {
+            arrSequencial.push(parseInt($(this).val()));
+        });
+        if (arrSequencial.length > 0) {
+            for (i = jsonDependentesArray.length - 1; i >= 0; i--) {
+                var obj = jsonDependentesArray[i];
+                if (jQuery.inArray(obj.sequencialDependentes, arrSequencial) > -1) {
+                    jsonDependentesArray.splice(i, 1);
+                }
+            }
+            $("#jsonDependentes").val(JSON.stringify(jsonDependentesArray));
+            fillTableDependentes();
+        } else
+            smartAlert("Erro", "Selecione pelo menos 1 dependente para excluir.", "error");
     }
 </script>

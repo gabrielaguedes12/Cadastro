@@ -19,11 +19,11 @@ include "js/girComum.php";
                 $utils = new comum();
                 $reposit = new reposit();
 
-                $sql = " SELECT  codigo, dependentes, ativo from dbo.dependentes ";
+                $sql = " SELECT  codigo, tipo, ativo from dbo.tipoDependentes ";
                 $where = "WHERE (0 = 0)";
 
 
-                $codigo = $_POST["dependentes"];
+                $codigo = $_POST["tipo"];
                 $ativo =  $_POST["ativo"];
 
                 if ($codigo != "") {
@@ -41,7 +41,7 @@ include "js/girComum.php";
 
                 foreach ($result as $row) {
                     $codigo =  $row['codigo'];
-                    $dependentes =  $row['dependentes'];
+                    $tipo =  $row['tipo'];
                     $ativo = $row['ativo'];
 
                     if ($ativo == 1) {
@@ -51,7 +51,7 @@ include "js/girComum.php";
                     }
 
                     echo '<tr >';
-                    echo '<td class="text-left">  <a href="funcionarioDependentes.php?id=' . $codigo . '">' . $dependentes;
+                    echo '<td class="text-left">  <a href="funcionarioDependentes.php?id=' . $codigo . '">' . $tipo;
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';
                     echo '</tr >';
                 }

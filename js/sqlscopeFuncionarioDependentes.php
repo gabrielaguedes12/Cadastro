@@ -32,14 +32,14 @@ function gravarDependentes()
 
 
     $codigo = (int) $_POST["codigo"];
-    $dependentes = (string) $_POST["dependentes"];
+    $tipo = (string) $_POST["tipo"];
     $ativo = 1;
 
     session_start();
 
-    $sql = "dbo.dependentes_atualiza 
+    $sql = "dbo.tipoDependentes_atualiza 
         $codigo,
-        $dependentes,
+        $tipo,
         $ativo
        ";
 
@@ -65,7 +65,7 @@ function recuperaDependentes()
     $codigo = $_POST["codigo"];
 
 
-    $sql = " SELECT codigo,dependentes,ativo from dbo.dependentes WHERE (0 = 0) and codigo = $codigo ";
+    $sql = " SELECT codigo,tipo,ativo from dbo.tipoDependentes WHERE (0 = 0) and codigo = $codigo ";
 
 
     $reposit = new reposit();
@@ -74,13 +74,13 @@ function recuperaDependentes()
     $out = "";
     if ($row = $result[0]) {
         $codigo = $row['codigo'];
-        $dependentes = $row['dependentes'];
+        $tipo = $row['tipo'];
         $ativo = $row['ativo'];
     }
 
     $out =
         $codigo . "^" .
-        $dependentes . "^" .
+        $tipo . "^" .
         $ativo;
 
     if ($out == "") {
@@ -98,7 +98,7 @@ function excluirDependentes()
 
     $codigo = (int) $_POST["codigo"];
 
-    $result = $reposit->update('dbo.dependentes' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
+    $result = $reposit->update('dbo.tipoDependentes' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 
     if ($result < 1) {
         echo ('failed#');

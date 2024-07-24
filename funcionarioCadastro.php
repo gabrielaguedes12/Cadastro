@@ -146,6 +146,7 @@ include("inc/nav.php");
                                                                             echo "<option value='$codigo'>$estadoCivil</option>";
                                                                         }
                                                                         ?>
+                                                                    </select><i></i>
                                                                     </select>
                                                                 </label>
                                                             </section>
@@ -167,6 +168,7 @@ include("inc/nav.php");
                                                                         }
 
                                                                         ?>
+                                                                    </select><i></i>
                                                                     </select>
                                                                 </label>
                                                             </section>
@@ -415,7 +417,7 @@ include("inc/nav.php");
                                                             <input type="" id="jsonDependentes" value="[]" hidden>
                                                             <div class="row">
                                                                 <input type="" id="sequencialDependentes" name="sequencialDependentes" value="" hidden>
-                                                                <input type="" id="dependentesId" name="dependentesId" value="" hidden>
+                                                                <input type="" id="idDependentes" name="idDependentes" value="" hidden>
 
                                                                 <section class="col col-3">
                                                                     <label class="label">Nome Completo</label>
@@ -442,7 +444,7 @@ include("inc/nav.php");
                                                                     <label class="label">Tipo</label>
                                                                     <label class="select">
                                                                         <select id="tipo" name="tipo">
-                                                                            <option hidden select> Selecione </option>
+                                                                            <option hidden select value = "" select> Selecione </option>
                                                                             <?php
                                                                             $reposit = new reposit();
                                                                             $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
@@ -470,24 +472,23 @@ include("inc/nav.php");
                                                                     </button>
                                                                 </section>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
-                                                            <table id="tableDependente" class="table table-bordered table-striped table-condensed table-hover dataTable">
-                                                                <thead>
-                                                                    <tr role="row">
-                                                                        <th></th>
-                                                                        <th class="text-center">Nome</th>
-                                                                        <th class="text-center">CPF</th>
-                                                                        <th class="text-center" style="width: 25%;">Data de nascimento</th>
-                                                                        <th class="text-center">Tipo</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
+                                                            <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
+                                                                <table id="tableDependentes" class="table table-bordered table-striped table-condensed table-hover dataTable">
+                                                                    <thead>
+                                                                        <tr role="row">
+                                                                            <th></th>
+                                                                            <th class="text-center">Nome</th>
+                                                                            <th class="text-center">CPF</th>
+                                                                            <th class="text-center" style="width: 25%;">Data de nascimento</th>
+                                                                            <th class="text-center">Tipo</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
 
                                                     </fieldset>
                                                 </div>
@@ -586,7 +587,6 @@ include("inc/scripts.php");
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
         jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
-
         //mascaras
         $(".cpf").mask("999.999.999-99");
         $(".rg").mask("99.999.999-9");
@@ -687,7 +687,7 @@ include("inc/scripts.php");
                 else {
                     //cep é inválido.
                     limpa_formulário_cep();
-                    smartAlert("Atenção","Formato de CEP inválido.", "error");
+                    smartAlert("Atenção", "Formato de CEP inválido.", "error");
                 }
             } //end if.
             else {
@@ -696,6 +696,7 @@ include("inc/scripts.php");
             }
 
         });
+
         function limpa_formulário_cep() {
             $('#cep').val("");
         }
@@ -792,8 +793,11 @@ include("inc/scripts.php");
 
     //dependentes
     $('#btnAddDependentes').on("click", function() {
-        validaDependentes();
-        adicionaDependentes();
+        if (validaDependentes() === true) {
+            adicionaDependentes();
+        } else {
+            smartAlert("Atenção", "Dependente inválido, tente novamente", "error");
+        }
     })
 
     $('#btnRemoverDependentes').on("click", function() {
@@ -852,8 +856,8 @@ include("inc/scripts.php");
 
 
         //contato
-        var telefone = $("#telefone").val();
-        var email = $("#email").val();
+        var telefone = $("#jsonTelefone").val();
+        var email = $("#jsonEmail").val();
 
         //endereço
         var cep = $("#cep").val();
@@ -865,9 +869,9 @@ include("inc/scripts.php");
         var cidade = $("#cidade").val();
 
         //dependentes
-        var dependentes = $("#nomeDependentes").val();
+        var nomeDependentes = $("#jsonDependentes").val();
 
-
+      
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
             nome = $("#nome").focus();
@@ -902,6 +906,16 @@ include("inc/scripts.php");
             emprego = $("#emprego").focus();
         }
 
+        if (telefone == "") {
+            smartAlert("Atenção", "Telefone não preenchido.", "error")
+            telefone = $("#jsonTelefone").focus();
+        }
+
+        if (email == "") {
+            smartAlert("Atenção", "Email não preenchido.", "error")
+            email = $("#jsonEmail").focus();
+        }
+
         if (cep == "") {
             smartAlert("Atenção", "CEP não preenchido.", "error")
             cep = $("#cep").focus();
@@ -926,6 +940,8 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Cidade não preenchido.", "error")
             cidade = $("#cidade").focus();
         }
+
+       
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade, jsonDependentesArray);
     }
 
@@ -1464,44 +1480,47 @@ include("inc/scripts.php");
 
     //-------------------------------------------------->dependentes<---------------------------------------------//
     function validaDependentes() {
-        var adicionado = false;
+        var contido = false;
         var nomeDependentes = $('#nomeDependentes').val();
         var cpfDependentes = $('#cpfDependentes').val();
         var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
-        var tipoDependentes = $('#tipo').val();
+        var tipo = $('#tipo').val();
         var sequencial = +$('#sequencialDependentes').val();
-        var valido = false;
-        // if ($("#principal").is(':checked') === true) {
-        //     telMarcado = 1;
-        // }
-        // if (telefone === '') {
-        //     smartAlert("Erro", "Informe um telefone", "error");
-        //     return false;
-        // }
 
-        // for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
-        //     if (telMarcado === 1) {
-        //         if ((jsonTelefoneArray[i].principal === 1) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-        //             existePrincipal = true;
-        //             break;
-        //         }
-        //     }
-        //     if ((jsonTelefoneArray[i].telefone === telefone) && (jsonTelefoneArray[i].sequencialTel !== sequencial)) {
-        //         adicionado = true;
-        //         break;
-        //     }
-        // }
-        // if (adicionado === true) {
-        //     smartAlert("Erro", "Telefone já adicionado", "error");
-        //     clearFormTelefone();
-        //     return false;
-        // }
-        // if ((existePrincipal === true) && (telMarcado === 1)) {
-        //     smartAlert("Erro", "Já existe um telefone principal", "error");
-        //     clearFormTelefone();
-        //     return false;
-        // }
-        // return true;
+
+        if (nomeDependentes === '') {
+            smartAlert("Erro", "Informe o nome do dependente", "error");
+            return false;
+        }
+
+        if (cpfDependentes === '') {
+            smartAlert("Erro", "Informe o CPF do dependente", "error");
+            return false;
+        }
+
+        if (dataNascimentoDependentes === '') {
+            smartAlert("Erro", "Informe a data de nascimento do dependente", "error");
+            return false;
+        }
+
+        if (tipo === '') {
+            smartAlert("Erro", "Informe o tipo de dependente", "error");
+            return false;
+        }
+
+        for (i = jsonDependentesArray.length - 1; i >= 0; i--) {
+            if ((jsonDependentesArray[i].nomeDependentes === nomeDependentes) && (jsonDependentesArray[i].sequencialDependentes !== sequencial)) {
+                contido = true;
+                break;
+            }
+        }
+        if (contido === true) {
+            smartAlert("Erro", "Dependente já cadastrado", "error");
+            clearFormDependentes();
+            return false;
+        }
+
+        return true;
     }
 
     //adiciona dependentes
@@ -1521,12 +1540,23 @@ include("inc/scripts.php");
                     return o.sequencialDependentes;
                 })) + 1;
             }
-            item["dependentesId"] = 0;
-        } else {
-            item["sequencialDependentes"] = +item["sequencialDependentes"];
-        }
 
-        $('#nomeDependentes').val("");
+            var nomeDependentes = $('#nomeDependentes').val();
+            var cpfDependentes = $('#cpfDependentes').val();
+            var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
+            var tipo = $('#tipo').val();
+            var sequencial = +$('#sequencialDependentes').val();
+            var idDependentes = $('#idDependentes').val();
+
+        } else {
+            item["nomeDependentes"] = +item["nomeDependentes"];
+            item["cpfDependentes"] = +item["cpfDependentes"];
+            item["dataNascimentoDependentes"] = +item["dataNascimentoDependentes"];
+            item["tipo"] = +item["tipo"];
+            item["sequencialDependentes"] = +item["sequencialDependentes"];
+            item["idDependentes"] = +item["idDependentes"];
+
+        }
 
         var index = -1;
         $.each(jsonDependentesArray, function(i, obj) {
@@ -1550,14 +1580,17 @@ include("inc/scripts.php");
     //append-> adicionar um elemento no final da lista
     function fillTableDependentes() {
         $("#tableDependentes tbody").empty();
-
         for (var i = 0; i < jsonDependentesArray.length; i++) {
-            if (jsonDependentesArray[i].dependentes !== null && jsonDependentesArray[i].dependentes != '') {
+            if (jsonDependentesArray[i].nomeDependentes !== null && jsonDependentesArray[i].nomeDependentes != '') {
+                var dependente = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
+                var row = $('<tr />');
 
                 $("#tableDependentes tbody").append(row);
                 row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonDependentesArray[i].sequencialDependentes + '"><i></i></label></td>'));
-                row.append($('<td class="text-nowrap" onclick="carregaDependentes(' + jsonDependentesArray[i].sequencialTel + ');">' + jsonDependentesArray[i].dependentes + '</td>'));
-
+                row.append($('<td class="text-nowrap" onclick="carregaDependentes(' + jsonDependentesArray[i].sequencialDependentes + ');">' + jsonDependentesArray[i].nomeDependentes + '</td>'));
+                row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].cpfDependentes + '</td>'));
+                row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].dataNascimentoDependentes + '</td>'));
+                row.append($('<td class="text-nowrap">' + dependente + '</td>'));
 
             }
         }
@@ -1567,17 +1600,38 @@ include("inc/scripts.php");
         var fieldId = node.getAttribute ? node.getAttribute('id') : '';
         var fieldName = node.getAttribute ? node.getAttribute('name') : '';
 
-        if (fieldName !== '' && (fieldId === "dependentes")) {
-            var valDependentes = $("#dependentes").val();
-            if (valDependentes !== '') {
-                fieldName = "dependentes";
+        if (fieldName !== '' && (fieldId === "nomeDependentes")) {
+            var valNomeDependentes = $("#nomeDependentes").val();
+            if (valNomeDependentes !== '') {
+                fieldName = "nomeDependentes";
             }
             return {
                 name: fieldName,
-                value: valDependentes
+                value: valNomeDependentes
             };
         }
 
+        if (fieldName !== '' && (fieldId === "cpfDependentes")) {
+            var valCpfDependentes = $("#cpfDependentes").val();
+            if (valCpfDependentes !== '') {
+                fieldName = "cpfDependentes";
+            }
+            return {
+                name: fieldName,
+                value: valCpfDependentes
+            };
+        }
+
+        if (fieldName !== '' && (fieldId === "dataNascimentoDependentes")) {
+            var valDataNascimentoDependentes = $("#dataNascimentoDependentes").val();
+            if (valDataNascimentoDependentes !== '') {
+                fieldName = "dataNascimentoDependentes";
+            }
+            return {
+                name: fieldName,
+                value: valDataNascimentoDependentes
+            };
+        }
 
         return false;
     }
@@ -1590,22 +1644,28 @@ include("inc/scripts.php");
         clearFormDependentes();
         if (arr.length > 0) {
             var item = arr[0];
+            $("#nomeDependentes").val(item.nomeDependentes);
+            $("#cpfDependentes").val(item.cpfDependentes);
+            $("#dataNascimentoDependentes").val(item.dataNascimentoDependentes);
+            $("#tipo").val(item.tipo);
             $("#sequencialDependentes").val(item.sequencialDependentes);
-            $("#dependentesId").val(item.dependentesId);
-            $("#dependentes").val(item.dependentes);
+            $("#idDependentes").val(item.idDependentes);
         }
     }
 
     function clearFormDependentes() {
+        $("#nomeDependentes").val("");
+        $("#cpfDependentes").val("");
+        $("#dataNascimentoDependentes").val("");
+        $("#tipo").val("");
         $("#sequencialDependentes").val("");
-        $("#dependentesId").val("");
-        $("#dependentes").val("");
+        $("#idDependentes").val("");
         return true;
     }
 
     function excluirDependentes() {
         var arrSequencial = [];
-        $('#tableDependentes input[type= text]:checked').each(function() {
+        $('#tableDependentes input[type= checkbox]:checked').each(function() {
             arrSequencial.push(parseInt($(this).val()));
         });
         if (arrSequencial.length > 0) {

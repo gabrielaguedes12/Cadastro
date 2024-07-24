@@ -54,6 +54,8 @@ function gravar()
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
     $descricao = $utils->formatarString($_POST['descricao']);
+    $emprego = $_POST['emprego'];
+    $pis = $utils->formatarString($_POST['pis']);
     $telefone = $_POST['jsonTelefoneArray'];
     $email = $_POST['jsonEmailArray'];
     $cep = $utils->formatarString($_POST['cep']);
@@ -63,9 +65,7 @@ function gravar()
     $uf = $utils->formatarString($_POST['uf']);
     $bairro = $utils->formatarString($_POST['bairro']);
     $cidade = $utils->formatarString($_POST['cidade']);
-    $emprego = $_POST['emprego'];
-    $pis = $utils->formatarString($_POST['pis']);
-    $dependentes = $_POST['jsonDependentesArray'];
+    $nomeDependentes = $_POST['jsonDependentesArray'];
 
 
     //telefone
@@ -128,27 +128,27 @@ function gravar()
     }
     $xmlJsonEmail = "'" . $xmlJsonEmail . "'";
 
-    //dependentes
-    $nomeXml = "ArrayDependentes";
-    $nomeTabela = "TabelaDependentes";
-    if (sizeof($dependentes) > 0) {
+    //----------------------------->dependentes<------------------------------//
+    $nomeXmlDependentes = "ArrayDependentes";
+    $nomeTabelaDependentes = "TabelaDependentes";
+    if (sizeof($nomeDependentes) > 0) {
         $xmlJsonDependentes = '<?xml version="1.0"?>';
-        $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
-        foreach ($dependentes as $chave) {
-            $xmlJsonDependentes = $xmlJsonDependentes . "<" . $nomeTabela . ">";
+        $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXmlDependentes . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        foreach ($nomeDependentes as $chave) {
+            $xmlJsonDependentes = $xmlJsonDependentes . "<" . $nomeTabelaDependentes . ">";
             foreach ($chave as $campo => $valor) {
 
                 $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $valor . "</" . $campo . ">";
             }
-            $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeTabela . ">";
+            $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeTabelaDependentes . ">";
         }
 
-        $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXml . ">";
+        $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXmlDependentes . ">";
     } else {
 
         $xmlJsonDependentes = '<?xml version="1.0"?>';
-        $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXml . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
-        $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXml . ">";
+        $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXmlDependentes . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+        $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXmlDependentes . ">";
     }
     $xml = simplexml_load_string($xmlJsonDependentes);
     if ($xml === false) {
@@ -167,10 +167,10 @@ function gravar()
         $dataNascimento,
         $estadoCivil,
         $descricao,
-        $xmlJsonTelefone,
-        $xmlJsonEmail,
         $emprego,
         $pis,
+        $xmlJsonTelefone,
+        $xmlJsonEmail,
         $cep,
         $logradouro,
         $numero,
@@ -315,9 +315,9 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT t.codigo, t.idUsuario, t.sequencialDependentes, t.dependentesId, t.dependentes, t.cpfDependentes, t.dataNascimentoDependentes,t.tipoDependentesId
-     FROM dependentes t
-      WHERE idUsuario = $id";
+    $sql = "SELECT t.codigo, t.nomeDependentes, t.cpfDependentes,t.dataNascimentoDependentes,t.tipoDependentes,t.idDependentes,t.sequencialDependentes
+     FROM nomeDependentes t
+      WHERE idDependentes = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -329,24 +329,24 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-            $sequencialDependentes = $row['sequencialDependentes'];
-            $dependentesId = $row['dependentesId'];
-            $dependentes = $row['dependentes'];
+            $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
             $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
-            $tipoDependentesId = $row['tipo'];
-            $idUsuario = $row['idUsuario'];
+            $idDependentes = $row['idDependentes'];
+            $tipoDependentes = $row['tipoDependentes'];
+            $sequencialDependentes = $row['sequencialDependentes'];
         }
 
         $dependentesNum = $dependentesNum + 1;
         $arrayDependentes[] = array(
-            "sequencialDependentes" =>   $sequencialDependentes,
-            "dependentesId"  => $dependentesId,
-            "dependentes"  => $dependentes,
+
+            "nomeDependentes"  => $nomeDependentes,
+            "idDependentes"  => $idDependentes,
             "cpfDependentes"  => $cpfDependentes,
             "dataNascimentoDependentes"  => $dataNascimentoDependentes,
-            "tipoDependentesId" => $tipoDependentesId,
-            "idUsuario"  => $idUsuario
+            "tipoDependentes" => $tipoDependentes,
+            "sequencialDependentes" =>   $sequencialDependentes,
+
         );
     }
 
@@ -373,7 +373,7 @@ function recupera()
         $uf . "^" .
         $bairro . "^" .
         $cidade . "^" .
-        $dependentes;
+        $nomeDependentes;
 
     if ($out == "") {
         echo "failed#";

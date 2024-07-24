@@ -157,6 +157,7 @@ function recuperaFuncionario(id) {
                 var strarrayTelefone = piece[2];
                 var strarrayEmail = piece[3];
                 var strarrayDependentes = piece[4];
+                
                 piece = out.split("^");
 
                 var codigo = +piece[0];

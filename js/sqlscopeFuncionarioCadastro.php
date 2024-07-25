@@ -54,8 +54,6 @@ function gravar()
     $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
     $descricao = $utils->formatarString($_POST['descricao']);
-    $emprego = $_POST['emprego'];
-    $pis = $utils->formatarString($_POST['pis']);
     $telefone = $_POST['jsonTelefoneArray'];
     $email = $_POST['jsonEmailArray'];
     $cep = $utils->formatarString($_POST['cep']);
@@ -65,7 +63,9 @@ function gravar()
     $uf = $utils->formatarString($_POST['uf']);
     $bairro = $utils->formatarString($_POST['bairro']);
     $cidade = $utils->formatarString($_POST['cidade']);
-    $nomeDependentes = $_POST['jsonDependentesArray'];
+    $emprego = $_POST['emprego'];
+    $pis = $utils->formatarString($_POST['pis']);
+
 
 
     //telefone
@@ -131,6 +131,7 @@ function gravar()
     //----------------------------->dependentes<------------------------------//
     $nomeXmlDependentes = "ArrayDependentes";
     $nomeTabelaDependentes = "TabelaDependentes";
+    $nomeDependentes = $_POST['jsonDependentesArray'];
     if (sizeof($nomeDependentes) > 0) {
         $xmlJsonDependentes = '<?xml version="1.0"?>';
         $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXmlDependentes . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
@@ -138,7 +139,13 @@ function gravar()
             $xmlJsonDependentes = $xmlJsonDependentes . "<" . $nomeTabelaDependentes . ">";
             foreach ($chave as $campo => $valor) {
 
-                $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $valor . "</" . $campo . ">";
+                if ($campo == "dataNascimentoDependentes") {
+                    $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $utils->validaDataBanco($valor) . "</" . $campo . ">";
+                }
+                if ($campo != "dataNascimentoDependentes") {
+
+                    $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $valor . "</" . $campo . ">";
+                }
             }
             $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeTabelaDependentes . ">";
         }
@@ -167,8 +174,6 @@ function gravar()
         $dataNascimento,
         $estadoCivil,
         $descricao,
-        $emprego,
-        $pis,
         $xmlJsonTelefone,
         $xmlJsonEmail,
         $cep,
@@ -178,6 +183,8 @@ function gravar()
         $uf,
         $bairro,
         $cidade,
+        $emprego,
+        $pis,
         $xmlJsonDependentes";
 
     $reposit = new reposit();
@@ -231,8 +238,6 @@ function recupera()
         $dataNascimento = $utils->validaData($row['dataNascimento']);
         $estadoCivil = $row['estadoCivil'];
         $idGenero = $row['idGenero'];
-        $emprego = $row['emprego'];
-        $pis = $row['pis'];
         $cep = $row['cep'];
         $logradouro = $row['logradouro'];
         $numero = $row['numero'];
@@ -240,6 +245,8 @@ function recupera()
         $uf = $row['uf'];
         $bairro = $row['bairro'];
         $cidade = $row['cidade'];
+        $emprego = $row['emprego'];
+        $pis = $row['pis'];
     }
 
 
@@ -315,7 +322,7 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT t.codigo, t.nomeDependentes, t.cpfDependentes,t.dataNascimentoDependentes,t.tipoDependentes,t.idDependentes,t.sequencialDependentes
+    $sql = "SELECT t.codigo, t.nomeDependentes, t.cpfDependentes,t.dataNascimentoDependentes,t.tipoDependentes,t.sequencialDependentes,t.idDependentes,t.idFuncionario
      FROM nomeDependentes t
       WHERE idDependentes = $id";
 
@@ -332,20 +339,22 @@ function recupera()
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
             $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
-            $idDependentes = $row['idDependentes'];
-            $tipoDependentes = $row['tipoDependentes'];
+            $tipo = $row['tipo'];
             $sequencialDependentes = $row['sequencialDependentes'];
+            $idDependentes = $row['idDependentes'];
+            $idFuncionario = $row['idFuncionario'];
         }
 
         $dependentesNum = $dependentesNum + 1;
         $arrayDependentes[] = array(
 
             "nomeDependentes"  => $nomeDependentes,
-            "idDependentes"  => $idDependentes,
             "cpfDependentes"  => $cpfDependentes,
             "dataNascimentoDependentes"  => $dataNascimentoDependentes,
-            "tipoDependentes" => $tipoDependentes,
+            "tipo" => $tipo,
             "sequencialDependentes" =>   $sequencialDependentes,
+            "idDependentes"  => $idDependentes,
+            "idFuncionario"  => $idFuncionario
 
         );
     }

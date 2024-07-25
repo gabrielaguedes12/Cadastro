@@ -417,7 +417,7 @@ include("inc/nav.php");
                                                             <input type="" id="jsonDependentes" value="[]" hidden>
                                                             <div class="row">
                                                                 <input type="" id="sequencialDependentes" name="sequencialDependentes" value="" hidden>
-                                                                <input type="" id="idDependentes" name="idDependentes" value="" hidden>
+                                                                <input type="" id="idFuncionario" name="idFuncionario" value="" hidden>
 
                                                                 <section class="col col-3">
                                                                     <label class="label">Nome Completo</label>
@@ -500,7 +500,7 @@ include("inc/nav.php");
                                                 <span class="fa fa-trash"></span>
                                             </button>
 
-                                            <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                            <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                                 <span class="fa fa-floppy-o"></span>
                                             </button>
                                             <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnNovo ?>">
@@ -587,6 +587,7 @@ include("inc/scripts.php");
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
         jsonEmailArray = JSON.parse($("#jsonEmail").val());
         jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
+
         //mascaras
         $(".cpf").mask("999.999.999-99");
         $(".rg").mask("99.999.999-9");
@@ -851,14 +852,12 @@ include("inc/scripts.php");
         var dataNascimento = $("#dataNascimento").val();
         var estadoCivil = $("#estadoCivil").val();
         var descricao = $("#descricao").val();
-        var emprego = $("#emprego").val();
-        var pis = $("#pis").val();
-
-
+        
+        
         //contato
         var telefone = $("#jsonTelefone").val();
         var email = $("#jsonEmail").val();
-
+        
         //endereço
         var cep = $("#cep").val();
         var logradouro = $("#logradouro").val();
@@ -867,6 +866,10 @@ include("inc/scripts.php");
         var uf = $("#uf").val();
         var bairro = $("#bairro").val();
         var cidade = $("#cidade").val();
+        
+        //emprego
+        var emprego = $("#emprego").val();
+        var pis = $("#pis").val();
 
         //dependentes
         var nomeDependentes = $("#jsonDependentes").val();
@@ -942,7 +945,7 @@ include("inc/scripts.php");
         }
 
        
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, emprego, pis, cep, logradouro, numero, complemento, uf, bairro, cidade, jsonDependentesArray);
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade,emprego, pis, jsonDependentesArray);
     }
 
     //------------------>valida data e idade<---------------//
@@ -1546,7 +1549,7 @@ include("inc/scripts.php");
             var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
             var tipo = $('#tipo').val();
             var sequencial = +$('#sequencialDependentes').val();
-            var idDependentes = $('#idDependentes').val();
+            var idFuncionario = $('#idFuncionario').val();
 
         } else {
             item["nomeDependentes"] = +item["nomeDependentes"];
@@ -1554,7 +1557,7 @@ include("inc/scripts.php");
             item["dataNascimentoDependentes"] = +item["dataNascimentoDependentes"];
             item["tipo"] = +item["tipo"];
             item["sequencialDependentes"] = +item["sequencialDependentes"];
-            item["idDependentes"] = +item["idDependentes"];
+            item["idFuncionario"] = +item["idFuncionario"];
 
         }
 
@@ -1649,7 +1652,7 @@ include("inc/scripts.php");
             $("#dataNascimentoDependentes").val(item.dataNascimentoDependentes);
             $("#tipo").val(item.tipo);
             $("#sequencialDependentes").val(item.sequencialDependentes);
-            $("#idDependentes").val(item.idDependentes);
+            $("#idFuncionario").val(item.idFuncionario);
         }
     }
 
@@ -1659,7 +1662,7 @@ include("inc/scripts.php");
         $("#dataNascimentoDependentes").val("");
         $("#tipo").val("");
         $("#sequencialDependentes").val("");
-        $("#idDependentes").val("");
+        $("#idFuncionario").val("");
         return true;
     }
 

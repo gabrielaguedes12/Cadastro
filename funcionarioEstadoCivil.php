@@ -115,7 +115,7 @@ include("inc/nav.php");
                                                 <span class="fa fa-trash"></span>
                                             </button>
 
-                                            <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                            <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                                 <span class="fa fa-floppy-o"></span>
                                             </button>
                                             <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
@@ -222,6 +222,10 @@ include("inc/scripts.php");
         }]
     });
 
+    $("#btnGravar").on("click", function() {
+        gravar();
+    });
+
     $("#btnExcluir").on("click", function() {
         var id = +$("#codigo").val();
 
@@ -286,6 +290,7 @@ include("inc/scripts.php");
         var ativo = $("#ativo").val();
 
         gravaEstadoCivil(codigo, estadoCivil, ativo);
+        $(location).attr('href', 'filtroEstadoCivil.php');
 
     }
 

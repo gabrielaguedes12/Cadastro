@@ -3,6 +3,9 @@ include "repositorio.php";
 include "girComum.php";
 
 $funcao = $_POST["funcao"];
+if ($funcao == 'verificaGenero') {
+    call_user_func($funcao);
+}
 
 if ($funcao == 'gravaGenero') {
     call_user_func($funcao);
@@ -22,6 +25,12 @@ if ($funcao == 'recuperarDadosUsuario') {
 
 return;
 
+function verificaGenero()
+{
+    $sql = " SELECT codigo,descricao,ativo from dbo.genero WHERE ";
+
+
+};
 
 function gravaGenero()
 {
@@ -32,8 +41,6 @@ function gravaGenero()
     } else {
         $id = (int) $_POST["id"];
     }
-
-
 
     $codigo = (int) $_POST["codigo"];
     $descricao = (string) $_POST["descricao"];

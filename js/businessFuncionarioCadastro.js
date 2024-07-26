@@ -156,7 +156,7 @@ function recuperaFuncionario(id) {
                 var out = piece[1];
                 var strarrayTelefone = piece[2];
                 var strarrayEmail = piece[3];
-                var strarrayDependentes = piece[4];
+                var strarrayNomeDependentes = piece[4];
                 
                 piece = out.split("^");
 
@@ -167,16 +167,16 @@ function recuperaFuncionario(id) {
                 var rg = piece[4];
                 var dataNascimento = piece[5];
                 var estadoCivil = piece[6];
-                var descricao = piece[7];
-                var emprego = piece[10];
-                var pis = piece[11];
-                var cep = piece[12];
-                var logradouro = piece[13];
-                var numero = piece[14];
-                var complemento = piece[15];
-                var uf = piece[16];
-                var bairro = piece[17];
-                var cidade = piece[18];
+                var descricao = piece[7];               
+                var cep = piece[10];
+                var logradouro = piece[11];
+                var numero = piece[12];
+                var complemento = piece[13];
+                var uf = piece[14];
+                var bairro = piece[15];
+                var cidade = piece[16];
+                var emprego = piece[17];
+                var pis = piece[18];
 
                 $("#codigo").val(codigo);
                 $("#nome").val(nome);
@@ -185,9 +185,7 @@ function recuperaFuncionario(id) {
                 $("#rg").val(rg);
                 $("#dataNascimento").val(dataNascimento);
                 $("#estadoCivil").val(estadoCivil);
-                $("#descricao").val(descricao);
-                $("#emprego").val(emprego);
-                $("#pis").val(pis);
+                $("#descricao").val(descricao);               
                 $("#cep").val(cep);
                 $("#logradouro").val(logradouro);
                 $("#numero").val(numero);
@@ -195,6 +193,8 @@ function recuperaFuncionario(id) {
                 $("#uf").val(uf);
                 $("#bairro").val(bairro);
                 $("#cidade").val(cidade);
+                $("#emprego").val(emprego);
+                $("#pis").val(pis);
 
 
                 //atribuindo valor 
@@ -214,7 +214,7 @@ function recuperaFuncionario(id) {
                 jsonEmailArray = JSON.parse($("#jsonEmail").val());
                 fillTableEmail();
 
-                $("#jsonDependentes").val(strarrayDependentes)
+                $("#jsonDependentes").val(strarrayNomeDependentes)
                 jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
                 fillTableDependentes();
                 return;

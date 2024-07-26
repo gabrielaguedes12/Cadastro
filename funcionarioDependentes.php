@@ -119,7 +119,7 @@ include("inc/nav.php");
                                             <span class="fa fa-trash"></span>
                                         </button>
 
-                                        <button type="submited" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                        <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                             <span class="fa fa-floppy-o"></span>
                                         </button>
 
@@ -298,13 +298,14 @@ include("inc/scripts.php");
         var ativo = $("#ativo").val();
 
         gravarDependentes(codigo, tipo, ativo);
+        $(location).attr('href', 'filtroDependentes.php');
     }
 
 
-    // document.getElementById("tipo").onkeypress = function(e) {
-    //     var chr = String.fromCharCode(e.which);
-    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ(),/           ".indexOf(chr) < 0)
-    //         return false;
-    // };
+    document.getElementById("tipo").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ(),/           ".indexOf(chr) < 0)
+            return false;
+    };
 
 </script>

@@ -129,7 +129,7 @@ function gravar()
     $xmlJsonEmail = "'" . $xmlJsonEmail . "'";
 
     //----------------------------->dependentes<------------------------------//
-    $nomeXmlDependentes = "ArrayDependentes";
+    $nomeXmlDependentes = "arrayDependentes";
     $nomeTabelaDependentes = "TabelaDependentes";
     $nomeDependentes = $_POST['jsonDependentesArray'];
     if (sizeof($nomeDependentes) > 0) {
@@ -221,7 +221,7 @@ function recupera()
     $id = $_POST["id"];
 
 
-    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero,emprego,pis,cep,logradouro,numero,complemento,uf,bairro,cidade
+    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero,cep,logradouro,numero,complemento,uf,bairro,cidade,emprego,pis
     from dbo.funcionario WHERE (0 = 0) and codigo = $id ";
 
     $reposit = new reposit();
@@ -322,9 +322,9 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT t.codigo, t.nomeDependentes, t.cpfDependentes,t.dataNascimentoDependentes,t.tipoDependentes,t.sequencialDependentes,t.idDependentes,t.idFuncionario
-     FROM nomeDependentes t
-      WHERE idDependentes = $id";
+    $sql = "SELECT codigo, sequencialDependentes,idFuncionario,nomeDependentes, cpfDependentes,dataNascimentoDependentes,tipoDependente
+     FROM dependentes 
+      WHERE idFuncionario = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -336,30 +336,28 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
+            $idFuncionario = $row['idFuncionario'];
+            $sequencialDependentes = $row['sequencialDependentes'];
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
             $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
-            $tipo = $row['tipo'];
-            $sequencialDependentes = $row['sequencialDependentes'];
-            $idDependentes = $row['idDependentes'];
-            $idFuncionario = $row['idFuncionario'];
+            $tipo = $row['tipoDependente'];
         }
 
         $dependentesNum = $dependentesNum + 1;
         $arrayDependentes[] = array(
 
+            "idFuncionario"  => $idFuncionario,
+            "sequencialDependentes" =>   $sequencialDependentes,
             "nomeDependentes"  => $nomeDependentes,
             "cpfDependentes"  => $cpfDependentes,
             "dataNascimentoDependentes"  => $dataNascimentoDependentes,
-            "tipo" => $tipo,
-            "sequencialDependentes" =>   $sequencialDependentes,
-            "idDependentes"  => $idDependentes,
-            "idFuncionario"  => $idFuncionario
+            "tipo" => $tipo
 
         );
     }
 
-    $strarrayDependentes = json_encode($arrayDependentes);
+    $strarrayNomeDependentes = json_encode($arrayDependentes);
 
     //---------------------------------------->>-------------------------------------//
     $out =
@@ -373,8 +371,6 @@ function recupera()
         $idGenero . "^" .
         $telefone . "^" .
         $email . "^" .
-        $emprego . "^" .
-        $pis . "^" .
         $cep . "^" .
         $logradouro . "^" .
         $numero . "^" .
@@ -382,13 +378,15 @@ function recupera()
         $uf . "^" .
         $bairro . "^" .
         $cidade . "^" .
+        $emprego . "^" .
+        $pis . "^" .
         $nomeDependentes;
 
     if ($out == "") {
         echo "failed#";
         return;
     }
-    echo "sucess#" . $out . "#" . $strarrayTelefone . "#" . $strarrayEmail . "#" . $strarrayDependentes;
+    echo "sucess#" . $out . "#" . $strarrayTelefone . "#" . $strarrayEmail . "#" . $strarrayNomeDependentes;
 
     return;
 }

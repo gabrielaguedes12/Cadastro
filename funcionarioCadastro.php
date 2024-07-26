@@ -1484,11 +1484,11 @@ include("inc/scripts.php");
     //-------------------------------------------------->dependentes<---------------------------------------------//
     function validaDependentes() {
         var contido = false;
+        var sequencial = +$('#sequencialDependentes').val();
         var nomeDependentes = $('#nomeDependentes').val();
         var cpfDependentes = $('#cpfDependentes').val();
         var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
         var tipo = $('#tipo').val();
-        var sequencial = +$('#sequencialDependentes').val();
 
 
         if (nomeDependentes === '') {
@@ -1544,20 +1544,20 @@ include("inc/scripts.php");
                 })) + 1;
             }
 
+            var idFuncionario = $('#idFuncionario').val();
+            var sequencial = +$('#sequencialDependentes').val();
             var nomeDependentes = $('#nomeDependentes').val();
             var cpfDependentes = $('#cpfDependentes').val();
             var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
             var tipo = $('#tipo').val();
-            var sequencial = +$('#sequencialDependentes').val();
-            var idFuncionario = $('#idFuncionario').val();
 
         } else {
+            item["idFuncionario"] = +item["idFuncionario"];
+            item["sequencialDependentes"] = +item["sequencialDependentes"];
             item["nomeDependentes"] = +item["nomeDependentes"];
             item["cpfDependentes"] = +item["cpfDependentes"];
             item["dataNascimentoDependentes"] = +item["dataNascimentoDependentes"];
             item["tipo"] = +item["tipo"];
-            item["sequencialDependentes"] = +item["sequencialDependentes"];
-            item["idFuncionario"] = +item["idFuncionario"];
 
         }
 
@@ -1585,7 +1585,7 @@ include("inc/scripts.php");
         $("#tableDependentes tbody").empty();
         for (var i = 0; i < jsonDependentesArray.length; i++) {
             if (jsonDependentesArray[i].nomeDependentes !== null && jsonDependentesArray[i].nomeDependentes != '') {
-                var dependente = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
+                var tipoDependentes = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
                 var row = $('<tr />');
 
                 $("#tableDependentes tbody").append(row);
@@ -1593,7 +1593,7 @@ include("inc/scripts.php");
                 row.append($('<td class="text-nowrap" onclick="carregaDependentes(' + jsonDependentesArray[i].sequencialDependentes + ');">' + jsonDependentesArray[i].nomeDependentes + '</td>'));
                 row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].cpfDependentes + '</td>'));
                 row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].dataNascimentoDependentes + '</td>'));
-                row.append($('<td class="text-nowrap">' + dependente + '</td>'));
+                row.append($('<td class="text-nowrap">' + tipoDependentes + '</td>'));
 
             }
         }
@@ -1647,22 +1647,22 @@ include("inc/scripts.php");
         clearFormDependentes();
         if (arr.length > 0) {
             var item = arr[0];
+            $("#idFuncionario").val(item.idFuncionario);
+            $("#sequencialDependentes").val(item.sequencialDependentes);
             $("#nomeDependentes").val(item.nomeDependentes);
             $("#cpfDependentes").val(item.cpfDependentes);
             $("#dataNascimentoDependentes").val(item.dataNascimentoDependentes);
             $("#tipo").val(item.tipo);
-            $("#sequencialDependentes").val(item.sequencialDependentes);
-            $("#idFuncionario").val(item.idFuncionario);
         }
     }
 
     function clearFormDependentes() {
+        $("#idFuncionario").val("");
+        $("#sequencialDependentes").val("");
         $("#nomeDependentes").val("");
         $("#cpfDependentes").val("");
         $("#dataNascimentoDependentes").val("");
         $("#tipo").val("");
-        $("#sequencialDependentes").val("");
-        $("#idFuncionario").val("");
         return true;
     }
 

@@ -199,10 +199,15 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
 
-//mascaras
-
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
+        $("#descricao").on('change', function() {
+            verificaGenero()
+            if (!verificaGenero($("#descricao").val())) {
+                smartAlert("Atenção", "Gênero já cadastrado", "error");
+                $('#descricao').val("");
+            }
+        });
         carregaPagina();
     })
 
@@ -230,6 +235,11 @@ include("inc/scripts.php");
     });
 
     $("#btnGravar").on("click", function() {
+        setTimeout(() => {
+            $("#btnGravar").prop('disabled', true);
+            ("Delayed for 1 second.");
+        }, 600);
+        $("#btnGravar").prop('disabled', false);
         gravar();
     });
 
@@ -288,6 +298,12 @@ include("inc/scripts.php");
         }
 
         excluirGenero(id);
+        $(location).attr('href', 'filtroGenero.php');
+    }
+
+    function verificaGenero() {
+        var descricao = $('#descricao').val()
+        verificarGenero(descricao) //variável "passa" nesse ()
     }
 
     function gravar() {
@@ -295,9 +311,13 @@ include("inc/scripts.php");
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
 
+        if (!descricao) {
+            smartAlert("Atenção", "Informe uma descrição", "error");
+            $("#descricao").val('');
+            return;
+        }
+
         gravaGenero(codigo, descricao, ativo);
-        $(location).attr('href', 'filtroGenero.php');
-        
     }
 
     document.getElementById("descricao").onkeypress = function(e) {

@@ -26,11 +26,39 @@ if ($funcao == 'recuperarDadosUsuario') {
 return;
 
 function verificaGenero()
-{
-    $sql = " SELECT codigo,descricao,ativo from dbo.genero WHERE ";
+{$reposit = new reposit();
 
+    if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
+        $id = 0;
+    } else {
+        $id = (int) $_POST["id"];
+    }
 
-};
+    if (!((empty($_POST["ativo"])) || (!isset($_POST["ativo"])) || (is_null($_POST["ativo"])))) {
+        $id = 0;
+    } else {
+        $id = (int) $_POST["ativo"];
+    }
+
+    $reposit = new reposit();
+    $utils = new comum();
+
+    $descricao = $utils->formatarString($_POST['descricao']);
+
+    $sql = "SELECT descricao from dbo.genero where descricao = $descricao";
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+     if (!$result) {
+        echo  "success";
+        return true;
+    } else {
+        $mensagem = "Informe o Gênero";
+        echo "failed#" . $mensagem . ' ';
+    }
+
+    return;
+}
 
 function gravaGenero()
 {
@@ -53,6 +81,12 @@ function gravaGenero()
         '$descricao',
         $ativo
        ";
+       
+       if ($descricao == "''") {
+        $ret = 'failed#';
+        echo $ret;
+        return;
+    }
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);

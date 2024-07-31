@@ -3,6 +3,9 @@ include "repositorio.php";
 include "girComum.php";
 
 $funcao = $_POST["funcao"];
+if ($funcao == 'verificaDependentes') {
+    call_user_func($funcao);
+}
 
 if ($funcao == 'gravarDependentes') {
     call_user_func($funcao);
@@ -18,6 +21,41 @@ if ($funcao == 'excluirDependentes') {
 
 return;
 
+function verificaDependentes()
+{$reposit = new reposit();
+
+    if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
+        $id = 0;
+    } else {
+        $id = (int) $_POST["id"];
+    }
+
+    if (!((empty($_POST["ativo"])) || (!isset($_POST["ativo"])) || (is_null($_POST["ativo"])))) {
+        $id = 0;
+    } else {
+        $id = (int) $_POST["ativo"];
+    }
+
+    $reposit = new reposit();
+    $utils = new comum();
+
+    $tipo = $utils->formatarString($_POST['tipo']);
+
+    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = $tipo";
+
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+    if (!$result) {
+        echo  "success";
+        return true;
+    } else {
+        $mensagem = "Informe o estado civil";
+        echo "failed#" . $mensagem . ' ';
+    }
+    return;
+}
+
 
 function gravarDependentes()
 {
@@ -28,8 +66,6 @@ function gravarDependentes()
     } else {
         $id = (int) $_POST["id"];
     }
-
-
 
     $codigo = (int) $_POST["codigo"];
     $tipo = (string) $_POST["tipo"];

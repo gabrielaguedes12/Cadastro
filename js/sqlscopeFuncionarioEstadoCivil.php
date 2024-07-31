@@ -3,6 +3,9 @@ include "repositorio.php";
 include "girComum.php";
 
 $funcao = $_POST["funcao"];
+if ($funcao == 'verificaEstadoCivil') {
+    call_user_func($funcao);
+}
 
 if ($funcao == 'gravaEstadoCivil') {
     call_user_func($funcao);
@@ -22,23 +25,53 @@ if ($funcao == 'recuperarDadosUsuario') {
 
 return;
 
+function verificaEstadoCivil()
+{$reposit = new reposit();
+
+    if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
+        $id = 0;
+    } else {
+        $id = (int) $_POST["id"];
+    }
+
+
+    $reposit = new reposit();
+    $utils = new comum();
+
+    $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
+
+
+    $sql = "SELECT estadoCivil from dbo.estadoCivil where estadoCivil = $estadoCivil AND codigo != $id";
+
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+    if (!$result) {
+        echo  "success";
+        return true;
+    } else {
+        $mensagem = "Informe o estado civil";
+        echo "failed#" . $mensagem . ' ';
+    }
+
+    return;
+}
+
 
 function gravaEstadoCivil()
 {
-     $reposit = new reposit();
+    $reposit = new reposit();
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
-      $id = 0;
-    } else{ 
+        $id = 0;
+    } else {
         $id = (int) $_POST["id"];
     }
-       
 
-   
     $id = (int) $_POST["id"];
     $estadoCivil = (string) $_POST["estadoCivil"];
     $ativo = 1;
-   
+
     session_start();
 
     $sql = "dbo.estadoCivil_atualiza 
@@ -46,6 +79,12 @@ function gravaEstadoCivil()
         '$estadoCivil',
         $ativo
        ";
+       
+    if ($estadoCivil == "''") {
+        $ret = 'failed#';
+        echo $ret;
+        return;
+    }
 
     $reposit = new reposit();
     $result = $reposit->Execprocedure($sql);
@@ -65,7 +104,7 @@ function recuperaEstadoCivil()
     $condicaoId = !((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])));
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
-    
+
     $codigo = $_POST["codigo"];
 
 
@@ -80,11 +119,11 @@ function recuperaEstadoCivil()
         $codigo = $row['codigo'];
         $estadoCivil = $row['estadoCivil'];
         $ativo = $row['ativo'];
-        }
+    }
 
     $out =
         $codigo . "^" .
-        $estadoCivil. "^" .
+        $estadoCivil . "^" .
         $ativo;
 
     if ($out == "") {

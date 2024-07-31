@@ -18,14 +18,11 @@ function gravarDependentes(codigo, tipo, ativo) {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
                     smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-
                 }
-
                 return '';
             } else {
                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
                 voltar();
-
             }
             //retorno dos dados
         },
@@ -105,6 +102,31 @@ function excluirDependentes(codigo) {
                 smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
                 novo();
             }
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
+}
+
+function verificarDependentes(tipo) {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioDependentes.php',
+        dataType: ' html',
+        type: 'post',
+        async: true,
+        data: { funcao: 'verificaDependentes', tipo: tipo },
+        success: function (data, textStatus) {
+            if (data.indexOf('success') > -1) {
+                var piece = data.split("#");
+                var status = piece[0];
+
+                if (status == 'success') {
+                    smartAlert("Atenção", 'Dependente já cadastrado.', "error");
+                    $("#tipo").val('');
+                }
+            }
+
         },
         error: function (xhr, er) {
             //tratamento de erro

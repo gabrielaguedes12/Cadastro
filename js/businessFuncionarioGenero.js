@@ -20,12 +20,10 @@ function gravaGenero(codigo, descricao, ativo) {
                     smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
 
                 }
-
                 return '';
             } else {
                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-                voltar();
-               
+                             
             }
             //retorno dos dados
         },
@@ -112,17 +110,27 @@ function excluirGenero(codigo) {
     });
 }
 
-// function recuperaDadosUsuario(callback) {
-//     $.ajax({
-//         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
-//         dataType: 'html', //tipo do retorno
-//         type: 'post', //metodo de envio
-//         data: { funcao: 'recuperarDadosUsuario' }, //valores enviados ao script
-
-//         success: function (data) {
-//             callback(data)
-//         },
-//     })
-
-//     return
-// }
+function verificarGenero(descricao) {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioGenero.php',
+        dataType: ' html',
+        type: 'post',
+        async: true,
+        data: { funcao: 'verificaGenero', descricao: descricao },
+        success: function (data, textStatus) {
+            if (data.indexOf('success') > -1) {
+                var piece = data.split("#");
+                var status = piece[0];
+                
+                if(status == 'success'){
+                    smartAlert("Atenção", 'Gênero já cadastrado.', "error");
+                    $("#descricao").val('');
+                }
+            }
+        
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
+}

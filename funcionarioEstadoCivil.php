@@ -62,7 +62,7 @@ include("inc/nav.php");
         <section id="widget-grid" class="">
             <div class="row">
                 <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable centerBox">
-                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false" style="">
+                    <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
                             <h2>Estado Civil</h2>
@@ -131,7 +131,7 @@ include("inc/nav.php");
                                                 </span>
                                             </div>
                                             <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
-                                                <p>CONFIRMA A EXCLUSÃO ? </p>
+                                                <p>CONFIRMA A EXCLUSÃO? </p>
                                             </div>
                                             <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
                                                 <div class="ui-dialog-buttonset">
@@ -191,11 +191,13 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
 
-
-
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-
+        $("#estadoCivil").on('change', function() {
+            verificaEstadoCivil();
+            smartAlert("Atenção", "Já cadastrado", "error");
+            
+        }); 
         carregaPagina();
     })
 
@@ -221,9 +223,14 @@ include("inc/scripts.php");
             }
         }]
     });
-
+    //setTimeout-->para determinar o tempo//
     $("#btnGravar").on("click", function() {
         gravar();
+        setTimeout(() => {
+            $("#btnGravar").prop('disabled', true);
+            ("Delayed for 1 second.");
+        }, 600);
+        // $("#btnGravar").prop('disabled', false);
     });
 
     $("#btnExcluir").on("click", function() {
@@ -248,8 +255,6 @@ include("inc/scripts.php");
         voltar();
     });
 
-  
-
     function carregaPagina() {
         var urlx = window.document.URL.toString();
         var params = urlx.split("?");
@@ -266,11 +271,32 @@ include("inc/scripts.php");
     }
 
     function novo() {
-        $(location).attr('href', 'funcionarioEstadoCivil.php');
+        $(location).attr('href', 'filtroEstadoCivil.php');
     }
 
     function voltar() {
         $(location).attr('href', 'filtroEstadoCivil.php');
+    }
+
+
+    function verificaEstadoCivil() {
+        var estadoCivil = $('#estadoCivil').val();
+        verificarEstadoCivil(estadoCivil);
+    }
+
+
+    function gravar() {
+        var codigo = +($("#codigo").val());
+        var estadoCivil = $("#estadoCivil").val();
+        var ativo = $("#ativo").val();
+
+        if (!estadoCivil) {
+            smartAlert("Atenção", "Informe uma descrição", "error");
+           
+            return;
+        
+        gravaEstadoCivil(codigo, estadoCivil, ativo);}
+
     }
 
     function excluir() {
@@ -280,18 +306,8 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Selecione um registro para excluir!", "error");
             return;
         }
-
         excluirEstadoCivil(id);
-    }
-
-    function gravar() {
-        var codigo = +($("#codigo").val());
-        var estadoCivil = $("#estadoCivil").val();
-        var ativo = $("#ativo").val();
-
-        gravaEstadoCivil(codigo, estadoCivil, ativo);
         $(location).attr('href', 'filtroEstadoCivil.php');
-
     }
 
     document.getElementById("estadoCivil").onkeypress = function(e) {
@@ -299,5 +315,4 @@ include("inc/scripts.php");
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()       ".indexOf(chr) < 0)
             return false;
     };
-  
 </script>

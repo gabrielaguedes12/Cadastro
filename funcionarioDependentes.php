@@ -201,10 +201,15 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
 
 
-
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-
+        $("#tipo").on('change', function() {
+            verificaDependentes()
+            if (!verificaDependentes($("#tipo").val())) {
+                smartAlert("Atenção", "Tipo dependente já cadastrado", "error");
+                $('#tipo').val("");
+            }
+        });      
         carregaPagina();
     })
 
@@ -240,6 +245,11 @@ include("inc/scripts.php");
     });
 
     $("#btnGravar").on("click", function() {
+        setTimeout(() => {
+            $("#btnGravar").prop('disabled', true);
+            ("Delayed for 1 second.");
+        }, 600);
+        $("#btnGravar").prop('disabled', false);
         gravar();
     });
 
@@ -292,20 +302,29 @@ include("inc/scripts.php");
         excluirDependentes(id);
     }
 
+    function verificaDependentes() {
+        var tipo = $('#tipo').val()
+        verificarDependentes(tipo) //variável "passa" nesse ()
+    }
+
     function gravar() {
         var codigo = +($("#codigo").val());
         var tipo = $("#tipo").val();
         var ativo = $("#ativo").val();
 
+        if (!dependentes) {
+            smartAlert("Atenção", "Informe uma descrição", "error");
+            
+            return;
+        }
+
         gravarDependentes(codigo, tipo, ativo);
-        $(location).attr('href', 'filtroDependentes.php');
     }
 
 
-    document.getElementById("tipo").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ(),/           ".indexOf(chr) < 0)
-            return false;
-    };
-
+    // document.getElementById("tipo").onkeypress = function(e) {
+    //     var chr = String.fromCharCode(e.which);
+    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ(),/           ".indexOf(chr) < 0)
+    //         return false;
+    // };
 </script>

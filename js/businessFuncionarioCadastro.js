@@ -1,11 +1,11 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray,  cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
         data: {
             funcao: "gravar", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray,
-             cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade,emprego: emprego, pis: pis, jsonDependentesArray:jsonDependentesArray
+            cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade, emprego: emprego, pis: pis, jsonDependentesArray: jsonDependentesArray
         },
         success: function (data, textStatus) {
             if (data.indexOf('sucess') < 0) {
@@ -41,8 +41,7 @@ function verificarCpf(cpf) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                     validaCpf()
-                } else {
-                    smartAlert("Atenção", "CPF já cadastrado", "error");
+                } else {                   
                     $('#cpf').val("");
                 }
             }
@@ -67,7 +66,7 @@ function validarCpf(cpf) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
-                    smartAlert("Atenção", "CPF inválido", "error");
+                    smartAlert("Atenção","CPF inválido", "error");
                     $('#cpf').val("");
 
                 }
@@ -94,7 +93,6 @@ function validarCpfDependentes(cpfDependentes) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
-                    smartAlert("Atenção", "CPF inválido", "error");
                     $('#cpfDependentes').val("");
 
                 }
@@ -157,7 +155,7 @@ function recuperaFuncionario(id) {
                 var strarrayTelefone = piece[2];
                 var strarrayEmail = piece[3];
                 var strarrayNomeDependentes = piece[4];
-                
+
                 piece = out.split("^");
 
                 var codigo = +piece[0];
@@ -167,7 +165,7 @@ function recuperaFuncionario(id) {
                 var rg = piece[4];
                 var dataNascimento = piece[5];
                 var estadoCivil = piece[6];
-                var descricao = piece[7];               
+                var descricao = piece[7];
                 var cep = piece[10];
                 var logradouro = piece[11];
                 var numero = piece[12];
@@ -185,7 +183,7 @@ function recuperaFuncionario(id) {
                 $("#rg").val(rg);
                 $("#dataNascimento").val(dataNascimento);
                 $("#estadoCivil").val(estadoCivil);
-                $("#descricao").val(descricao);               
+                $("#descricao").val(descricao);
                 $("#cep").val(cep);
                 $("#logradouro").val(logradouro);
                 $("#numero").val(numero);

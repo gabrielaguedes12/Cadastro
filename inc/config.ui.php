@@ -67,7 +67,7 @@ $condicaoConfiguracoesOK = (($condicaoConfiguracoesOK) or in_array('PARAMETRO_AC
 $page_nav['cadastro'] = array("title" => "Cadastro");
 $page_nav['cadastro']['sub'] = array();
 
-$page_nav['cadastro']['sub'] += array("funcionario" => array("title" => "Funcionário", "url" => APP_URL . "/funcionarioCadastro.php"));
+$page_nav['cadastro']['sub'] += array("funcionario" => array("title" => "Funcionário", "url" => APP_URL . "/funcionarioFiltro.php"));
 
 
 //------------------filtro---------------//

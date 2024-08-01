@@ -89,24 +89,41 @@ include("inc/nav.php");
                                                                     <input id="nome" maxlength="255" name="nome" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" class=required type="text" placeholder="999.999.999-99" value="">
+                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" placeholder="999.999.999-99" value="">
                                                                 </label>
                                                             </section>
+
                                                             <section class="col col-2">
-                                                                <label class="label">Data inicial</label>
+                                                                <label class="label">Data de nascimento-Inicial</label>
                                                                 <label class="input">
                                                                     <input id="dataInicial" name="dataInicial" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
-                                                                <label class="label">Data final</label>
+                                                                <label class="label">Data de nascimento-Final</label>
                                                                 <label class="input">
                                                                     <input id="dataFinal" name="dataFinal" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
+                                            
+                                                            <section class="col col-3">
+                                                                <label class="label">Estado Civil</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="estadoCivil" maxlength="255" name="estadoCivil" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>
+                                                            
+                                                            <section class="col col-3">
+                                                                <label class="label">Gênero</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="idGenero" maxlength="255" name="idGenero" type="text" placeholder=" " value="">
+                                                                </label>
+                                                            </section>                                                 
+
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
@@ -192,7 +209,7 @@ include("inc/scripts.php");
         $('#btnSearch').on("click", function() {
             listarFiltro();
         });
-        
+
         $('#btnNovo').on("click", function() {
             novo();
         });
@@ -201,6 +218,8 @@ include("inc/scripts.php");
     function listarFiltro() {
         var nome = $('#nome').val();
         var cpf = $('#cpf').val();
+        var estadoCivil = $('estadoCivil').val();
+        var idGenero = $('idGenero').val();
         var dataInicial = $('#dataInicial').val();
         var dataFinal = $('#dataFinal').val();
         var ativo = $('#ativo').val();
@@ -208,6 +227,8 @@ include("inc/scripts.php");
         $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
             nome: nome,
             cpf: cpf,
+            estadoCivil: estadoCivil,
+            idGenero: idGenero,
             dataInicial: dataInicial,
             dataFinal: dataFinal,
             ativo: ativo
@@ -223,5 +244,4 @@ include("inc/scripts.php");
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
             return false;
     };
-
 </script>

@@ -202,11 +202,7 @@ include("inc/scripts.php");
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         $("#descricao").on('change', function() {
-            verificaGenero()
-            if (!verificaGenero($("#descricao").val())) {
-                smartAlert("Atenção", "Gênero já cadastrado", "error");
-                $('#descricao').val("");
-            }
+            verificaGenero()           
         });
         carregaPagina();
     })
@@ -310,12 +306,6 @@ include("inc/scripts.php");
         var codigo = +($("#codigo").val());
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
-
-        if (!descricao) {
-            smartAlert("Atenção", "Informe uma descrição", "error");
-            $("#descricao").val('');
-            return;
-        }
 
         gravaGenero(codigo, descricao, ativo);
     }

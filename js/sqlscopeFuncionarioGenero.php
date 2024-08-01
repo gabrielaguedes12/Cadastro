@@ -26,7 +26,8 @@ if ($funcao == 'recuperarDadosUsuario') {
 return;
 
 function verificaGenero()
-{$reposit = new reposit();
+{
+    $reposit = new reposit();
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
         $id = 0;
@@ -34,22 +35,17 @@ function verificaGenero()
         $id = (int) $_POST["id"];
     }
 
-    if (!((empty($_POST["ativo"])) || (!isset($_POST["ativo"])) || (is_null($_POST["ativo"])))) {
-        $id = 0;
-    } else {
-        $id = (int) $_POST["ativo"];
-    }
-
     $reposit = new reposit();
     $utils = new comum();
 
     $descricao = $utils->formatarString($_POST['descricao']);
 
-    $sql = "SELECT descricao from dbo.genero where descricao = $descricao";
+    $sql = "SELECT descricao from dbo.genero where descricao = '$descricao' AND codigo != $id";
+
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
 
-     if (!$result) {
+    if (!$result) {
         echo  "success";
         return true;
     } else {
@@ -74,29 +70,39 @@ function gravaGenero()
     $descricao = (string) $_POST["descricao"];
     $ativo = 1;
 
-    session_start();
+    $sql = "SELECT descricao from dbo.genero where descricao = '$descricao' AND codigo != $id";
 
-    $sql = "dbo.genero_atualiza 
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+
+    if (!$result) {
+        session_start();
+
+        $sql = "dbo.genero_atualiza 
         $codigo,
         '$descricao',
         $ativo
        ";
-       
-       if ($descricao == "''") {
-        $ret = 'failed#';
+
+        if ($descricao == "''") {
+            $ret = 'failed#';
+            echo $ret;
+            return;
+        }
+
+        $reposit = new reposit();
+        $result = $reposit->Execprocedure($sql);
+        $ret = 'sucess#';
+        if ($result < 1) {
+            $ret = 'failed#';
+        }
         echo $ret;
         return;
+    } else {
+        $mensagem = "Informe o Gênero";
+        echo "failed#" . $mensagem . ' ';
+        return;
     }
-
-    $reposit = new reposit();
-    $result = $reposit->Execprocedure($sql);
-
-    $ret = 'sucess#';
-    if ($result < 1) {
-        $ret = 'failed#';
-    }
-    echo $ret;
-    return;
 }
 
 function recuperaGenero()
@@ -142,7 +148,7 @@ function excluirGenero()
     $reposit = new reposit();
 
 
-    $codigo =(int) $_POST["codigo"];
+    $codigo = (int) $_POST["codigo"];
 
     $result = $reposit->update('dbo.genero' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 

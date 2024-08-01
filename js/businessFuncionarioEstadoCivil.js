@@ -124,7 +124,6 @@ function verificarEstadoCivil(estadoCivil) {
                 
                 if(status == 'success'){                    
                     $("#estadoCivil").val('');
-
                 }
             }
         

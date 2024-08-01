@@ -10,6 +10,9 @@ include "js/girComum.php";
                 <tr role="row">
                     <th class="text-left" style="min-width:35px;">Nome</th>
                     <th class="text-left" style="min-width:30px;">CPF</th>
+                    <!-- <th class="text-left" style="min-width:30px;">Data de Nascimento</th> -->
+                    <th class="text-left" style="min-width:30px;">Estado Civil</th>
+                    <th class="text-left" style="min-width:30px;">Gênero</th>
                     <th class="text-left" style="min-width:10px;">Ativo</th>
 
                 </tr>
@@ -19,12 +22,14 @@ include "js/girComum.php";
                 $utils = new comum();
                 $reposit = new reposit();
 
-                $sql = " SELECT codigo,nome,cpf,dataNascimento,ativo from dbo.funcionario ";
+                $sql = " SELECT codigo,nome,cpf,estadoCivil,idGenero,ativo from dbo.funcionario ";
                 $where = "WHERE (0 = 0)";
 
                 $nome = $_POST["nome"];
                 $cpf = $_POST["cpf"];
-                $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
+                $estadoCivil = $_POST["estadoCivil"];
+                $idGenero = $_POST["idGenero"];
+                // $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
                 $ativo =  $_POST["ativo"];
 
                 if ($nome != "") {
@@ -33,11 +38,17 @@ include "js/girComum.php";
                 if ($cpf != "") {
                     $where = $where . " AND (cpf like '%" . $cpf . "%')";
                 }
-                if ($dataInicial != "") {
-                    $where = $where . " AND (dataInicial like '%" . $dataInicial . "%')";
+                // if ($dataInicial != "") {
+                //     $where = $where . " AND (dataInicial like '%" . $dataInicial . "%')";
+                // }
+                // if ($dataFinal != "") {
+                //     $where = $where . " AND (dataFinal like '%" . $dataFinal . "%')";
+                // }
+                if ($estadoCivil != "") {
+                    $where = $where . " AND (estadoCivil like '%" . $estadoCivil . "%')";
                 }
-                if ($dataFinal != "") {
-                    $where = $where . " AND (dataFinal like '%" . $dataFinal . "%')";
+                if ($idGenero != "") {
+                    $where = $where . " AND (idGenero like '%" . $idGenero . "%')";
                 }
                 if ($ativo != "") {
                     $where = $where . " AND (ativo = $ativo)";
@@ -52,8 +63,10 @@ include "js/girComum.php";
                     $id =  $row['codigo'];
                     $nome =  $row['nome'];
                     $cpf =  $row['cpf'];
-                    $dataInicial =  $row['dataInicial'];
-                    $dataFinal =  $row['dataFinal'];
+                    $estadoCivil =  $row['estadoCivil'];
+                    $idGenero =  $row['idGenero'];
+                    // $dataInicial =  $row['dataInicial'];
+                    // $dataFinal =  $row['dataFinal'];
                     $ativo = $row['ativo'];
 
                     if ($ativo == 1) {
@@ -64,7 +77,11 @@ include "js/girComum.php";
 
                     echo '<tr >';
                     echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
-                    echo '<td class="text-left">' . $cpf . '</td>';
+                    echo '<td class="text-left">' . $cpf . '</td>';                   
+                    echo '<td class="text-left">' . $estadoCivil . '</td>';
+                    echo '<td class="text-left">' . $idGenero . '</td>';
+                    // echo '<td class="text-left">' . $dataInicial . '</td>';
+                    // echo '<td class="text-left">' . $dataFinal . '</td>';
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';
                     echo '</tr >';
                 }

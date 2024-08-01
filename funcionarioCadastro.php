@@ -65,7 +65,7 @@ include("inc/nav.php");
                     <div class="jarviswidget" id="wid-id-1" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-widget-sortable="false">
                         <header>
                             <span class="widget-icon"><i class="fa fa-cog"></i></span>
-                            <h2>Cadastro</h2>
+                            <h2>Funcionário</h2>
                         </header>
                         <div>
                             <div class="widget-body no-padding">
@@ -104,10 +104,10 @@ include("inc/nav.php");
 
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
+                                                                <label class="input">
+                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class=required  placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
-                                                            </section>
+                                                            </section>                                                           
 
                                                             <section class="col col-2">
                                                                 <label class="label">RG</label>
@@ -362,7 +362,7 @@ include("inc/nav.php");
                                                         <section class="col col-1">
                                                             <label class="label">Número</label>
                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                <input id="numero" maxlength="6" name="numero" class="" type="text" placeholder=" " value="">
+                                                                <input id="numero" maxlength="6" name="numero" class="required" class="" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
 
@@ -601,14 +601,17 @@ include("inc/scripts.php");
         //funçoes
         $("#cpf").on('focusout', function() {
             validaCpf()
+            $('#cpf').val("");
         });
 
         $("#cpf").on('change', function() {
             verificaCpf()
+            $('#cpf').val("");
         });
 
         $("#cpfDependentes").on('focusout', function() {
             validaCpfDependentes()
+           
         });
 
 
@@ -718,6 +721,12 @@ include("inc/scripts.php");
     document.getElementById("nomeDependentes").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
+
+    document.getElementById("pis").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("0912345678".indexOf(chr) < 0)
             return false;
     };
     //------------------------------>BOTÕES<--------------------------//
@@ -1321,7 +1330,7 @@ include("inc/scripts.php");
             emailmarcado = 1;
         }
         if (email === '') {
-            smartAlert("Erro", "Informe um email.", "error");
+            
             return false;
         }
 

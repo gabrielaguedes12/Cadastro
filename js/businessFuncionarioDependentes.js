@@ -122,7 +122,6 @@ function verificarDependentes(tipo) {
                 var status = piece[0];
 
                 if (status == 'success') {
-                    smartAlert("Atenção", 'Dependente já cadastrado.', "error");
                     $("#tipo").val('');
                 }
             }

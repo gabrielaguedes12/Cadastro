@@ -195,9 +195,7 @@ include("inc/scripts.php");
     $(document).ready(function() {
         $("#estadoCivil").on('change', function() {
             verificaEstadoCivil();
-            smartAlert("Atenção", "Já cadastrado", "error");
-            
-        }); 
+        });
         carregaPagina();
     })
 
@@ -223,14 +221,15 @@ include("inc/scripts.php");
             }
         }]
     });
+
     //setTimeout-->para determinar o tempo//
     $("#btnGravar").on("click", function() {
-        gravar();
         setTimeout(() => {
             $("#btnGravar").prop('disabled', true);
             ("Delayed for 1 second.");
         }, 600);
-        // $("#btnGravar").prop('disabled', false);
+        $("#btnGravar").prop('disabled', false);
+        gravar();
     });
 
     $("#btnExcluir").on("click", function() {
@@ -241,7 +240,6 @@ include("inc/scripts.php");
             $("#nome").focus();
             return;
         }
-
         if (id !== 0) {
             $('#dlgSimpleExcluir').dialog('open');
         }
@@ -267,36 +265,27 @@ include("inc/scripts.php");
             }
         }
         $("#nome").focus();
-
     }
 
     function novo() {
-        $(location).attr('href', 'filtroEstadoCivil.php');
+        $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
 
     function voltar() {
         $(location).attr('href', 'filtroEstadoCivil.php');
     }
 
-
     function verificaEstadoCivil() {
         var estadoCivil = $('#estadoCivil').val();
         verificarEstadoCivil(estadoCivil);
     }
 
-
     function gravar() {
         var codigo = +($("#codigo").val());
         var estadoCivil = $("#estadoCivil").val();
-        var ativo = $("#ativo").val();
+        var ativo = $("#ativo").val();      
 
-        if (!estadoCivil) {
-            smartAlert("Atenção", "Informe uma descrição", "error");
-           
-            return;
-        
-        gravaEstadoCivil(codigo, estadoCivil, ativo);}
-
+        gravaEstadoCivil(codigo, estadoCivil, ativo);
     }
 
     function excluir() {

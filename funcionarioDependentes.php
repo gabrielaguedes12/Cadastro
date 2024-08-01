@@ -204,11 +204,7 @@ include("inc/scripts.php");
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         $("#tipo").on('change', function() {
-            verificaDependentes()
-            if (!verificaDependentes($("#tipo").val())) {
-                smartAlert("Atenção", "Tipo dependente já cadastrado", "error");
-                $('#tipo').val("");
-            }
+            verificaDependentes()            
         });      
         carregaPagina();
     })
@@ -312,19 +308,12 @@ include("inc/scripts.php");
         var tipo = $("#tipo").val();
         var ativo = $("#ativo").val();
 
-        if (!dependentes) {
-            smartAlert("Atenção", "Informe uma descrição", "error");
-            
-            return;
-        }
-
         gravarDependentes(codigo, tipo, ativo);
     }
-
-
+    
     // document.getElementById("tipo").onkeypress = function(e) {
     //     var chr = String.fromCharCode(e.which);
-    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ(),/           ".indexOf(chr) < 0)
+    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/,           ".indexOf(chr) < 0);
     //         return false;
     // };
 </script>

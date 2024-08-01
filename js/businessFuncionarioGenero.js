@@ -123,7 +123,6 @@ function verificarGenero(descricao) {
                 var status = piece[0];
                 
                 if(status == 'success'){
-                    smartAlert("Atenção", 'Gênero já cadastrado.', "error");
                     $("#descricao").val('');
                 }
             }

@@ -22,7 +22,8 @@ if ($funcao == 'excluirDependentes') {
 return;
 
 function verificaDependentes()
-{$reposit = new reposit();
+{
+    $reposit = new reposit();
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
         $id = 0;
@@ -30,18 +31,12 @@ function verificaDependentes()
         $id = (int) $_POST["id"];
     }
 
-    if (!((empty($_POST["ativo"])) || (!isset($_POST["ativo"])) || (is_null($_POST["ativo"])))) {
-        $id = 0;
-    } else {
-        $id = (int) $_POST["ativo"];
-    }
-
     $reposit = new reposit();
     $utils = new comum();
 
     $tipo = $utils->formatarString($_POST['tipo']);
 
-    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = $tipo";
+    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = '$tipo' AND codigo != $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -50,7 +45,7 @@ function verificaDependentes()
         echo  "success";
         return true;
     } else {
-        $mensagem = "Informe o estado civil";
+        $mensagem = "Informe o Dependente";
         echo "failed#" . $mensagem . ' ';
     }
     return;
@@ -70,24 +65,39 @@ function gravarDependentes()
     $codigo = (int) $_POST["codigo"];
     $tipo = (string) $_POST["tipo"];
     $ativo = 1;
+    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = '$tipo' AND codigo != $id";
 
-    session_start();
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
 
-    $sql = "dbo.tipoDependentes_atualiza 
+    if (!$result) {
+        session_start();
+
+        $sql = "dbo.tipoDependentes_atualiza 
         $codigo,
         $tipo,
         $ativo
        ";
 
-    $reposit = new reposit();
-    $result = $reposit->Execprocedure($sql);
+        if ($tipo == "''") {
+            $ret = 'failed#';
+            echo $ret;
+            return;
+        }
+        $reposit = new reposit();
+        $result = $reposit->Execprocedure($sql);
+        $ret = 'sucess#';
+        if ($result < 1) {
+            $ret = 'failed#';
+        }
+        echo $ret;
+        return;
 
-    $ret = 'sucess#';
-    if ($result < 1) {
-        $ret = 'failed#';
+    } else {
+        $mensagem = "Informe o tipo Dependente";
+        echo "failed#" . $mensagem . ' ';
+        return;
     }
-    echo $ret;
-    return;
 }
 
 function recuperaDependentes()

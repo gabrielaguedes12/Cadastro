@@ -93,7 +93,7 @@ function excluirEstadoCivil(codigo) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
 
-                if (mensagem !== "") {
+                if (mensagem !== "=") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
                     smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
@@ -116,7 +116,7 @@ function verificarEstadoCivil(estadoCivil) {
         dataType: ' html',
         type: 'post',
         async: true,
-        data: { funcao: 'verificaEstadoCivil', estadoCivil: estadoCivil },
+        data: { funcao: 'verificaEstadoCivil', estadoCivil: estadoCivil},
         success: function (data, textStatus) {
             if (data.indexOf('success') > -1) {
                 var piece = data.split("#");
@@ -124,9 +124,9 @@ function verificarEstadoCivil(estadoCivil) {
                 
                 if(status == 'success'){                    
                     $("#estadoCivil").val('');
-                }
+                
             }
-        
+            }
         },
         error: function (xhr, er) {
             //tratamento de erro

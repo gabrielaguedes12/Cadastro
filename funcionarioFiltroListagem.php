@@ -22,8 +22,10 @@ include "js/girComum.php";
                 $utils = new comum();
                 $reposit = new reposit();
 
-                $sql = " SELECT codigo,nome,cpf,estadoCivil,idGenero,ativo from dbo.funcionario ";
+                $sql = " SELECT codigo,nome,cpf,estadoCivil,idGenero,ativo from dbo.funcionario";
                 $where = "WHERE (0 = 0)";
+                // $sql = "SELECT * FROM dbo.funcionario F LEFT JOIN estadoCivil E ON F.estadoCivil = E.codigo";
+                // $sql = "SELECT * FROM dbo.funcionario F LEFT JOIN genero G ON F.idGenero = G.codigo";
 
                 $nome = $_POST["nome"];
                 $cpf = $_POST["cpf"];

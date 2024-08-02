@@ -106,8 +106,6 @@ include("inc/nav.php");
                                                                 </label>
                                                             </section>
                                                         </div>
-
-
                                                     </fieldset>
                                                 </div>
                                             </div>
@@ -118,21 +116,16 @@ include("inc/nav.php");
                                         <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                             <span class="fa fa-trash"></span>
                                         </button>
-
                                         <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
                                             <span class="fa fa-floppy-o"></span>
                                         </button>
-
                                         <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnNovo ?>">
                                             <span class="fa fa-file-o"></span>
                                         </button>
-
                                         <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
                                             <span class="fa fa-backward "></span>
                                         </button>
-
                                     </footer>
-
 
                                     <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
                                         <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
@@ -204,8 +197,8 @@ include("inc/scripts.php");
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         $("#tipo").on('change', function() {
-            verificaDependentes()            
-        });      
+            verificaDependentes()
+        });
         carregaPagina();
     })
 
@@ -232,14 +225,6 @@ include("inc/scripts.php");
         }]
     });
 
-    $("#btnVoltar").on("click", function() {
-        voltar();
-    });
-
-    $("#btnNovo").on("click", function() {
-        novo();
-    });
-
     $("#btnGravar").on("click", function() {
         setTimeout(() => {
             $("#btnGravar").prop('disabled', true);
@@ -248,6 +233,7 @@ include("inc/scripts.php");
         $("#btnGravar").prop('disabled', false);
         gravar();
     });
+
 
     $("#btnExcluir").on("click", function() {
         var id = +$("#codigo").val();
@@ -262,6 +248,16 @@ include("inc/scripts.php");
             $('#dlgSimpleExcluir').dialog('open');
         }
     });
+
+    $("#btnNovo").on("click", function() {
+        novo();
+    });
+
+    $("#btnVoltar").on("click", function() {
+        voltar();
+    });
+
+
 
 
     function carregaPagina() {
@@ -287,17 +283,6 @@ include("inc/scripts.php");
         $(location).attr('href', 'filtroDependentes.php');
     }
 
-    function excluir() {
-        var id = +$("#codigo").val();
-
-        if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
-            return;
-        }
-
-        excluirDependentes(id);
-    }
-
     function verificaDependentes() {
         var tipo = $('#tipo').val()
         verificarDependentes(tipo) //variável "passa" nesse ()
@@ -310,10 +295,17 @@ include("inc/scripts.php");
 
         gravarDependentes(codigo, tipo, ativo);
     }
-    
-    // document.getElementById("tipo").onkeypress = function(e) {
-    //     var chr = String.fromCharCode(e.which);
-    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/,           ".indexOf(chr) < 0);
-    //         return false;
-    // };
+
+    function excluir() {
+        var id = +$("#codigo").val();
+
+        if (id === 0) {
+            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
+            return;
+        }
+
+        excluirDependentes(id);
+        $(location).attr('href', 'filtroDependentes.php');
+
+    }
 </script>

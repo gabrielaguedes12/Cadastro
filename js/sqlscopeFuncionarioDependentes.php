@@ -65,6 +65,7 @@ function gravarDependentes()
     $codigo = (int) $_POST["codigo"];
     $tipo = (string) $_POST["tipo"];
     $ativo = 1;
+    
     $sql = "SELECT tipo from dbo.tipoDependentes where tipo = '$tipo' AND codigo != $id";
 
     $reposit = new reposit();
@@ -75,7 +76,7 @@ function gravarDependentes()
 
         $sql = "dbo.tipoDependentes_atualiza 
         $codigo,
-        $tipo,
+        '$tipo',
         $ativo
        ";
 

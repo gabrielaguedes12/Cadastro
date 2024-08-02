@@ -105,9 +105,9 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class=required  placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
+                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class=required placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
-                                                            </section>                                                           
+                                                            </section>
 
                                                             <section class="col col-2">
                                                                 <label class="label">RG</label>
@@ -444,7 +444,7 @@ include("inc/nav.php");
                                                                     <label class="label">Tipo</label>
                                                                     <label class="select">
                                                                         <select id="tipo" name="tipo">
-                                                                            <option hidden select value = "" select> Selecione </option>
+                                                                            <option hidden select value="" select> Selecione </option>
                                                                             <?php
                                                                             $reposit = new reposit();
                                                                             $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
@@ -600,18 +600,19 @@ include("inc/scripts.php");
 
         //funçoes
         $("#cpf").on('focusout', function() {
+           
             validaCpf()
-            $('#cpf').val("");
+           
         });
 
         $("#cpf").on('change', function() {
             verificaCpf()
-            $('#cpf').val("");
+           
         });
 
         $("#cpfDependentes").on('focusout', function() {
             validaCpfDependentes()
-           
+
         });
 
 
@@ -626,10 +627,6 @@ include("inc/scripts.php");
 
         $("#dataNascimento").on('focusout', function() {
             validaData()
-            if (!validaData($("#dataNascimento").val())) {
-                smartAlert("Atenção", "Data Inválida,por favor tentar novamente.", "error");
-                $('#dataNascimento').val("");
-            }
         });
 
         //id--> input unico
@@ -714,13 +711,13 @@ include("inc/scripts.php");
     //---------------->não permitir caracteres especiais e numeros<------------------//
     document.getElementById("nome").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ.       ".indexOf(chr) < 0)
             return false;
     };
 
     document.getElementById("nomeDependentes").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ.       ".indexOf(chr) < 0)
             return false;
     };
 
@@ -861,12 +858,12 @@ include("inc/scripts.php");
         var dataNascimento = $("#dataNascimento").val();
         var estadoCivil = $("#estadoCivil").val();
         var descricao = $("#descricao").val();
-        
-        
+
+
         //contato
         var telefone = $("#jsonTelefone").val();
         var email = $("#jsonEmail").val();
-        
+
         //endereço
         var cep = $("#cep").val();
         var logradouro = $("#logradouro").val();
@@ -875,7 +872,7 @@ include("inc/scripts.php");
         var uf = $("#uf").val();
         var bairro = $("#bairro").val();
         var cidade = $("#cidade").val();
-        
+
         //emprego
         var emprego = $("#emprego").val();
         var pis = $("#pis").val();
@@ -883,7 +880,7 @@ include("inc/scripts.php");
         //dependentes
         var nomeDependentes = $("#jsonDependentes").val();
 
-      
+
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
             nome = $("#nome").focus();
@@ -953,8 +950,8 @@ include("inc/scripts.php");
             cidade = $("#cidade").focus();
         }
 
-       
-        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade,emprego, pis, jsonDependentesArray);
+
+        gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray);
     }
 
     //------------------>valida data e idade<---------------//
@@ -969,7 +966,8 @@ include("inc/scripts.php");
 
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
-        }
+        }     
+
         $("#idade").val(age)
         return age;
     }
@@ -977,7 +975,7 @@ include("inc/scripts.php");
     //data de nascimento válido
     function validaData(dataNascimento) {
 
-        var verificaData = document.getElementById('dataNascimento').value;
+        var validaData = document.getElementById('dataNascimento').value;
         var hoje = new Date().getFullYear().value;
 
         if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
@@ -989,7 +987,7 @@ include("inc/scripts.php");
             return false
         }
 
-        //split é oq divide os algorismos em XX//X/XXXX
+        //split é oq divide os algorismos em XX/XX/XXXX
         const dataDiv = dataNascimento.split('/')
         const data = {
             dias: dataDiv[0],
@@ -1012,17 +1010,25 @@ include("inc/scripts.php");
 
         if (ano > new Date().getFullYear()) {
             return false;
+
         }
 
         //para restringir os meses de 1 a 12
         if (mes < 1 || mes > 12 || dias < 1) {
             return false
+
         }
 
         //para restringir número de dias no mês
-        else if (dias > dataDias[dias]) {
+        if (dias > dataDias[dias]) {
             return false
         }
+
+        if(dias>new Date()){
+            return false;
+        }
+
+
 
         return true
     }
@@ -1030,18 +1036,18 @@ include("inc/scripts.php");
     //---------------->validação cpf e rg<-------------------//
     //validar cpf(exem: 111.111.111-11)
     function validaCpf() {
-        var cpf = $('#cpf').val()
+        var cpf = $('#cpf').val();
         validarCpf(cpf)
     }
 
     //verificar se já foi cadastrado
     function verificaCpf() {
-        var cpf = $('#cpf').val()
+        var cpf = $('#cpf').val();
         verificarCpf(cpf) //variável "passa" nesse ()
     }
 
     function validaCpfDependentes() {
-        var cpfDependentes = $('#cpfDependentes').val()
+        var cpfDependentes = $('#cpfDependentes').val();
         validarCpfDependentes(cpfDependentes)
     }
 
@@ -1053,21 +1059,20 @@ include("inc/scripts.php");
 
     //valida data nascimento dependente
     function validaDatas(dataNascimentoDependentes) {
-
-        var verificaData = document.getElementById('dataNascimentoDependentes').value;
+        var verificaData = document.getElementById('dataNascimento').value;
         var hoje = new Date().getFullYear().value;
 
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
             return false
         }
 
         //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
-        if (typeof dataNascimentoDependentes != 'string') {
+        if (typeof dataNascimento != 'string') {
             return false
         }
 
         //split é oq divide os algorismos em XX//X/XXXX
-        const dataDiv = dataNascimentoDependentes.split('/')
+        const dataDiv = dataNascimento.split('/')
         const data = {
             dias: dataDiv[0],
             mes: dataDiv[1],
@@ -1330,7 +1335,7 @@ include("inc/scripts.php");
             emailmarcado = 1;
         }
         if (email === '') {
-            
+
             return false;
         }
 

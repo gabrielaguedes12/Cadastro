@@ -18,7 +18,6 @@ function gravaGenero(codigo, descricao, ativo) {
                     smartAlert("Atenção", mensagem, "error"); 
                 } else {
                     smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-
                 }
                 return '';
             } else {

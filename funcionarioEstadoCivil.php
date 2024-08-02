@@ -98,13 +98,15 @@ include("inc/nav.php");
                                                                     <input id="estadoCivil" maxlength="255" name="estadoCivil" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
-                                                            <section class="col col-2 hidden">
+                                                            <section class="col col-1 hidden ">
                                                                 <label class="label">Ativo</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="ativo" maxlength="255" name="ativo" class="" type="text" placeholder=" " value="">
-                                                                </label>
+                                                                <label class="select">
+                                                                    <select id="ativo" name="ativo">
+                                                                        <option></option>
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="0">Não</option>
+                                                                    </select><i></i>
                                                             </section>
-
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -125,6 +127,7 @@ include("inc/nav.php");
                                                 <span class="fa fa-backward "></span>
                                             </button>
                                         </footer>
+
                                         <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
                                             <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
                                                 <span id="ui-id-2" class="ui-dialog-title">
@@ -283,7 +286,7 @@ include("inc/scripts.php");
     function gravar() {
         var codigo = +($("#codigo").val());
         var estadoCivil = $("#estadoCivil").val();
-        var ativo = $("#ativo").val();      
+        var ativo = $("#ativo").val();
 
         gravaEstadoCivil(codigo, estadoCivil, ativo);
     }

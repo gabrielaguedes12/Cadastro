@@ -53,7 +53,6 @@ function verificaEstadoCivil()
         $mensagem = "Informe o estado civil";
         echo "failed#" . $mensagem . ' ';
     }
-
     return;
 }
 

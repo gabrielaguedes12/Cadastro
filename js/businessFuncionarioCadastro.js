@@ -40,7 +40,7 @@ function verificarCpf(cpf) {
 
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
-                    validaCpf()
+                    
                 } else {                   
                     $('#cpf').val("");
                 }
@@ -68,7 +68,7 @@ function validarCpf(cpf) {
                 } else {
                     smartAlert("Atenção","CPF inválido", "error");
                     $('#cpf').val("");
-
+                
                 }
             }
         },
@@ -93,6 +93,7 @@ function validarCpfDependentes(cpfDependentes) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
+                    smartAlert("Atenção","CPF dependente inválido", "error");
                     $('#cpfDependentes').val("");
 
                 }

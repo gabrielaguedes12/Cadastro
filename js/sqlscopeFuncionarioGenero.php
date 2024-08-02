@@ -98,6 +98,7 @@ function gravaGenero()
         }
         echo $ret;
         return;
+
     } else {
         $mensagem = "Informe o Gênero";
         echo "failed#" . $mensagem . ' ';

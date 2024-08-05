@@ -40,8 +40,8 @@ function verificarCpf(cpf) {
 
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
-                    
-                } else {                   
+
+                } else {
                     $('#cpf').val("");
                 }
             }
@@ -66,9 +66,9 @@ function validarCpf(cpf) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
-                    smartAlert("Atenção","CPF inválido", "error");
+                    smartAlert("Atenção", "CPF inválido", "error");
                     $('#cpf').val("");
-                
+
                 }
             }
         },
@@ -77,7 +77,6 @@ function validarCpf(cpf) {
         }
     });
 }
-
 
 function validarCpfDependentes(cpfDependentes) {
     $.ajax({
@@ -93,7 +92,7 @@ function validarCpfDependentes(cpfDependentes) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
-                    smartAlert("Atenção","CPF dependente inválido", "error");
+                    smartAlert("Atenção", "CPF dependente inválido", "error");
                     $('#cpfDependentes').val("");
 
                 }

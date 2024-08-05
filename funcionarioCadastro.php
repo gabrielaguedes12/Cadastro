@@ -600,14 +600,14 @@ include("inc/scripts.php");
 
         //funçoes
         $("#cpf").on('focusout', function() {
-           
+
             validaCpf()
-           
+
         });
 
         $("#cpf").on('change', function() {
             verificaCpf()
-           
+
         });
 
         $("#cpfDependentes").on('focusout', function() {
@@ -966,7 +966,7 @@ include("inc/scripts.php");
 
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
-        }     
+        }
 
         $("#idade").val(age)
         return age;
@@ -1024,7 +1024,7 @@ include("inc/scripts.php");
             return false
         }
 
-        if(dias>new Date()){
+        if (dias > new Date()) {
             return false;
         }
 
@@ -1193,11 +1193,12 @@ include("inc/scripts.php");
             jsonTelefoneArray.push(item);
 
         $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));
+        
         fillTableTelefone();
         clearFormTelefone();
 
     }
-
+    
     //append-> adicionar um elemento no final da lista
     function fillTableTelefone() {
         $("#tableTelefone tbody").empty();
@@ -1264,6 +1265,7 @@ include("inc/scripts.php");
                 name: fieldName,
                 value: whats
             };
+
         }
 
         return false;
@@ -1287,6 +1289,8 @@ include("inc/scripts.php");
         $("#sequencialTel").val("");
         $("#telefoneId").val("");
         $("#telefone").val("");
+
+
         return true;
     }
 
@@ -1403,10 +1407,11 @@ include("inc/scripts.php");
             jsonEmailArray.push(item);
 
         $("#jsonEmail").val(JSON.stringify(jsonEmailArray));
-
         fillTableEmail();
         clearFormEmail();
     }
+
+   
 
     function fillTableEmail() {
         $("#tableEmail tbody").empty();

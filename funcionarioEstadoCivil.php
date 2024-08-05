@@ -50,6 +50,10 @@ include("inc/nav.php");
 <!-- MAIN PANEL -->
 <div id="main" role="main">
     <?php
+    function trim_estadoCivil(&$estadoCivil)
+    {
+        $estadoCivil = trim($estadoCivil);
+    }
     //configure ribbon (breadcrumbs) array("name"=>"url"), leave url empty if no url
     //$breadcrumbs["New Crumb"] => "http://url.com"
     $breadcrumbs["Tabela Básica"] = "";
@@ -283,7 +287,8 @@ include("inc/scripts.php");
         verificarEstadoCivil(estadoCivil);
     }
 
-    function gravar() {
+    function gravar() {        
+
         var codigo = +($("#codigo").val());
         var estadoCivil = $("#estadoCivil").val();
         var ativo = $("#ativo").val();
@@ -307,4 +312,6 @@ include("inc/scripts.php");
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()       ".indexOf(chr) < 0)
             return false;
     };
+
+
 </script>

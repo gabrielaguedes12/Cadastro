@@ -100,36 +100,63 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">Data de nascimento-Inicial</label>
                                                                 <label class="input">
-                                                                    <input id="dataInicial" name="dataInicial" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataNascimento" name="dataInicial" type="text" placeholder="dd/mm/aaaa"  class="datepicker" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_"  style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
                                                                 <label class="label">Data de nascimento-Final</label>
                                                                 <label class="input">
-                                                                    <input id="dataFinal" name="dataFinal" type="text" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataNascimento" name="dataFinal" type="text" placeholder="dd/mm/aaaa"  class="datepicker" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
-                                            
-                                                            <section class="col col-3">
+
+                                                            <section class="col col-2">
                                                                 <label class="label">Estado Civil</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="estadoCivil" maxlength="255" name="estadoCivil" type="text" placeholder=" " value="">
+                                                                <label class="select">
+                                                                    <select id="estadoCivil" name="estadoCivil">
+                                                                        <option hidden select></option>
+                                                                        <?php
+                                                                        $reposit = new reposit();
+                                                                        $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
+                                                                        $result = $reposit->RunQuery($sql);
+                                                                        foreach ($result as $row) {
+                                                                            $codigo = (int) $row['codigo'];
+                                                                            $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
+
+                                                                            echo "<option value='$codigo'>$estadoCivil</option>";
+                                                                        }
+                                                                        ?>
+                                                                    </select><i></i>
+                                                                    </select>
                                                                 </label>
                                                             </section>
-                                                            
-                                                            <section class="col col-3">
+
+                                                            <section class="col col-2">
                                                                 <label class="label">Gênero</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="idGenero" maxlength="255" name="idGenero" type="text" placeholder=" " value="">
+                                                                <label class="select">
+                                                                    <select id="idGenero" name="idGenero">
+                                                                        <option hidden select></option>
+                                                                        <?php
+                                                                        $reposit = new reposit();
+                                                                        $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
+                                                                        $result = $reposit->RunQuery($sql);
+                                                                        foreach ($result as $row) {
+                                                                            $codigo = (int) $row['codigo'];
+                                                                            $descricao = htmlspecialchars($row['descricao'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            echo "<option value='$codigo'>$descricao</option>";
+                                                                        }
+                                                                        ?>
+                                                                    </select><i></i>
+                                                                    </select>
                                                                 </label>
-                                                            </section>                                                 
+                                                            </section>
 
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
                                                                     <select id="ativo" name="ativo">
                                                                         <option></option>
-                                                                        <option value="1" selected>Sim</option>
+                                                                        <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
@@ -205,6 +232,7 @@ include("inc/scripts.php");
 
 <script>
     $(".cpf").inputmask("999.999.999-99");
+
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
             listarFiltro();
@@ -218,19 +246,21 @@ include("inc/scripts.php");
     function listarFiltro() {
         var nome = $('#nome').val();
         var cpf = $('#cpf').val();
+        var dataNascimento = $('#dataNascimento').val();
+        // var dataInicial = $('#dataInicial').val();
+        // var dataFinal = $('#dataFinal').val();
         var estadoCivil = $('estadoCivil').val();
-        var idGenero = $('idGenero').val();
-        var dataInicial = $('#dataInicial').val();
-        var dataFinal = $('#dataFinal').val();
-        var ativo = $('#ativo').val();
+        var descricao = $("#descricao").val();
+        var ativo = $("#ativo").val();
 
         $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
             nome: nome,
             cpf: cpf,
+            dataNascimento: dataNascimento,
+            // dataInicial: dataInicial,
+            // dataFinal: dataFinal,
             estadoCivil: estadoCivil,
-            idGenero: idGenero,
-            dataInicial: dataInicial,
-            dataFinal: dataFinal,
+            descricao: descricao,
             ativo: ativo
         });
     }

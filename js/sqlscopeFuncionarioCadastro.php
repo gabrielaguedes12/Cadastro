@@ -322,7 +322,7 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT codigo, sequencialDependentes,idFuncionario,nomeDependentes, cpfDependentes,dataNascimentoDependentes,tipoDependente
+    $sql = "SELECT codigo, sequencialDependentes,idFuncionario,nomeDependentes, cpfDependentes, dataNascimentoDependentes,tipoDependente
      FROM dependentes 
       WHERE idFuncionario = $id";
 
@@ -336,8 +336,8 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-            $idFuncionario = $row['idFuncionario'];
             $sequencialDependentes = $row['sequencialDependentes'];
+            $idFuncionario = $row['idFuncionario'];
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
             $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
@@ -347,12 +347,12 @@ function recupera()
         $dependentesNum = $dependentesNum + 1;
         $arrayDependentes[] = array(
 
-            "idFuncionario"  => $idFuncionario,
             "sequencialDependentes" =>   $sequencialDependentes,
+            "idFuncionario"  => $idFuncionario,
             "nomeDependentes"  => $nomeDependentes,
             "cpfDependentes"  => $cpfDependentes,
             "dataNascimentoDependentes"  => $dataNascimentoDependentes,
-            "tipo" => $tipo
+            "tipoDependente" => $tipo
 
         );
     }

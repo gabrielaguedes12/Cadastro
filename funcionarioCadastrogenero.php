@@ -202,8 +202,11 @@ include("inc/scripts.php");
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         $("#descricao").on('change', function() {
-            verificaGenero()           
+            verificaGenero()
         });
+        var espaco = ("$estadoCivil");
+        var stringResultante = espaco.trim();
+        smartAlert("Atenção","Espaço indévido","error" );
         carregaPagina();
     })
 
@@ -243,7 +246,7 @@ include("inc/scripts.php");
         var id = +$("#codigo").val();
 
         if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir !", "error");
+            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
             $("#nome").focus();
             return;
         }

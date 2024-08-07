@@ -600,7 +600,6 @@ include("inc/scripts.php");
 
         //funçoes
         $("#cpf").on('focusout', function() {
-
             validaCpf()
 
         });
@@ -621,12 +620,16 @@ include("inc/scripts.php");
 
         });
 
-        $("#dataNascimento").on('change', function() {
+        $("#dataNascimento").on('focuout', function() {
             idade($("#dataNascimento").val());
         });
+        
+        $(".dataNascimento").on('focusout', function() {
+            validaData();           
+            });
 
-        $("#dataNascimento").on('focusout', function() {
-            validaData()
+        $(".dataNascimentoDependentes").on('change', function(){
+            validaDataDependentes();
         });
 
         //id--> input unico
@@ -780,6 +783,8 @@ include("inc/scripts.php");
     $('#btnAddTelefone').on("click", function() {
         validaTelefone();
         adicionaTelefone();
+       
+
     });
 
 
@@ -974,8 +979,7 @@ include("inc/scripts.php");
 
     //data de nascimento válido
     function validaData(dataNascimento) {
-
-        var validaData = document.getElementById('dataNascimento').value;
+        var verificarData = document.getElementById('dataNascimento').value;
         var hoje = new Date().getFullYear().value;
 
         if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
@@ -1008,27 +1012,20 @@ include("inc/scripts.php");
             dataDias[2] == 29
         }
 
-        if (ano > new Date().getFullYear()) {
+        //restringir ano 
+        if (ano >= new Date().getFullYear()) {
             return false;
-
         }
 
         //para restringir os meses de 1 a 12
         if (mes < 1 || mes > 12 || dias < 1) {
             return false
-
         }
 
         //para restringir número de dias no mês
-        if (dias > dataDias[dias]) {
+        if (dias > new Date()) {
             return false
         }
-
-        if (dias > new Date()) {
-            return false;
-        }
-
-
 
         return true
     }
@@ -1058,56 +1055,56 @@ include("inc/scripts.php");
     }
 
     //valida data nascimento dependente
-    function validaDatas(dataNascimentoDependentes) {
-        var verificaData = document.getElementById('dataNascimento').value;
-        var hoje = new Date().getFullYear().value;
+    // function validaDataDependentes(dataNascimentoDependentes) {
+    //     var verificaData = document.getElementById('dataNascimentoDependentes').value;
+    //     var hoje = new Date().getFullYear().value;
 
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
-            return false
-        }
+    //     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
+    //         return false
+    //     }
 
-        //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
-        if (typeof dataNascimento != 'string') {
-            return false
-        }
+    //     //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
+    //     if (typeof dataNascimentoDependentes != 'string') {
+    //         return false
+    //     }
 
-        //split é oq divide os algorismos em XX//X/XXXX
-        const dataDiv = dataNascimento.split('/')
-        const data = {
-            dias: dataDiv[0],
-            mes: dataDiv[1],
-            ano: dataDiv[2]
-        }
+    //     //split é oq divide os algorismos em XX//X/XXXX
+    //     const dataDiv = dataNascimentoDependentes.split('/')
+    //     const data = {
+    //         dias: dataDiv[0],
+    //         mes: dataDiv[1],
+    //         ano: dataDiv[2]
+    //     }
 
-        //parseint --> para converter strings em número inteiro
-        const dias = parseInt(data.dias)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
+    //     //parseint --> para converter strings em número inteiro
+    //     const dias = parseInt(data.dias)
+    //     const mes = parseInt(data.mes)
+    //     const ano = parseInt(data.ano)
 
-        //dias para cada mês
-        const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    //     //dias para cada mês
+    //     const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-        //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
-        if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
-            dataDias[2] == 29
-        }
+    //     //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
+    //     if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
+    //         dataDias[2] == 29
+    //     }
 
-        if (ano > new Date().getFullYear()) {
-            return false;
-        }
+    //     if (ano > new Date().getFullYear()) {
+    //         return false;
+    //     }
 
-        //para restringir os meses de 1 a 12
-        if (mes < 1 || mes > 12 || dias < 1) {
-            return false
-        }
+    //     //para restringir os meses de 1 a 12
+    //     if (mes < 1 || mes > 12 || dias < 1) {
+    //         return false
+    //     }
 
-        //para restringir número de dias no mês
-        else if (dias > dataDias[dias]) {
-            return false
-        }
+    //     //para restringir número de dias no mês
+    //     else if (dias > dataDias[dias]) {
+    //         return false
+    //     }
 
-        return true
-    }
+    //     return true
+    // }
 
     //------------------------------->TELEFONE<----------------------------------//
     function mascaraTelefone() {
@@ -1192,8 +1189,7 @@ include("inc/scripts.php");
         else
             jsonTelefoneArray.push(item);
 
-        $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));
-        
+        $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));        
         fillTableTelefone();
         clearFormTelefone();
 
@@ -1282,6 +1278,7 @@ include("inc/scripts.php");
             $("#sequencialTel").val(item.sequencialTel);
             $("#telefoneId").val(item.telefoneId);
             $("#telefone").val(item.telefone);
+           
         }
     }
 
@@ -1289,7 +1286,6 @@ include("inc/scripts.php");
         $("#sequencialTel").val("");
         $("#telefoneId").val("");
         $("#telefone").val("");
-
 
         return true;
     }

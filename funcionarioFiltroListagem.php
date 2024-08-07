@@ -10,7 +10,7 @@ include "js/girComum.php";
                 <tr role="row">
                     <th class="text-left" style="min-width:35px;">Nome</th>
                     <th class="text-left" style="min-width:30px;">CPF</th>
-                    <th class="text-left" style="min-width:25px;">Data de Nascimento</th>
+                    <!-- <th class="text-left" style="min-width:25px;">Data de Nascimento</th> -->
                     <th class="text-left" style="min-width:30px;">Estado Civil</th>
                     <th class="text-left" style="min-width:30px;">Gênero</th>
                     <th class="text-left" style="min-width:10px;">Ativo</th>
@@ -21,19 +21,23 @@ include "js/girComum.php";
                 <?php
                 $utils = new comum();
                 $reposit = new reposit();
-                
-                $sql = "SELECT * FROM dbo.funcionario F LEFT JOIN estadoCivil E ON F.estadoCivil = E.codigo";
-                $sql = "SELECT * FROM dbo.funcionario F LEFT JOIN genero G ON F.idGenero = G.codigo";
-                $sql = "SELECT codigo,nome,cpf,dataNascimento,estadoCivil,idGenero,ativo from dbo.funcionario WHERE(0 = 0)";
-                
 
-                // $codigo = $_POST["codigo"];
+                $sql = "SELECT  F.codigo,nome,cpf, descricao, E.estadoCivil FROM dbo.funcionario F
+                 LEFT JOIN estadoCivil E ON F.estadoCivil= E.codigo 
+                 LEFT JOIN genero G ON F.idGenero = G.codigo WHERE (0 = 0)";
+
+
+                $codigo = $_POST["codigo"];
                 $nome = $_POST["nome"];
                 $cpf = $_POST["cpf"];
-                $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
+                // $dataNascimento = $utils->formataDataSql($_POST['dataNascimento']);
                 $estadoCivil = $_POST["estadoCivil"];
-                $idGenero = $_POST["idGenero"];
+                $descricao = $_POST["descricao"];
                 $ativo =  $_POST["ativo"];
+
+                if ($codigo != "") {
+                    $where = $where . " AND (codigo like '%" . $codigo . "%')";
+                }
 
                 if ($nome != "") {
                     $where = $where . " AND (nome like '%" . $nome . "%')";
@@ -41,17 +45,15 @@ include "js/girComum.php";
                 if ($cpf != "") {
                     $where = $where . " AND (cpf like '%" . $cpf . "%')";
                 }
-                if ($dataInicial != "") {
-                    $where = $where . " AND (dataInicial like '%" . $dataInicial . "%')";
-                }
-                // if ($dataFinal != "") {
-                //     $where = $where . " AND (dataFinal like '%" . $dataFinal . "%')";
+                // if ($dataNascimento != "") {
+                //     $where = $where . " AND (dataNas$dataNascimento like '%" . $dataNascimento . "%')";
                 // }
+
                 if ($estadoCivil != "") {
                     $where = $where . " AND (estadoCivil like '%" . $estadoCivil . "%')";
                 }
-                if ($idGenero != "") {
-                    $where = $where . " AND (idGenero like '%" . $idGenero . "%')";
+                if ($descricao != "") {
+                    $where = $where . " AND (descricao like '%" . $descricao . "%')";
                 }
                 if ($ativo != "") {
                     $where = $where . " AND (ativo = $ativo)";
@@ -65,10 +67,9 @@ include "js/girComum.php";
                     $id =  $row['codigo'];
                     $nome =  $row['nome'];
                     $cpf =  $row['cpf'];
-                    $dataInicial =  $row['dataInicial'];
-                    // $dataFinal =  $row['dataFinal'];
+                    // $dataNascimento =  $row['dataNascimento'];
                     $estadoCivil =  $row['estadoCivil'];
-                    $idGenero =  $row['idGenero'];
+                    $descricao =  $row['descricao'];
                     $ativo = $row['ativo'];
 
                     if ($ativo == 1) {
@@ -80,10 +81,9 @@ include "js/girComum.php";
                     echo '<tr >';
                     echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
                     echo '<td class="text-left">' . $cpf . '</td>';
-                    echo '<td class="text-left">' . $dataInicial . '</td>';
-                    // echo '<td class="text-left">' . $dataFinal . '</td>';
+                    // echo '<td class="text-left">' . $dataNascimento . '</td>';
                     echo '<td class="text-left">' . $estadoCivil . '</td>';
-                    echo '<td class="text-left">' . $idGenero . '</td>';
+                    echo '<td class="text-left">' . $descricao . '</td>';
                     echo '<td class="text-left">' . $descricaoAtivo . '</td>';
                     echo '</tr >';
                 }

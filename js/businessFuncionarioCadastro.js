@@ -39,10 +39,8 @@ function verificarCpf(cpf) {
                 var mensagem = piece[1];
 
                 if (mensagem !== "") {
-                    smartAlert("Atenção", mensagem, "error");
-
-                } else {
-                    $('#cpf').val("");
+                    smartAlert("Atenção", "CPF já cadastrado", "error");
+                    $('#cpf').val("");               
                 }
             }
         },
@@ -118,9 +116,9 @@ function verificarRg(rg) {
 
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
+                    $('#rg').val("");
                 } else {
                     smartAlert("Atenção", "RG já cadastrado", "error");
-                    $('#rg').val("");
 
                 }
             }

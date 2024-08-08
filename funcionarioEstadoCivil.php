@@ -197,10 +197,10 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        $("#estadoCivil").on('change', function() {
-            verificaEstadoCivil();            
-        });
 
+        $('#estadoCivil').on('change', function() {
+            verificaEstadoCivil();
+        });
         carregaPagina();
     })
 
@@ -234,6 +234,7 @@ include("inc/scripts.php");
             ("Delayed for 1 second.");
         }, 600);
         $("#btnGravar").prop('disabled', false);
+
         gravar();
     });
 
@@ -283,13 +284,13 @@ include("inc/scripts.php");
     function verificaEstadoCivil() {
         var estadoCivil = $('#estadoCivil').val();
         verificarEstadoCivil(estadoCivil);
-    }    
+    }
 
     function gravar() {
-
         var codigo = +($("#codigo").val());
         var estadoCivil = $("#estadoCivil").val();
         var ativo = $("#ativo").val();
+
         gravaEstadoCivil(codigo, estadoCivil, ativo);
     }
 
@@ -306,7 +307,9 @@ include("inc/scripts.php");
 
     document.getElementById("estadoCivil").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()       ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()".indexOf(chr) < 0)
             return false;
     };
+    
+    
 </script>

@@ -65,8 +65,7 @@ function gravar()
     $cidade = $utils->formatarString($_POST['cidade']);
     $emprego = $_POST['emprego'];
     $pis = $utils->formatarString($_POST['pis']);
-
-
+    $nomeDependentes = $_POST['jsonDependentesArray'];
 
     //telefone
     $nomeXml = "ArrayTelefone";
@@ -131,7 +130,7 @@ function gravar()
     //----------------------------->dependentes<------------------------------//
     $nomeXmlDependentes = "arrayDependentes";
     $nomeTabelaDependentes = "TabelaDependentes";
-    $nomeDependentes = $_POST['jsonDependentesArray'];
+   
     if (sizeof($nomeDependentes) > 0) {
         $xmlJsonDependentes = '<?xml version="1.0"?>';
         $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXmlDependentes . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
@@ -249,7 +248,6 @@ function recupera()
         $pis = $row['pis'];
     }
 
-
     //telefone
     $sql = "SELECT t.codigo, t.idFuncio, t.principal, t.sequencialTel, t.telefone, t.telefoneId, t.whats
         FROM telefone t
@@ -341,7 +339,7 @@ function recupera()
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
             $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
-            $tipo = $row['tipoDependente'];
+            $tipoDependente = $row['tipoDependente'];
         }
 
         $dependentesNum = $dependentesNum + 1;
@@ -352,7 +350,7 @@ function recupera()
             "nomeDependentes"  => $nomeDependentes,
             "cpfDependentes"  => $cpfDependentes,
             "dataNascimentoDependentes"  => $dataNascimentoDependentes,
-            "tipoDependente" => $tipo
+            "tipoDependente" => $tipoDependente
 
         );
     }

@@ -211,11 +211,5 @@ include("inc/scripts.php");
         $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
 
-
-
-    // document.getElementById("nome").onkeypress = function(e) {
-    //     var chr = String.fromCharCode(e.which);
-    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM".indexOf(chr) < 0)
-    //         return false;
-    // };
+   
 </script>

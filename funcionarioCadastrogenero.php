@@ -204,9 +204,7 @@ include("inc/scripts.php");
         $("#descricao").on('change', function() {
             verificaGenero()
         });
-        var espaco = ("$estadoCivil");
-        var stringResultante = espaco.trim();
-        smartAlert("Atenção","Espaço indévido","error" );
+        
         carregaPagina();
     })
 
@@ -315,7 +313,7 @@ include("inc/scripts.php");
 
     document.getElementById("descricao").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()       ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()".indexOf(chr) < 0)
             return false;
     };
 </script>

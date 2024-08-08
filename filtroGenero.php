@@ -211,5 +211,5 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioCadastroGenero.php');
     }
-
+ 
 </script>

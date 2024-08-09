@@ -626,6 +626,8 @@ include("inc/scripts.php");
 
         $("#dataNascimento").on('change', function() {
             validaData();
+            smartAlert("Atenção", "Data inválida", "error")
+            $("#dataNascimento").val("");
         });
 
         $("#dataNascimentoDependentes").on('change', function() {
@@ -980,7 +982,7 @@ include("inc/scripts.php");
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-
+       
         $("#idade").val(age)
         return age;
     }

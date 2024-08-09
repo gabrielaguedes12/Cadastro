@@ -37,12 +37,6 @@ return;
 
 function gravar()
 {
-    if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
-        $mensagem = "Nenhum parâmetro de pesquisa foi informado.";
-        echo "failed#" . $mensagem . ' ';
-        return;
-    }
-
     $reposit = new reposit();
     $utils = new comum();
 
@@ -128,9 +122,9 @@ function gravar()
     $xmlJsonEmail = "'" . $xmlJsonEmail . "'";
 
     //----------------------------->dependentes<------------------------------//
-    $nomeXmlDependentes = "arrayDependentes";
+    $nomeXmlDependentes = "ArrayDependentes";
     $nomeTabelaDependentes = "TabelaDependentes";
-   
+
     if (sizeof($nomeDependentes) > 0) {
         $xmlJsonDependentes = '<?xml version="1.0"?>';
         $xmlJsonDependentes = $xmlJsonDependentes . '<' . $nomeXmlDependentes . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
@@ -320,7 +314,7 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT t.codigo,t.idFuncionario, t.sequencialDependentes,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipoDependente
+    $sql = "SELECT t.codigo,t.sequencialDependentes,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
      FROM dependentes t 
       WHERE idFuncionario = $id";
 
@@ -334,24 +328,22 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-            $idFuncionario = $row['idFuncionario'];
             $sequencialDependentes = $row['sequencialDependentes'];
+            $idFuncionario = $row['idFuncionario'];
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
             $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
-            $tipoDependente = $row['tipoDependente'];
+            $tipo = $row['tipo'];
         }
 
         $dependentesNum = $dependentesNum + 1;
         $arrayDependentes[] = array(
-
-            "idFuncionario"  => $idFuncionario,
             "sequencialDependentes" =>   $sequencialDependentes,
+            "idFuncionario"  => $idFuncionario,
             "nomeDependentes"  => $nomeDependentes,
             "cpfDependentes"  => $cpfDependentes,
             "dataNascimentoDependentes"  => $dataNascimentoDependentes,
-            "tipoDependente" => $tipoDependente
-
+            "tipo" => $tipo
         );
     }
 

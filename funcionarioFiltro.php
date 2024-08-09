@@ -97,18 +97,18 @@ include("inc/nav.php");
                                                                 </label>
                                                             </section>
 
-                                                            <!-- <section class="col col-2">
+                                                            <section class="col col-2">
                                                                 <label class="label">Data de nascimento-Inicial</label>
                                                                 <label class="input">
-                                                                    <input id="dataNascimento" name="dataInicial" type="text" placeholder="dd/mm/aaaa" class="datepicker" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataNascimentoInicial" name="dataInicial" type="text" placeholder="dd/mm/aaaa" class="datepicker" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
                                                             <section class="col col-2">
                                                                 <label class="label">Data de nascimento-Final</label>
                                                                 <label class="input">
-                                                                    <input id="dataNascimento" name="dataFinal" type="text" placeholder="dd/mm/aaaa" class="datepicker" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
+                                                                    <input id="dataNascimentoFinal" name="dataFinal" type="text" placeholder="dd/mm/aaaa" class="datepicker" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="_" style="text-align: center" autocomplete="off">
                                                                 </label>
-                                                            </section> -->
+                                                            </section>
 
                                                             <section class="col col-2">
                                                                 <label class="label">Estado Civil</label>
@@ -244,7 +244,8 @@ include("inc/scripts.php");
     function listarFiltro() {
         var nome = $('#nome').val();
         var cpf = $('#cpf').val();
-        // var dataNascimento = $('#dataNascimento').val();
+        var dataNascimentoInicial=$('#dataNascimentoInicial').val();
+        var dataNascimentoFinal = $('#dataNascimentoFinal').val();
         var estadoCivil = $('estadoCivil').val();
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
@@ -252,7 +253,8 @@ include("inc/scripts.php");
         $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
             nome: nome,
             cpf: cpf,
-            // dataNascimento: dataNascimento,
+            dataNascimentoInicial: dataNascimentoInicial,
+            dataNascimentoFinal: dataNascimentoFinal,
             estadoCivil: estadoCivil,
             descricao: descricao,
             ativo: ativo

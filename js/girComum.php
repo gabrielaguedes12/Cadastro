@@ -282,9 +282,9 @@ class comum
             $value = 'NULL';
             return $value;
         }
-        $value = str_replace('/', '-', $value);
-        //   $value = date("Y-m-d", strtotime($value));
-        $value = "'" . $value . "'";
+        $value = explode('/', $value); 
+       
+        $value = "'" . ( $value[2] . "-" . $value[1] ."-" . $value[0] ) . "'";
         return $value;
     }
 

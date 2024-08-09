@@ -617,7 +617,7 @@ include("inc/scripts.php");
 
         $(".rg").on('change', function() {
             verificaRg()
-            
+
         });
 
         $("#dataNascimento").on('change', function() {
@@ -957,15 +957,15 @@ include("inc/scripts.php");
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray);
     }
 
+    //------------------>compara cpf funcionario e dependente<-----------------------//
     function comparaCpf() {
         var cpfDependente = $("#cpfDependentes").val();
         var cpfFuncionario = $("#cpf").val();
         if (cpfFuncionario == cpfDependente) {
             smartAlert("Atenção", "CPF repetido", "error")
             $("#cpfDependentes").val("");
-        }else{
-             smartAlert("Sucesso", "CPF aceito", "success");
-    }}
+        } else {}
+    }
 
     //------------------>valida data e idade<---------------//
     //data na ordem e contagem de idade
@@ -1604,7 +1604,7 @@ include("inc/scripts.php");
         $("#tableDependentes tbody").empty();
         for (var i = 0; i < jsonDependentesArray.length; i++) {
             if (jsonDependentesArray[i].nomeDependentes !== null && jsonDependentesArray[i].nomeDependentes != '') {
-                var tipoDependentes = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
+                var tipo = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
                 var row = $('<tr />');
 
                 $("#tableDependentes tbody").append(row);
@@ -1612,8 +1612,7 @@ include("inc/scripts.php");
                 row.append($('<td class="text-nowrap" onclick="carregaDependentes(' + jsonDependentesArray[i].sequencialDependentes + ');">' + jsonDependentesArray[i].nomeDependentes + '</td>'));
                 row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].cpfDependentes + '</td>'));
                 row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].dataNascimentoDependentes + '</td>'));
-                row.append($('<td class="text-nowrap">' + tipoDependentes + '</td>'));
-
+                row.append($('<td class="text-nowrap">' + tipo + '</td>'));
             }
         }
     }
@@ -1666,8 +1665,8 @@ include("inc/scripts.php");
         clearFormDependentes();
         if (arr.length > 0) {
             var item = arr[0];
-            $("#idFuncionario").val(item.idFuncionario);
             $("#sequencialDependentes").val(item.sequencialDependentes);
+            $("#idFuncionario").val(item.idFuncionario);
             $("#nomeDependentes").val(item.nomeDependentes);
             $("#cpfDependentes").val(item.cpfDependentes);
             $("#dataNascimentoDependentes").val(item.dataNascimentoDependentes);
@@ -1676,8 +1675,8 @@ include("inc/scripts.php");
     }
 
     function clearFormDependentes() {
-        $("#idFuncionario").val("");
         $("#sequencialDependentes").val("");
+        $("#idFuncionario").val("");
         $("#nomeDependentes").val("");
         $("#cpfDependentes").val("");
         $("#dataNascimentoDependentes").val("");

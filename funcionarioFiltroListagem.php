@@ -8,31 +8,31 @@ include "js/girComum.php";
         <table id="tableSearchResult" class="table table-bordered table-striped table-condensed table-hover dataTable">
             <thead>
                 <tr role="row">
-                    <th class="text-left" style="min-width:35px;">Nome</th>
-                    <th class="text-left" style="min-width:30px;">CPF</th>
-                    <th class="text-left" style="min-width:25px;">Data de Nascimento</th>
-                    <th class="text-left" style="min-width:30px;">Estado Civil</th>
-                    <th class="text-left" style="min-width:30px;">Gênero</th>
-                    <th class="text-left" style="min-width:10px;">Ativo</th>
+                    <th class="text-center" style="min-width:35px;">Nome</th>
+                    <th class="text-center" style="min-width:30px;">CPF</th>
+                    <th class="text-center" style="min-width:25px;">Data de Nascimento</th>
+                    <th class="text-center" style="min-width:30px;">Estado Civil</th>
+                    <th class="text-center" style="min-width:30px;">Gênero</th>
+                    <th class="text-center" style="min-width:10px;">Ativo</th>
 
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $utils = new comum();
-                $reposit = new reposit();              
+                $reposit = new reposit();
 
                 $nome = $_POST['nome'] ? $_POST['nome'] : null;
                 $cpf = $_POST['cpf'] ? $utils->formatarString($_POST['cpf']) : null;
-                $dataNascimentoInicial = $_POST['dataNascimentoInicial'] ? $utils->formataDataSql($_POST['dataNascimentoInicial'] ) : null;
-                $dataNascimentoFinal = $_POST['dataNascimentoFinal'] ? $utils->formataDataSql($_POST['dataNascimentoFinal'] ) : null;                
-                $estadoCivil = $_POST['estadoCivil'] ? $_POST['estadoCivil'] : null;
-                // $descricao = $_POST["descricao"];
-                // $ativo =  $_POST["ativo"];
+                $dataNascimentoInicial = $_POST['dataNascimentoInicial'] ? $utils->formataDataSql($_POST['dataNascimentoInicial']) : null;
+                $dataNascimentoFinal = $_POST['dataNascimentoFinal'] ? $utils->formataDataSql($_POST['dataNascimentoFinal']) : null;
+                $estadoCivil = $_POST['estadoCivil'] ;
+                $descricao = $_POST['descricao'] ;
+                $ativo =  $_POST['ativo'];
 
-                $sql = "SELECT  F.codigo,nome,cpf,dataNascimento, E.estadoCivil,G.descricao FROM dbo.funcionario F
-                LEFT JOIN estadoCivil E ON F.estadoCivil= E.codigo 
-                LEFT JOIN genero G ON F.idGenero = G.codigo WHERE (0 = 0)";
+                $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
+                LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
+                LEFT JOIN dbo.genero G ON G.codigo = F.idGenero WHERE (0 = 0)";
 
                 if ($nome) {
                     $where = $where . " AND (nome like '%$nome%')";
@@ -44,23 +44,23 @@ include "js/girComum.php";
 
                 if ($dataNascimentoInicial && !$dataNascimentoFinal) {
                     $where = $where . " AND dataNascimento >= $dataNascimentoInicial";
-                }else if ( !$dataNascimentoInicial && $dataNascimentoFinal) {
+                } else if (!$dataNascimentoInicial && $dataNascimentoFinal) {
                     $where = $where . " AND dataNascimento <= $dataNascimentoFinal";
-                }else if($dataNascimentoInicial && $dataNascimentoFinal){
+                } else if ($dataNascimentoInicial && $dataNascimentoFinal) {
                     $where = $where . " AND dataNascimento BETWEEN $dataNascimentoInicial AND $dataNascimentoFinal";
                 }
 
                 if ($estadoCivil) {
-                    $where = $where . " AND estadoCivil = $estadoCivil";
+                    $where = $where . " AND (E.codigo = '$estadoCivil')";
                 }
 
-                // if ($descricao != "") {
-                //         $where = $where . " AND descricao = $descricao";
-                //     }
-      
-                // if ($ativo != "") {
-                //     $where = $where . " AND (ativo = $ativo)";
-                // }
+                if ($descricao != "") {
+                    $where = $where . " AND (G.codigo = '$descricao')";
+                }
+
+                if ($ativo != "") {
+                    $where = $where . " AND (F.ativo = $ativo)";
+                }
 
                 $sql = $sql .  $where;
 
@@ -75,19 +75,19 @@ include "js/girComum.php";
                     $descricao =  $row['descricao'];
                     $ativo = $row['ativo'];
 
-                    if ($ativo == 1) {
+                    if ($ativo = 1) {
                         $descricaoAtivo = "Sim";
                     } else {
                         $descricaoAtivo = "Não";
                     }
 
                     echo '<tr >';
-                    echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
-                    echo '<td class="text-left">' . $cpf . '</td>';
-                    echo '<td class="text-left">' . $dataNascimento . '</td>';
-                    echo '<td class="text-left">' . $estadoCivil . '</td>';
-                    echo '<td class="text-left">' . $descricao . '</td>';
-                    echo '<td class="text-left">' . $descricaoAtivo . '</td>';
+                    echo '<td class="text-center">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
+                    echo '<td class="text-center">' . $cpf . '</td>';
+                    echo '<td class="text-center">' . $dataNascimento . '</td>';
+                    echo '<td class="text-center">' . $estadoCivil . '</td>';
+                    echo '<td class="text-center">' . $descricao . '</td>';
+                    echo '<td class="text-center">' . $descricaoAtivo . '</td>';
                     echo '</tr >';
                 }
                 ?>

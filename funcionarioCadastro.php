@@ -620,14 +620,36 @@ include("inc/scripts.php");
 
         });
 
-        $("#dataNascimento").on('change', function() {
-            idade($("#dataNascimento").val());
+        $("#dataNascimento").on("change", function() {
+            var dataNascimento = $("#dataNascimento").val();
+            if (dataNascimento.length < 10) {
+
+                $("#idade").val("");
+                $("#dataNascimento").val("");
+            }
+
+            if (validaData(dataNascimento) == false) {
+                smartAlert("Atenção", "Data Inválida", "error");
+                $("#idade").val("");
+                $("#dataNascimento").val("");
+            }
         });
 
         $("#dataNascimento").on('change', function() {
             validaData();
-            smartAlert("Atenção", "Data inválida", "error")
-            $("#dataNascimento").val("");
+        });
+
+        //dependentes       
+        $("#dataNascimentoDependentes").on("change", function() {
+            var dataNascimento = $("#dataNascimentoDependentes").val();
+            if (dataNascimentoDependentes.length < 10) {                
+                $("#dataNascimentoDependentes").val("");
+            }
+
+            if (validaDataDependentes(dataNascimentoDependentes) == false) {
+                smartAlert("Atenção", "Data Inválida", "error");               
+                $("#dataNascimentoDependentes").val("");
+            }
         });
 
         $("#dataNascimentoDependentes").on('change', function() {
@@ -982,62 +1004,60 @@ include("inc/scripts.php");
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-       
+
         $("#idade").val(age)
         return age;
     }
 
-    //data de nascimento válido
-    function validaData(dataNascimento) {
-        var verificaData = document.getElementById('dataNascimento').value;
+    function validaData() {
+        var data = $("#dataNascimento").val();
+        data = data.replace(" /g, /");
+        var data_array = data.split("/"); //responsável por quebrar a data em array
+
+        //Inserir formato DD/MM/YYYY
+        if (data_array[0].length != 4) {
+            data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
+        }
+
+        //Calculo da idade referente a Data de Nascimento
         var hoje = new Date();
+        var nasc = new Date(data);
+        var idade = hoje.getFullYear() - nasc.getFullYear();
+        var m = hoje.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
 
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimento)) {
-            return false
+
+
+        if (idade >= 14 && idade <= 150) {
+            $("#idade").val(idade)
+            $("#btnGravar").prop('disabled', false);
+            return;
         }
 
-        //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
-        if (typeof dataNascimento != 'string') {
-            return false
-        }
 
-        //split é oq divide os algorismos em XX//X/XXXX
-        const dataDiv = dataNascimento.split('/')
-        const data = {
-            dias: dataDiv[0],
-            mes: dataDiv[1],
-            ano: dataDiv[2]
-        }
-
-        //parseint --> para converter strings em número inteiro
-        const dias = parseInt(data.dias)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
-
-        //dias para cada mês
-        const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
-        if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
-            dataDias[2] == 29
-        }
-
-        if (ano > new Date().getFullYear()) {
-            return false;
-        }
-
-        //para restringir os meses de 1 a 12
-        if (mes < 1 || mes > 12 || dias < 1) {
-            return false
-        }
-
-        //para restringir número de dias no mês
-        else if (dias > dataDias[dias]) {
-            return false
-        }
-
-        return true
+        if (hoje) return false;
     }
+
+    function validaDataDependentes() {
+        var data = $("#dataNascimentoDependentes").val();
+        data = data.replace(" /g, /");
+        var data_array = data.split("/"); //responsável por quebrar a data em array
+
+        //Inserir formato DD/MM/YYYY
+        if (data_array[0].length != 4) {
+            data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
+        }
+
+        //Calculo da idade referente a Data de Nascimento
+        var hoje = new Date();
+        var nasc = new Date(data);
+        var idade = hoje.getFullYear() - nasc.getFullYear();
+        var m = hoje.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+
+         return false;
+    }
+
 
     //---------------->validação cpf e rg<-------------------//
     //validar cpf(exem: 111.111.111-11)
@@ -1061,58 +1081,6 @@ include("inc/scripts.php");
     function verificaRg() {
         var rg = $('#rg').val()
         verificarRg(rg)
-    }
-
-    //valida data nascimento dependente
-    function validaDataDependentes(dataNascimentoDependentes) {
-        var verificarData = document.getElementById('dataNascimentoDependentes').value;
-        var hoje = new Date().getFullYear().value;
-
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
-            return false
-        }
-
-        //typeof é uma palavra-chave em JavaScript que retornará o tipo da variável quando você a chama
-        if (typeof dataNascimentoDependentes != 'string') {
-            return false
-        }
-
-        //split é oq divide os algorismos em XX//X/XXXX
-        const dataDiv = dataNascimentoDependentes.split('/')
-        const data = {
-            dias: dataDiv[0],
-            mes: dataDiv[1],
-            ano: dataDiv[2]
-        }
-
-        //parseint --> para converter strings em número inteiro
-        const dias = parseInt(data.dias)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
-
-        //dias para cada mês
-        const dataDias = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        //ano bissexto --> se o ano é múltiplo de 4 e 400, mas não é por 100
-        if (ano % 400 == 0 || ano % 4 == 0 && ano % 100 != 0) {
-            dataDias[2] == 29
-        }
-
-        if (ano > new Date().getFullYear()) {
-            return false;
-        }
-
-        //para restringir os meses de 1 a 12
-        if (mes < 1 || mes > 12 || dias < 1) {
-            return false
-        }
-
-        //para restringir número de dias no mês
-        else if (dias > dataDias[dias]) {
-            return false
-        }
-
-        return true
     }
 
     //------------------------------->TELEFONE<----------------------------------//

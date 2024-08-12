@@ -122,7 +122,6 @@ include("inc/nav.php");
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
                                                                             $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
-
                                                                             echo "<option value='$codigo'>$estadoCivil</option>";
                                                                         }
                                                                         ?>
@@ -244,9 +243,9 @@ include("inc/scripts.php");
     function listarFiltro() {
         var nome = $('#nome').val();
         var cpf = $('#cpf').val();
-        var dataNascimentoInicial=$('#dataNascimentoInicial').val();
+        var dataNascimentoInicial = $('#dataNascimentoInicial').val();
         var dataNascimentoFinal = $('#dataNascimentoFinal').val();
-        var estadoCivil = $('estadoCivil').val();
+        var estadoCivil = $('#estadoCivil').val();
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
 

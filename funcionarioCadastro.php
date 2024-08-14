@@ -623,7 +623,6 @@ include("inc/scripts.php");
         $("#dataNascimento").on("change", function() {
             var dataNascimento = $("#dataNascimento").val();
             if (dataNascimento.length < 10) {
-
                 $("#idade").val("");
                 $("#dataNascimento").val("");
             }
@@ -641,13 +640,13 @@ include("inc/scripts.php");
 
         //dependentes       
         $("#dataNascimentoDependentes").on("change", function() {
-            var dataNascimento = $("#dataNascimentoDependentes").val();
-            if (dataNascimentoDependentes.length < 10) {                
+            var dataNascimentoDependentes = $("#dataNascimentoDependentes").val();
+            if (dataNascimentoDependentes.length < 10) {
                 $("#dataNascimentoDependentes").val("");
             }
 
             if (validaDataDependentes(dataNascimentoDependentes) == false) {
-                smartAlert("Atenção", "Data Inválida", "error");               
+                smartAlert("Atenção", "Data Inválida", "error");
                 $("#dataNascimentoDependentes").val("");
             }
         });
@@ -827,10 +826,17 @@ include("inc/scripts.php");
 
     //dependentes
     $('#btnAddDependentes').on("click", function() {
-        if (validaDependentes() === true) {
-            adicionaDependentes();
+        var cpfUsuario = $("#cpf").val();
+        if (cpfUsuario == "") {
+            smartAlert("Atenção", "Preencha CPF do funcionário", "error");
+            $("#cpfDependentes").val("");
         } else {
-            smartAlert("Atenção", "Dependente inválido, tente novamente", "error");
+            validaCpfDependentes();
+            if (validaDependentes() === true) {
+                adicionaDependentes();
+            } else {
+                smartAlert("Atenção", "Dependente inválido, tente novamente", "error");
+            }
         }
     })
 
@@ -983,10 +989,11 @@ include("inc/scripts.php");
 
     //------------------>compara cpf funcionario e dependente<-----------------------//
     function comparaCpf() {
-        var cpfDependente = $("#cpfDependentes").val();
+        var cpfDependentes = $("#cpfDependentes").val();
         var cpfFuncionario = $("#cpf").val();
-        if (cpfFuncionario == cpfDependente) {
-            smartAlert("Atenção", "CPF repetido", "error")
+
+        if (cpfFuncionario == cpfDependentes) {
+            smartAlert("Atenção", "CPF dependente repetido", "error")
             $("#cpfDependentes").val("");
         } else {}
     }
@@ -1004,7 +1011,6 @@ include("inc/scripts.php");
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-
         $("#idade").val(age)
         return age;
     }
@@ -1026,38 +1032,67 @@ include("inc/scripts.php");
         var m = hoje.getMonth() - nasc.getMonth();
         if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
 
-
-
+        //validar idade maior que 14 e menor que 150
         if (idade >= 14 && idade <= 150) {
             $("#idade").val(idade)
             $("#btnGravar").prop('disabled', false);
             return;
         }
-
-
         if (hoje) return false;
     }
 
-    function validaDataDependentes() {
-        var data = $("#dataNascimentoDependentes").val();
-        data = data.replace(" /g, /");
-        var data_array = data.split("/"); //responsável por quebrar a data em array
+    //------------------>valida data dependentes<---------------//
+    function validaDataDependentes(dataNascimentoDependentes) {
+        var anoAtual = new Date();
+        var anoHoje = anoAtual.getFullYear()
 
-        //Inserir formato DD/MM/YYYY
-        if (data_array[0].length != 4) {
-            data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
+        // Verifica se a entrada é uma string
+        if (typeof dataNascimentoDependentes !== 'string') {
+            return false
         }
 
-        //Calculo da idade referente a Data de Nascimento
-        var hoje = new Date();
-        var nasc = new Date(data);
-        var idade = hoje.getFullYear() - nasc.getFullYear();
-        var m = hoje.getMonth() - nasc.getMonth();
-        if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+        // Verifica formado da data
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
+            return false
+        }
 
-         return false;
+        // Divide a data para o objeto "data"
+        const partesData = dataNascimentoDependentes.split('/')
+        const data = {
+            dia: partesData[0],
+            mes: partesData[1],
+            ano: partesData[2]
+        }
+
+        // Converte strings em número
+        const dia = parseInt(data.dia)
+        const mes = parseInt(data.mes)
+        const ano = parseInt(data.ano)
+
+        // Dias de cada mês, incluindo ajuste para ano bissexto
+        const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+        // Atualiza os dias do mês de fevereiro para ano bisexto
+        if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
+            diasNoMes[2] = 29
+        }
+
+        // Regras de validação:
+        // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
+        if (mes < 1 || mes > 12 || dia < 1) {
+            return false
+        }
+        if (ano > anoHoje || ano < (anoHoje - 150)) {
+            return false;
+        }
+        // Valida número de dias do mês
+        else if (dia > diasNoMes[mes]) {
+            return false
+        }
+
+        // Passou nas validações
+        return true
     }
-
 
     //---------------->validação cpf e rg<-------------------//
     //validar cpf(exem: 111.111.111-11)
@@ -1087,6 +1122,12 @@ include("inc/scripts.php");
     function mascaraTelefone() {
         var telefone = $('#telefone').val()
     }
+
+    function desmarcarCheckBox() {
+        var myCheckbox = document.getElementById('principal');        
+        myCheckbox.checked = true;
+    }
+
 
     function validaTelefone() {
         var adicionado = false;
@@ -1131,7 +1172,6 @@ include("inc/scripts.php");
 
     //adiciona telefone
     function adicionaTelefone() {
-
         var item = $("#formTelefone").toObject({
             mode: 'combine',
             skipEmpty: false,
@@ -1150,7 +1190,6 @@ include("inc/scripts.php");
         } else {
             item["sequencialTel"] = +item["sequencialTel"];
         }
-
         $('#telefone').val("");
 
         var index = -1;
@@ -1169,7 +1208,6 @@ include("inc/scripts.php");
         $("#jsonTelefone").val(JSON.stringify(jsonTelefoneArray));
         fillTableTelefone();
         clearFormTelefone();
-
     }
 
     //append-> adicionar um elemento no final da lista
@@ -1238,9 +1276,7 @@ include("inc/scripts.php");
                 name: fieldName,
                 value: whats
             };
-
         }
-
         return false;
     }
 
@@ -1248,7 +1284,6 @@ include("inc/scripts.php");
         var arr = jQuery.grep(jsonTelefoneArray, function(item, i) {
             return (item.sequencialTel === sequencialTel);
         });
-
         clearFormTelefone();
         if (arr.length > 0) {
             var item = arr[0];
@@ -1284,7 +1319,6 @@ include("inc/scripts.php");
         } else
             smartAlert("Erro", "Selecione pelo menos 1 telefone para excluir.", "error");
     }
-
 
     //--------------------------------------------------------------->EMAIL<----------------------------------------------------------//
     function formataEmail() {
@@ -1383,8 +1417,6 @@ include("inc/scripts.php");
         fillTableEmail();
         clearFormEmail();
     }
-
-
 
     function fillTableEmail() {
         $("#tableEmail tbody").empty();

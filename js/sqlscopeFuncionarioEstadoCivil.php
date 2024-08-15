@@ -20,10 +20,6 @@ if ($funcao == 'excluirEstadoCivil') {
     call_user_func($funcao);
 }
 
-if ($funcao == 'recuperarDadosUsuario') {
-    call_user_func($funcao);
-}
-
 return;
 
 function verificaEstadoCivil()
@@ -71,7 +67,7 @@ function gravaEstadoCivil()
     $estadoCivil = (string) $_POST["estadoCivil"];
     $ativo = 1;
 
-    $sql = "SELECT estadoCivil from dbo.estadoCivil where estadoCivil = '$estadoCivil' AND codigo != $id";
+    $sql = "SELECT estadoCivil from dbo.estadoCivil where estadoCivil = '$estadoCivil' AND codigo = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -118,7 +114,7 @@ function recuperaEstadoCivil()
     $codigo = $_POST["codigo"];
 
 
-    $sql = " SELECT codigo,estadoCivil,ativo from dbo.estadoCivil WHERE (0 = 0) and codigo = $codigo ";
+    $sql = "SELECT codigo,estadoCivil,ativo from dbo.estadoCivil WHERE (0 = 0) and codigo = $codigo ";
 
 
     $reposit = new reposit();

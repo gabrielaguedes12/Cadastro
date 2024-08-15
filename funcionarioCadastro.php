@@ -173,7 +173,7 @@ include("inc/nav.php");
                                                                 </label>
                                                             </section>
 
-                                                            <section class="col col-1">
+                                                            <section class="col col-1 hidden">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
                                                                     <select id="ativo" name="ativo">
@@ -452,9 +452,9 @@ include("inc/nav.php");
                                                                             foreach ($result as $row) {
                                                                                 $codigo = (int) $row['codigo'];
                                                                                 $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
-
                                                                                 echo "<option value='$codigo'>$tipo</option>";
                                                                             }
+
                                                                             ?>
                                                                         </select><i></i>
                                                                         </select>
@@ -606,7 +606,7 @@ include("inc/scripts.php");
 
         $("#cpf").on('change', function() {
             verificaCpf()
-
+            comparaCpf()
         });
 
         $("#cpfDependentes").on('focusout', function() {
@@ -644,7 +644,6 @@ include("inc/scripts.php");
             if (dataNascimentoDependentes.length < 10) {
                 $("#dataNascimentoDependentes").val("");
             }
-
             if (validaDataDependentes(dataNascimentoDependentes) == false) {
                 smartAlert("Atenção", "Data Inválida", "error");
                 $("#dataNascimentoDependentes").val("");
@@ -1033,7 +1032,7 @@ include("inc/scripts.php");
         if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
 
         //validar idade maior que 14 e menor que 150
-        if (idade >= 14 && idade <= 150) {
+        if (idade > 14 && idade <= 150) {
             $("#idade").val(idade)
             $("#btnGravar").prop('disabled', false);
             return;
@@ -1133,8 +1132,8 @@ include("inc/scripts.php");
 
         if ($("#principal").is(':checked') === true) {
             telMarcado = 1;
-
         }
+
         if (telefone === '') {
             smartAlert("Erro", "Informe um telefone", "error");
             return false;
@@ -1421,293 +1420,293 @@ include("inc/scripts.php");
         if ($("#principalEmail").is(':checked') === true) {
             principalEmail.checked = false;
         }
+        fillTableEmail();
+        clearFormEmail();
+    }
+
+    function fillTableEmail() {
+        $("#tableEmail tbody").empty();
+
+        for (var i = 0; i < jsonEmailArray.length; i++) {
+            if (jsonEmailArray[i].email !== null && jsonEmailArray[i].email != '') {
+                var row = $('<tr />');
+                let auxPrincipalEmail = 'Não';
+
+                if (jsonEmailArray[i].principalEmail === 1) {
+                    auxPrincipalEmail = 'Sim';
+                }
+
+                $("#tableEmail tbody").append(row);
+                row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonEmailArray[i].sequencialEmail + '"><i></i></label></td>'));
+                row.append($('<td class="text-nowrap" onclick="carregaEmail(' + jsonEmailArray[i].sequencialEmail + ');">' + jsonEmailArray[i].email + '</td>'));
+                row.append($('<td class="text-nowrap">' + auxPrincipalEmail + '</td>'));
+
+            }
+        }
+    }
+
+    function processDataEmail(node) {
+        var fieldId = node.getAttribute ? node.getAttribute('id') : '';
+        var fieldName = node.getAttribute ? node.getAttribute('name') : '';
+
+        if (fieldName !== '' && (fieldId === "email")) {
+            var valEmail = $("#email").val();
+            if (valEmail !== '') {
+                fieldName = "email";
+            }
+            return {
+                name: fieldName,
+                value: valEmail
+            };
+        }
+        if (fieldName !== '' && (fieldId === "principalEmail")) {
+            var principalEmail = 0;
+            if ($("#principalEmail").is(':checked') === true) {
+                principalEmail = 1;
+            }
+            return {
+                name: fieldName,
+                value: principalEmail
+            };
+        }
+        return false;
+    }
+
+    function carregaEmail(sequencialEmail) {
+        var arr = jQuery.grep(jsonEmailArray, function(item, i) {
+            return (item.sequencialEmail === sequencialEmail);
+        });
+
+        clearFormEmail();
+        if (arr.length > 0) {
+            var item = arr[0];
+            $("#sequencialEmail").val(item.sequencialEmail);
+            $("#emailId").val(item.emailId);
+            $("#email").val(item.email);
+        }
+    }
+
+    function clearFormEmail() {
+        $("#sequencialEmail").val("");
+        $("#emailId").val("");
+        $("#email").val("");
+        return true;
+    }
+
+    function excluirEmail() {
+        var arrSequencial = [];
+        $('#tableEmail input[type=checkbox]:checked').each(function() {
+            arrSequencial.push(parseInt($(this).val()));
+        });
+        if (arrSequencial.length > 0) {
+            for (i = jsonEmailArray.length - 1; i >= 0; i--) {
+                var obj = jsonEmailArray[i];
+                if (jQuery.inArray(obj.sequencialEmail, arrSequencial) > -1) {
+                    jsonEmailArray.splice(i, 1);
+                }
+            }
+            $("#jsonEmail").val(JSON.stringify(jsonEmailArray));
             fillTableEmail();
-            clearFormEmail();
-        }
+        } else
+            smartAlert("Erro", "Selecione pelo menos 1 Email para excluir.", "error");
+    }
 
-        function fillTableEmail() {
-            $("#tableEmail tbody").empty();
+    //-------------------------------------------------->dependentes<---------------------------------------------//
+    function validaDependentes() {
+        var contido = false;
+        var sequencial = +$('#sequencialDependentes').val();
+        var nomeDependentes = $('#nomeDependentes').val();
+        var cpfDependentes = $('#cpfDependentes').val();
+        var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
+        var tipo = $('#tipo').val();
 
-            for (var i = 0; i < jsonEmailArray.length; i++) {
-                if (jsonEmailArray[i].email !== null && jsonEmailArray[i].email != '') {
-                    var row = $('<tr />');
-                    let auxPrincipalEmail = 'Não';
 
-                    if (jsonEmailArray[i].principalEmail === 1) {
-                        auxPrincipalEmail = 'Sim';
-                    }
-
-                    $("#tableEmail tbody").append(row);
-                    row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonEmailArray[i].sequencialEmail + '"><i></i></label></td>'));
-                    row.append($('<td class="text-nowrap" onclick="carregaEmail(' + jsonEmailArray[i].sequencialEmail + ');">' + jsonEmailArray[i].email + '</td>'));
-                    row.append($('<td class="text-nowrap">' + auxPrincipalEmail + '</td>'));
-
-                }
-            }
-        }
-
-        function processDataEmail(node) {
-            var fieldId = node.getAttribute ? node.getAttribute('id') : '';
-            var fieldName = node.getAttribute ? node.getAttribute('name') : '';
-
-            if (fieldName !== '' && (fieldId === "email")) {
-                var valEmail = $("#email").val();
-                if (valEmail !== '') {
-                    fieldName = "email";
-                }
-                return {
-                    name: fieldName,
-                    value: valEmail
-                };
-            }
-            if (fieldName !== '' && (fieldId === "principalEmail")) {
-                var principalEmail = 0;
-                if ($("#principalEmail").is(':checked') === true) {
-                    principalEmail = 1;
-                }
-                return {
-                    name: fieldName,
-                    value: principalEmail
-                };
-            }
+        if (nomeDependentes === '') {
+            smartAlert("Erro", "Informe o nome do dependente", "error");
             return false;
         }
 
-        function carregaEmail(sequencialEmail) {
-            var arr = jQuery.grep(jsonEmailArray, function(item, i) {
-                return (item.sequencialEmail === sequencialEmail);
-            });
+        if (cpfDependentes === '') {
+            smartAlert("Erro", "Informe o CPF do dependente", "error");
+            return false;
+        }
 
-            clearFormEmail();
-            if (arr.length > 0) {
-                var item = arr[0];
-                $("#sequencialEmail").val(item.sequencialEmail);
-                $("#emailId").val(item.emailId);
-                $("#email").val(item.email);
+        if (dataNascimentoDependentes === '') {
+            smartAlert("Erro", "Informe a data de nascimento do dependente", "error");
+            return false;
+        }
+
+        if (tipo === '') {
+            smartAlert("Erro", "Informe o tipo de dependente", "error");
+            return false;
+        }
+
+        for (i = jsonDependentesArray.length - 1; i >= 0; i--) {
+            if ((jsonDependentesArray[i].nomeDependentes === nomeDependentes) && (jsonDependentesArray[i].sequencialDependentes !== sequencial)) {
+                contido = true;
+                break;
             }
         }
-
-        function clearFormEmail() {
-            $("#sequencialEmail").val("");
-            $("#emailId").val("");
-            $("#email").val("");
-            return true;
+        if (contido === true) {
+            smartAlert("Erro", "Dependente já cadastrado", "error");
+            clearFormDependentes();
+            return false;
         }
+        return true;
+    }
 
-        function excluirEmail() {
-            var arrSequencial = [];
-            $('#tableEmail input[type=checkbox]:checked').each(function() {
-                arrSequencial.push(parseInt($(this).val()));
-            });
-            if (arrSequencial.length > 0) {
-                for (i = jsonEmailArray.length - 1; i >= 0; i--) {
-                    var obj = jsonEmailArray[i];
-                    if (jQuery.inArray(obj.sequencialEmail, arrSequencial) > -1) {
-                        jsonEmailArray.splice(i, 1);
-                    }
-                }
-                $("#jsonEmail").val(JSON.stringify(jsonEmailArray));
-                fillTableEmail();
-            } else
-                smartAlert("Erro", "Selecione pelo menos 1 Email para excluir.", "error");
-        }
+    //adiciona dependentes
+    function adicionaDependentes() {
+        var item = $("#formDependentes").toObject({
+            mode: 'combine',
+            skipEmpty: false,
+            nodeCallback: processDataDependentes
+        });
 
-        //-------------------------------------------------->dependentes<---------------------------------------------//
-        function validaDependentes() {
-            var contido = false;
+        if (item["sequencialDependentes"] === '') {
+            if (jsonDependentesArray.length === 0) {
+                item["sequencialDependentes"] = 1;
+            } else {
+                item["sequencialDependentes"] = Math.max.apply(Math, jsonDependentesArray.map(function(o) {
+                    return o.sequencialDependentes;
+                })) + 1;
+            }
             var sequencial = +$('#sequencialDependentes').val();
+            var idFuncionario = $('#idFuncionario').val();
             var nomeDependentes = $('#nomeDependentes').val();
             var cpfDependentes = $('#cpfDependentes').val();
             var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
             var tipo = $('#tipo').val();
 
+        } else {
+            item["sequencialDependentes"] = +item["sequencialDependentes"];
+            item["idFuncionario"] = +item["idFuncionario"];
+            item["nomeDependentes"] = +item["nomeDependentes"];
+            item["cpfDependentes"] = +item["cpfDependentes"];
+            item["dataNascimentoDependentes"] = +item["dataNascimentoDependentes"];
+            item["tipo"] = +item["tipo"];
 
-            if (nomeDependentes === '') {
-                smartAlert("Erro", "Informe o nome do dependente", "error");
-                return false;
-            }
-
-            if (cpfDependentes === '') {
-                smartAlert("Erro", "Informe o CPF do dependente", "error");
-                return false;
-            }
-
-            if (dataNascimentoDependentes === '') {
-                smartAlert("Erro", "Informe a data de nascimento do dependente", "error");
-                return false;
-            }
-
-            if (tipo === '') {
-                smartAlert("Erro", "Informe o tipo de dependente", "error");
-                return false;
-            }
-
-            for (i = jsonDependentesArray.length - 1; i >= 0; i--) {
-                if ((jsonDependentesArray[i].nomeDependentes === nomeDependentes) && (jsonDependentesArray[i].sequencialDependentes !== sequencial)) {
-                    contido = true;
-                    break;
-                }
-            }
-            if (contido === true) {
-                smartAlert("Erro", "Dependente já cadastrado", "error");
-                clearFormDependentes();
-                return false;
-            }
-            return true;
         }
 
-        //adiciona dependentes
-        function adicionaDependentes() {
-            var item = $("#formDependentes").toObject({
-                mode: 'combine',
-                skipEmpty: false,
-                nodeCallback: processDataDependentes
-            });
-
-            if (item["sequencialDependentes"] === '') {
-                if (jsonDependentesArray.length === 0) {
-                    item["sequencialDependentes"] = 1;
-                } else {
-                    item["sequencialDependentes"] = Math.max.apply(Math, jsonDependentesArray.map(function(o) {
-                        return o.sequencialDependentes;
-                    })) + 1;
-                }
-                var sequencial = +$('#sequencialDependentes').val();
-                var idFuncionario = $('#idFuncionario').val();
-                var nomeDependentes = $('#nomeDependentes').val();
-                var cpfDependentes = $('#cpfDependentes').val();
-                var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
-                var tipo = $('#tipo').val();
-
-            } else {
-                item["sequencialDependentes"] = +item["sequencialDependentes"];
-                item["idFuncionario"] = +item["idFuncionario"];
-                item["nomeDependentes"] = +item["nomeDependentes"];
-                item["cpfDependentes"] = +item["cpfDependentes"];
-                item["dataNascimentoDependentes"] = +item["dataNascimentoDependentes"];
-                item["tipo"] = +item["tipo"];
-
+        var index = -1;
+        $.each(jsonDependentesArray, function(i, obj) {
+            if (+$('#sequencialDependentes').val() === obj.sequencialDependentes) {
+                index = i;
+                return false;
             }
+        });
 
-            var index = -1;
-            $.each(jsonDependentesArray, function(i, obj) {
-                if (+$('#sequencialDependentes').val() === obj.sequencialDependentes) {
-                    index = i;
-                    return false;
+        if (index >= 0)
+            jsonDependentesArray.splice(index, 1, item);
+        else
+            jsonDependentesArray.push(item);
+
+        $("#jsonDependentes").val(JSON.stringify(jsonDependentesArray));
+        fillTableDependentes();
+        clearFormDependentes();
+
+    }
+
+    //append-> adicionar um elemento no final da lista
+    function fillTableDependentes() {
+        $("#tableDependentes tbody").empty();
+        for (var i = 0; i < jsonDependentesArray.length; i++) {
+            if (jsonDependentesArray[i].nomeDependentes !== null && jsonDependentesArray[i].nomeDependentes != '') {
+                var tipo = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
+                var row = $('<tr />');
+
+                $("#tableDependentes tbody").append(row);
+                row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonDependentesArray[i].sequencialDependentes + '"><i></i></label></td>'));
+                row.append($('<td class="text-nowrap" onclick="carregaDependentes (' + jsonDependentesArray[i].sequencialDependentes + ');">' + jsonDependentesArray[i].nomeDependentes + '</td>'));
+                row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].cpfDependentes + '</td>'));
+                row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].dataNascimentoDependentes + '</td>'));
+                row.append($('<td class="text-nowrap">' + tipo + '</td>'));
+            }
+        }
+    }
+
+    function processDataDependentes(node) {
+        var fieldId = node.getAttribute ? node.getAttribute('id') : '';
+        var fieldName = node.getAttribute ? node.getAttribute('name') : '';
+
+        if (fieldName !== '' && (fieldId === "nomeDependentes")) {
+            var valNomeDependentes = $("#nomeDependentes").val();
+            if (valNomeDependentes !== '') {
+                fieldName = "nomeDependentes";
+            }
+            return {
+                name: fieldName,
+                value: valNomeDependentes
+            };
+        }
+
+        if (fieldName !== '' && (fieldId === "cpfDependentes")) {
+            var valCpfDependentes = $("#cpfDependentes").val();
+            if (valCpfDependentes !== '') {
+                fieldName = "cpfDependentes";
+            }
+            return {
+                name: fieldName,
+                value: valCpfDependentes
+            };
+        }
+
+        if (fieldName !== '' && (fieldId === "dataNascimentoDependentes")) {
+            var valDataNascimentoDependentes = $("#dataNascimentoDependentes").val();
+            if (valDataNascimentoDependentes !== '') {
+                fieldName = "dataNascimentoDependentes";
+            }
+            return {
+                name: fieldName,
+                value: valDataNascimentoDependentes
+            };
+        }
+
+        return false;
+    }
+
+    function carregaDependentes(sequencialDependentes) {
+        var arr = jQuery.grep(jsonDependentesArray, function(item, i) {
+            return (item.sequencialDependentes === sequencialDependentes);
+        });
+
+        clearFormDependentes();
+        if (arr.length > 0) {
+            var item = arr[0];
+            $("#sequencialDependentes").val(item.sequencialDependentes);
+            $("#idFuncionario").val(item.idFuncionario);
+            $("#nomeDependentes").val(item.nomeDependentes);
+            $("#cpfDependentes").val(item.cpfDependentes);
+            $("#dataNascimentoDependentes").val(item.dataNascimentoDependentes);
+            $("#tipo").val(item.tipo);
+        }
+    }
+
+    function clearFormDependentes() {
+        $("#sequencialDependentes").val("");
+        $("#idFuncionario").val("");
+        $("#nomeDependentes").val("");
+        $("#cpfDependentes").val("");
+        $("#dataNascimentoDependentes").val("");
+        $("#tipo").val("");
+        return true;
+    }
+
+    function excluirDependentes() {
+        var arrSequencial = [];
+        $('#tableDependentes input[type= checkbox]:checked').each(function() {
+            arrSequencial.push(parseInt($(this).val()));
+        });
+        if (arrSequencial.length > 0) {
+            for (i = jsonDependentesArray.length - 1; i >= 0; i--) {
+                var obj = jsonDependentesArray[i];
+                if (jQuery.inArray(obj.sequencialDependentes, arrSequencial) > -1) {
+                    jsonDependentesArray.splice(i, 1);
                 }
-            });
-
-            if (index >= 0)
-                jsonDependentesArray.splice(index, 1, item);
-            else
-                jsonDependentesArray.push(item);
-
+            }
             $("#jsonDependentes").val(JSON.stringify(jsonDependentesArray));
             fillTableDependentes();
-            clearFormDependentes();
-
-        }
-
-        //append-> adicionar um elemento no final da lista
-        function fillTableDependentes() {
-            $("#tableDependentes tbody").empty();
-            for (var i = 0; i < jsonDependentesArray.length; i++) {
-                if (jsonDependentesArray[i].nomeDependentes !== null && jsonDependentesArray[i].nomeDependentes != '') {
-                    var tipo = $("#tipo option[value = '" + jsonDependentesArray[i].tipo + "']").text();
-                    var row = $('<tr />');
-
-                    $("#tableDependentes tbody").append(row);
-                    row.append($('<td><label class="checkbox"><input type="checkbox" name="checkbox" value="' + jsonDependentesArray[i].sequencialDependentes + '"><i></i></label></td>'));
-                    row.append($('<td class="text-nowrap" onclick="carregaDependentes(' + jsonDependentesArray[i].sequencialDependentes + ');">' + jsonDependentesArray[i].nomeDependentes + '</td>'));
-                    row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].cpfDependentes + '</td>'));
-                    row.append($('<td class="text-nowrap">' + jsonDependentesArray[i].dataNascimentoDependentes + '</td>'));
-                    row.append($('<td class="text-nowrap">' + tipo + '</td>'));
-                }
-            }
-        }
-
-        function processDataDependentes(node) {
-            var fieldId = node.getAttribute ? node.getAttribute('id') : '';
-            var fieldName = node.getAttribute ? node.getAttribute('name') : '';
-
-            if (fieldName !== '' && (fieldId === "nomeDependentes")) {
-                var valNomeDependentes = $("#nomeDependentes").val();
-                if (valNomeDependentes !== '') {
-                    fieldName = "nomeDependentes";
-                }
-                return {
-                    name: fieldName,
-                    value: valNomeDependentes
-                };
-            }
-
-            if (fieldName !== '' && (fieldId === "cpfDependentes")) {
-                var valCpfDependentes = $("#cpfDependentes").val();
-                if (valCpfDependentes !== '') {
-                    fieldName = "cpfDependentes";
-                }
-                return {
-                    name: fieldName,
-                    value: valCpfDependentes
-                };
-            }
-
-            if (fieldName !== '' && (fieldId === "dataNascimentoDependentes")) {
-                var valDataNascimentoDependentes = $("#dataNascimentoDependentes").val();
-                if (valDataNascimentoDependentes !== '') {
-                    fieldName = "dataNascimentoDependentes";
-                }
-                return {
-                    name: fieldName,
-                    value: valDataNascimentoDependentes
-                };
-            }
-
-            return false;
-        }
-
-        function carregaDependentes(sequencialDependentes) {
-            var arr = jQuery.grep(jsonDependentesArray, function(item, i) {
-                return (item.sequencialDependentes === sequencialDependentes);
-            });
-
-            clearFormDependentes();
-            if (arr.length > 0) {
-                var item = arr[0];
-                $("#sequencialDependentes").val(item.sequencialDependentes);
-                $("#idFuncionario").val(item.idFuncionario);
-                $("#nomeDependentes").val(item.nomeDependentes);
-                $("#cpfDependentes").val(item.cpfDependentes);
-                $("#dataNascimentoDependentes").val(item.dataNascimentoDependentes);
-                $("#tipo").val(item.tipo);
-            }
-        }
-
-        function clearFormDependentes() {
-            $("#sequencialDependentes").val("");
-            $("#idFuncionario").val("");
-            $("#nomeDependentes").val("");
-            $("#cpfDependentes").val("");
-            $("#dataNascimentoDependentes").val("");
-            $("#tipo").val("");
-            return true;
-        }
-
-        function excluirDependentes() {
-            var arrSequencial = [];
-            $('#tableDependentes input[type= checkbox]:checked').each(function() {
-                arrSequencial.push(parseInt($(this).val()));
-            });
-            if (arrSequencial.length > 0) {
-                for (i = jsonDependentesArray.length - 1; i >= 0; i--) {
-                    var obj = jsonDependentesArray[i];
-                    if (jQuery.inArray(obj.sequencialDependentes, arrSequencial) > -1) {
-                        jsonDependentesArray.splice(i, 1);
-                    }
-                }
-                $("#jsonDependentes").val(JSON.stringify(jsonDependentesArray));
-                fillTableDependentes();
-            } else
-                smartAlert("Erro", "Selecione pelo menos 1 dependente para excluir.", "error");
-        }
+        } else
+            smartAlert("Erro", "Selecione pelo menos 1 dependente para excluir.", "error");
+    }
 </script>

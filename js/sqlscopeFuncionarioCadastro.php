@@ -131,19 +131,12 @@ function gravar()
         foreach ($nomeDependentes as $chave) {
             $xmlJsonDependentes = $xmlJsonDependentes . "<" . $nomeTabelaDependentes . ">";
             foreach ($chave as $campo => $valor) {
-
-                if ($campo == "dataNascimentoDependentes") {
-                    $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $utils->validaDataBanco($valor) . "</" . $campo . ">";
-                }
-                if ($campo != "dataNascimentoDependentes") {
-
-                    $xmlJsonDependentes = $xmlJsonDependentes . "<" . $campo . ">" . $valor . "</" . $campo . ">";
-                }
+                $xmlJsonDependentes = $xmlJsonDependentes . "<" .  $campo . ">" . $valor . "</" . $campo . ">";
             }
             $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeTabelaDependentes . ">";
         }
-
         $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXmlDependentes . ">";
+
     } else {
 
         $xmlJsonDependentes = '<?xml version="1.0"?>';
@@ -161,7 +154,7 @@ function gravar()
     $sql = "dbo.funcionario_atualiza 
         $id,
         $nome,
-        $ativo,
+        1,
         $cpf,
         $rg,
         $dataNascimento,
@@ -338,7 +331,7 @@ function recupera()
 
         $dependentesNum = $dependentesNum + 1;
         $arrayDependentes[] = array(
-            "sequencialDependentes" =>   $sequencialDependentes,
+            "sequencialDependentes" => $sequencialDependentes,
             "idFuncionario"  => $idFuncionario,
             "nomeDependentes"  => $nomeDependentes,
             "cpfDependentes"  => $cpfDependentes,

@@ -99,7 +99,8 @@ include("inc/nav.php");
                                                                     <input id="estadoCivil" maxlength="255" name="estadoCivil" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
-                                                            <section class="col col-1 hidden ">
+
+                                                            <section class="col col-1 hidden">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
                                                                     <select id="ativo" name="ativo">
@@ -108,7 +109,6 @@ include("inc/nav.php");
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
-                                                        </div>
                                                     </fieldset>
                                                 </div>
                                             </div>
@@ -234,8 +234,8 @@ include("inc/scripts.php");
             ("Delayed for 1 second.");
         }, 600);
         $("#btnGravar").prop('disabled', false);
-
         gravar();
+
     });
 
     $("#btnExcluir").on("click", function() {
@@ -292,6 +292,7 @@ include("inc/scripts.php");
         var ativo = $("#ativo").val();
 
         gravaEstadoCivil(codigo, estadoCivil, ativo);
+        $(location).attr('href', 'filtroEstadoCivil.php');
     }
 
     function excluir() {
@@ -310,6 +311,4 @@ include("inc/scripts.php");
         if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()".indexOf(chr) < 0)
             return false;
     };
-    
-    
 </script>

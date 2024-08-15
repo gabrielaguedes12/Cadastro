@@ -18,11 +18,6 @@ if ($funcao == 'recuperaGenero') {
 if ($funcao == 'excluirGenero') {
     call_user_func($funcao);
 }
-
-if ($funcao == 'recuperarDadosUsuario') {
-    call_user_func($funcao);
-}
-
 return;
 
 function verificaGenero()
@@ -70,7 +65,7 @@ function gravaGenero()
     $descricao = (string) $_POST["descricao"];
     $ativo = 1;
 
-    $sql = "SELECT descricao from dbo.genero where descricao = '$descricao' AND codigo != $id";
+    $sql = "SELECT descricao from dbo.genero where descricao = '$descricao' AND codigo = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -98,7 +93,6 @@ function gravaGenero()
         }
         echo $ret;
         return;
-
     } else {
         $mensagem = "Informe o Gênero";
         echo "failed#" . $mensagem . ' ';
@@ -116,7 +110,7 @@ function recuperaGenero()
     $codigo = $_POST["codigo"];
 
 
-    $sql = " SELECT codigo,descricao,ativo from dbo.genero WHERE (0 = 0) and codigo = $codigo ";
+    $sql = "SELECT codigo,descricao,ativo from dbo.genero WHERE (0 = 0) and codigo = $codigo ";
 
 
     $reposit = new reposit();

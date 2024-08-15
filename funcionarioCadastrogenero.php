@@ -101,12 +101,14 @@ include("inc/nav.php");
                                                                     <input id="descricao" maxlength="255" name="descricao" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
-
-                                                            <section class="col col-2 hidden">
+                                                            <section class="col col-1 hidden">
                                                                 <label class="label">Ativo</label>
-                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="ativo" maxlength="255" name="ativo" class="" type="text" placeholder=" " value="">
-                                                                </label>
+                                                                <label class="select">
+                                                                    <select id="ativo" name="ativo">
+                                                                        <option></option>
+                                                                        <option value="1">Sim</option>
+                                                                        <option value="0">Não</option>
+                                                                    </select><i></i>
                                                             </section>
                                                         </div>
 
@@ -204,7 +206,7 @@ include("inc/scripts.php");
         $("#descricao").on('change', function() {
             verificaGenero()
         });
-        
+
         carregaPagina();
     })
 
@@ -309,6 +311,7 @@ include("inc/scripts.php");
         var ativo = $("#ativo").val();
 
         gravaGenero(codigo, descricao, ativo);
+        $(location).attr('href', 'filtroGenero.php');
     }
 
     document.getElementById("descricao").onkeypress = function(e) {

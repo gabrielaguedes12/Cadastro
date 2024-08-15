@@ -75,7 +75,7 @@ include "js/girComum.php";
                     $descricao =  $row['descricao'];
                     $ativo = $row['ativo'];
 
-                    if ($ativo = 1) {
+                    if ($ativo == 1) {
                         $descricaoAtivo = "Sim";
                     } else {
                         $descricaoAtivo = "Não";

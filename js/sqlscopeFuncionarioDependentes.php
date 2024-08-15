@@ -66,7 +66,7 @@ function gravarDependentes()
     $tipo = (string) $_POST["tipo"];
     $ativo = 1;
     
-    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = '$tipo' AND codigo != $id";
+    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = '$tipo' AND codigo = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -112,7 +112,7 @@ function recuperaDependentes()
     $codigo = $_POST["codigo"];
 
 
-    $sql = " SELECT codigo,tipo,ativo from dbo.tipoDependentes WHERE (0 = 0) and codigo = $codigo ";
+    $sql = "SELECT codigo,tipo,ativo from dbo.tipoDependentes WHERE (0 = 0) and codigo = $codigo ";
 
 
     $reposit = new reposit();
@@ -137,7 +137,6 @@ function recuperaDependentes()
     echo "sucess#" . $out;
     return;
 }
-
 
 function excluirDependentes()
 {

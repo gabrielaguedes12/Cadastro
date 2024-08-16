@@ -1571,20 +1571,20 @@ include("inc/scripts.php");
                     return o.sequencialDependentes;
                 })) + 1;
             }
-            var sequencial = +$('#sequencialDependentes').val();
+            var sequencialDependentes = +$('#sequencialDependentes').val();
             var idFuncionario = $('#idFuncionario').val();
             var nomeDependentes = $('#nomeDependentes').val();
             var cpfDependentes = $('#cpfDependentes').val();
             var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
-            var tipo = $('#tipo').val();
+            var tipoDependentes = $('#tipoDependentes').val();
 
         } else {
             item["sequencialDependentes"] = +item["sequencialDependentes"];
             item["idFuncionario"] = +item["idFuncionario"];
-            item["nomeDependentes"] = +item["nomeDependentes"];
-            item["cpfDependentes"] = +item["cpfDependentes"];
-            item["dataNascimentoDependentes"] = +item["dataNascimentoDependentes"];
-            item["tipo"] = +item["tipo"];
+            item["nomeDependentes"] =  $('#nomeDependentes').val();
+            item["cpfDependentes"] =$('#cpfDependentes').val();
+            item["dataNascimentoDependentes"] = $('#dataNascimentoDependentes').val();
+            item["tipoDependentes"] = +item["tipoDependentes"];
 
         }
 

@@ -26,75 +26,25 @@ class PDF extends FPDF
     function Header()
     {
         $this->SetLineWidth(1);
-
-
         global $codigo;
-        $sqlLogo = "SELECT nome  FROM dbo.funcionario";
-        $reposit = new reposit();
-        $result = $reposit->RunQuery($sqlLogo);
 
+        $img = "./img/imageNTL.png";
 
-        // $rowLogo = $result[0];
-        // $logo = $rowLogo['parametroLogoRelatorio'];
-        // if ($logo != "") {
-        //     $img = explode('/', $logo);
-        //     $img = $img[1] . "/" . $img[2] . "/" . $img[3];
-        //     $img = str_replace('"', "'", $img);
+        $this->Image($img, 75, 8, 65, 25); #logo da empresa
+        $this->SetXY(100, 6);
 
+        $this->SetFont('Arial', 'B', 15); #Seta a Fonte
+        $this->SetXY(100, 40);
+        $this->Cell(15, -1, iconv('UTF-8', 'windows-1252', 'Funcionários Cadastrados'), 0, 0, "C", false, '');
+        $this->Ln(24); #Quebra de Linhas
 
-        //     list($x1, $y1) = getimagesize($img);
-        //     $x2 = 15;
-        //     $y2 = 10;
-        //     if (($x1 / $x2) < ($y1 / $y2)) {
-        //         $y2 = 5;
-        //     } else {
-        //         $x2 = 5;
-        //     }
-        //     $this->Cell(116, 1, "", 0, 1, 'C', $this->Image($img, $x2, $y2, 0, 15));
-        // }
-        // $sqlMarca = "SELECT parametroMarca 
-        // FROM Ntl.parametro ";
-        // $reposit = new reposit();
-        // $result = $reposit->RunQuery($sqlMarca);
-        // $rowMarca = $result[0];
-        // $logoMarca = $rowMarca['parametroMarca'];
-        // if ($logoMarca != "") {
-        //     $img1 = explode('/', $logoMarca);
-        //     $img1 = $img1[1] . "/" . $img1[2] . "/" . $img1[3];
-        //     $img1 = str_replace('"', "'", $img1);
-        //     list($x3, $y3) = getimagesize($img1);
-        //     $x4 = 1;
-        //     $y4 = 100;
-        //     if (($x3 / $x4) < ($y3 / $y4)) {
-        //         $y4 = 5;
-        //     } else {
-        //         $x4 = 50;
-        //     }
-        //     $this->Image($img1, $x4, $y4, 105, 105);
-        // }
-        //        if ($nomeLogoRelatorio != "")
-        //        $this->SetFont('Arial', '', 8); #Seta a Fonte
-        //        $dataAux = new DateTime();
-        //        $dataAux->setTimezone(new DateTimeZone("GMT-3"));
-        //        $dataAtualizada = $dataAux->format('d/m/Y H:i:s');
-        //        $this->Cell(288, 0, $dataAtualizada, 0, 0, 'R', 0); #Título do Relatório
-        // $this->Cell(116, 1, "", 0, 1, 'C', 0); #Título do Relatório
-        // $this->Image($img, 7, 5, 13, 13); #logo da empresa
-        // $this->SetXY(190, 5);
-        // $this->SetFont('Arial', 'B', 8); #Seta a Fonte
-
-        // $this->Cell(20, 7.5, 'Pagina ' . $this->pageno()); #Imprime o Número das Páginas
-
-        // $this->Ln(24); #Quebra de Linhas
-
-        // $this->SetTextColor(255, 192, 203);
+        $this->SetTextColor(255, 192, 203);
         // $this->Image('C:\inetpub\wwwroot\Cadastro\img\marcaDagua.png', 35, 45, 135, 145, 'PNG');
     }
     function Footer()
     {
         $this->SetY(-15);
         $this->Cell(0, 0, iconv('UTF-8', 'windows-1252', 'Página ' . $this->PageNo()), 0, 0, "C", 0, 0);
-
     }
 }
 $pdf = new PDF('P', 'mm', 'A4'); #Crio o PDF padrão RETRATO, Medida em Milímetro e papel A$
@@ -110,52 +60,75 @@ $fontWeight = 'B';
 
 $id = $_GET["id"];
 
-$sql = "SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero,cep,logradouro,numero,complemento,uf,bairro,cidade,emprego,pis
- from dbo.funcionario";
+$sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
+                LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
+                LEFT JOIN dbo.genero G ON G.codigo = F.idGenero ";
 
 $reposit = new reposit();
+$sql = $sql .  $where;
 $resultQuery = $reposit->RunQuery($sql);
 
-if ($resultQuery[0]) {
-    $id = $resultQuery['codigo'];
-    $nome = $resultQuery[0]['nome'];
-    $cpf = $resultQuery[2]['cpf'];
-    $rg = $resultQuery[0]['rg'];
-    $dataNascimento = $resultQuery[0]['dataNascimento'];
-    $estadoCivil = $resultQuery[0]['estadoCivil'];
-    $idGenero = $resultQuery[0]['idGenero'];
-    // $cep = $resultQuery[0]['cep'];
-    // $logradouro = $resultQuery[0]['logradouro'];
-    // $numero = $resultQuery[0]['numero'];
-    // $complemento = $resultQuery[0]['complemento'];
-    // $uf = $resultQuery[0]['uf'];
-    // $bairro = $resultQuery[0]['bairro'];
-    // $cidade = $resultQuery[0]['cidade'];
-    $emprego = $resultQuery[0]['emprego'];
-    $pis = $resultQuery[0]['pis'];
-}
+
+
+
 
 $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+//linhas
+$pdf->setY(45);
+$pdf->setX(18);
+$pdf->Cell(50, 8, "Nome", 1, 20, 'C', true, "");
 
-$pdf->setY(28);
-$pdf->setX(25);
-$pdf->Cell(180, 15, "", 1, 10, 'C', 0, "");
-$pdf->Cell(25, -1, iconv('UTF-8', 'windows-1252', $nome), 0, 0, "L", 0,"");
-$pdf->Cell(30, -1, iconv('UTF-8', 'windows-1252', $cpf), 0, 0, "L", 0,"");
-$pdf->Cell(40, -1, iconv('UTF-8', 'windows-1252', $rg), 0, 0, "L", 0,"");
-$pdf->Cell(40, -1, iconv('UTF-8', 'windows-1252', $dataNascimento), 0, 0, "L", 0,"");
-$pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $estadoCivil), 0, 0, "L", 0);
-$pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $idGenero), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $cep), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $logradouro), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $numero), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $complemento), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $uf), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $bairro), 0, 0, "L", 0);
-// $pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $cidade), 0, 0, "L", 0);
-$pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $emprego), 0, 0, "L", 0);
-$pdf->Cell(20, -1, iconv('UTF-8', 'windows-1252', $pis), 0, 0, "L", 0);
-// Dependentes nome, cpf  data e tipo
+$pdf->setY(45);
+$pdf->setX(68);
+$pdf->Cell(40, 8, "CPF", 1, 20, 'C', true, "");
+
+$pdf->setY(45);
+$pdf->setX(108);
+$pdf->Cell(30, 8, "Data Nascimento", 1, 20, 'C', true, "");
+
+$pdf->setY(45);
+$pdf->setX(138);
+$pdf->Cell(30, 8, "Estado Civil", 1, 20, 'C', true, "");
+
+$pdf->setY(45);
+$pdf->setX(168);
+$pdf->Cell(30, 8,iconv('UTF-8', 'windows-1252', 'Gênero'), 1, 20, 'C', true, "");
+
+//segunda linha
+
+
+  $y = $pdf->getY() ;
+
+foreach ($resultQuery as $row) {
+    $id =  $row['codigo'];
+    $nome =  $row['nome'];
+    $cpf =  $row['cpf'];
+    $dataNascimento =  $row['dataNascimento'];
+    $estadoCivil =  $row['estadoCivil'];
+    $descricao =  $row['descricao'];
+
+    $pdf->setY($y);
+    $pdf->setX(18);
+    $pdf->Cell(50, 10,iconv('UTF-8', 'windows-1252', $nome), 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(68);
+    $pdf->Cell(40, 10, $cpf, 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(108);
+    $pdf->Cell(30, 10, $dataNascimento, 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(138);
+    $pdf->Cell(30, 10, $estadoCivil, 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(168);
+    $pdf->Cell(30, 10, $descricao, 1, 20, 'C', 0, "");
+
+    $y = $pdf->getY();
+}
 
 $pdf->Ln(8);
 $pdf->Output();

@@ -93,37 +93,33 @@ $y = $pdf->getY();
 foreach ($resultQuery as $row) {
     $id =  $row['codigo'];
     $nome =  $row['nome'];
+
     $abreviarNome = explode(" ", $nome);
-
     $nomeAux =  "";
-
-    if (count($abreviarNome) > 2) {
-
-        for ($i = 0; (count($abreviarNome)) > $i; $i++) {            
+    if (count($abreviarNome) >= 3) {
+        for ($i = 0; (count($abreviarNome)) > $i; $i++) {
 
             if (strlen($abreviarNome[$i]) > 3) {
 
                 $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
 
-                if($nomeAux != ""){
+                if ($nomeAux != "") {
                     $nomeAux = $nomeAux . $abreviarNome[$i];
-                }
-                else{
+                }else {
                     $nomeAux = $abreviarNome[$i];
                 }
-
             }
         }
-    }else{
+    } else {
         $nomeAux = $abreviarNome[0];
     }
+    $nome = $abreviarNome[$i];
 
     $cpf =  $row['cpf'];
     $dataNascimento = $utils->validaData($row['dataNascimento']);
     $estadoCivil =  $row['estadoCivil'];
     $descricao =  $row['descricao'];
 
-    $nome = $abreviarNome;
 
     $pdf->setY($y);
     $pdf->setX(18);

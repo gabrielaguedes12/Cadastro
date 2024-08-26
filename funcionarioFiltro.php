@@ -255,7 +255,7 @@ include("inc/scripts.php");
         var estadoCivil = $('#estadoCivil').val();
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
-
+        
         $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
             nome: nome,
             cpf: cpf,
@@ -264,6 +264,7 @@ include("inc/scripts.php");
             estadoCivil: estadoCivil,
             descricao: descricao,
             ativo: ativo
+    
         });
     }
 

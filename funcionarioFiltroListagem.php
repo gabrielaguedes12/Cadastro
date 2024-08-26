@@ -30,7 +30,8 @@ include "js/girComum.php";
                 $estadoCivil = $_POST['estadoCivil'];
                 $descricao = $_POST['descricao'];
                 $ativo =  $_POST['ativo'];
-               
+                $pdf =  $_POST['pdf'];               
+
                 $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
                 LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
                 LEFT JOIN dbo.genero G ON G.codigo = F.idGenero WHERE (0 = 0)";
@@ -62,7 +63,7 @@ include "js/girComum.php";
                 if ($ativo != "") {
                     $where = $where . " AND (F.ativo = $ativo)";
                 }
-
+              
                 $sql = $sql .  $where;
 
                 $result = $reposit->RunQuery($sql);
@@ -81,6 +82,7 @@ include "js/girComum.php";
                     } else {
                         $descricaoAtivo = "Não";
                     }
+                    $pdf = $row['pdf'];
 
                     echo '<tr >';
                     echo '<td class="text-center">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
@@ -89,6 +91,8 @@ include "js/girComum.php";
                     echo '<td class="text-center">' . $estadoCivil . '</td>';
                     echo '<td class="text-center">' . $descricao . '</td>';
                     echo '<td class="text-center">' . $descricaoAtivo . '</td>';
+                    echo '<td class="text-center">' . $pdf . '</td>';
+
                     echo '</tr >';
                 }
                 ?>

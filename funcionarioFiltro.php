@@ -174,6 +174,9 @@ include("inc/nav.php");
                                             <button id="btnNovo" type="button" class="btn btn-primary pull-left" title="Novo">
                                                 <span class="fa fa-file"></span>
                                             </button>
+                                            <button type="button" id="btnPdf" class="btn btn-primary" aria-hidden="true" title="PDF" style="display:<?php echo $esconderBtnPdf ?>">
+                                                <span class="fa fa-file-pdf-o"></span>
+                                            </button>
                                         <?php } ?>
                                     </footer>
                             </div>
@@ -238,6 +241,10 @@ include("inc/scripts.php");
         $('#btnNovo').on("click", function() {
             novo();
         });
+
+        $("#btnPdf").on("click", function() {
+            pdf();
+        });
     });
 
     function listarFiltro() {
@@ -262,6 +269,10 @@ include("inc/scripts.php");
 
     function novo() {
         $(location).attr('href', 'funcionarioCadastro.php');
+    }
+
+    function pdf() {
+        $(location).attr('href', 'pdfGeral.php');
     }
 
     document.getElementById("nome").onkeypress = function(e) {

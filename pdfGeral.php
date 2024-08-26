@@ -1,6 +1,8 @@
 <?php
 
+include "js/girComum.php"; //lembrar do caminho
 include "repositorio.php";
+
 
 //initilize the page
 require_once("inc/init.php");
@@ -9,12 +11,6 @@ require_once("inc/config.ui.php");
 
 require('./fpdf/mc_table.php');
 // $codigoLogin = $_SESSION['codigo'];
-
-// if ((empty($_GET["id"])) || (!isset($_GET["id"])) || (is_null($_GET[""]))) {
-//     $mensagem = "Nenhum parâmetro de pesquisa foi informado.";
-//     echo "failed#" . $mensagem . ' ';
-//     return;
-// }
 
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
@@ -30,7 +26,7 @@ class PDF extends FPDF
 
         $img = "./img/imageNTL.png";
 
-        $this->Image($img, 75, 8, 65, 25); #logo da empresa
+        $this->Image($img, 73, 10, 70, 25); #logo da empresa
         $this->SetXY(100, 6);
 
         $this->SetFont('Arial', 'B', 15); #Seta a Fonte
@@ -64,13 +60,11 @@ $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, 
                 LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
                 LEFT JOIN dbo.genero G ON G.codigo = F.idGenero ";
 
+
 $reposit = new reposit();
+$utils = new comum();
 $sql = $sql .  $where;
 $resultQuery = $reposit->RunQuery($sql);
-
-
-
-
 
 $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
 //linhas
@@ -84,7 +78,7 @@ $pdf->Cell(40, 8, "CPF", 1, 20, 'C', true, "");
 
 $pdf->setY(45);
 $pdf->setX(108);
-$pdf->Cell(30, 8, "Data Nascimento", 1, 20, 'C', true, "");
+$pdf->Cell(30, 8, 'Data Nascimento', 1, 20, 'C', true, "");
 
 $pdf->setY(45);
 $pdf->setX(138);
@@ -92,24 +86,48 @@ $pdf->Cell(30, 8, "Estado Civil", 1, 20, 'C', true, "");
 
 $pdf->setY(45);
 $pdf->setX(168);
-$pdf->Cell(30, 8,iconv('UTF-8', 'windows-1252', 'Gênero'), 1, 20, 'C', true, "");
+$pdf->Cell(30, 8, iconv('UTF-8', 'windows-1252', 'Gênero'), 1, 20, 'C', true, "");
 
-//segunda linha
-
-
-  $y = $pdf->getY() ;
+$y = $pdf->getY();
 
 foreach ($resultQuery as $row) {
     $id =  $row['codigo'];
     $nome =  $row['nome'];
+    $abreviarNome = explode(" ", $nome);
+
+    $nomeAux =  "";
+
+    if (count($abreviarNome) > 2) {
+
+        for ($i = 0; (count($abreviarNome)) > $i; $i++) {            
+
+            if (strlen($abreviarNome[$i]) > 3) {
+
+                $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
+
+                if($nomeAux != ""){
+                    $nomeAux = $nomeAux . $abreviarNome[$i];
+                }
+                else{
+                    $nomeAux = $abreviarNome[$i];
+                }
+
+            }
+        }
+    }else{
+        $nomeAux = $abreviarNome[0];
+    }
+
     $cpf =  $row['cpf'];
-    $dataNascimento =  $row['dataNascimento'];
+    $dataNascimento = $utils->validaData($row['dataNascimento']);
     $estadoCivil =  $row['estadoCivil'];
     $descricao =  $row['descricao'];
 
+    $nome = $abreviarNome;
+
     $pdf->setY($y);
     $pdf->setX(18);
-    $pdf->Cell(50, 10,iconv('UTF-8', 'windows-1252', $nome), 1, 20, 'C', 0, "");
+    $pdf->Cell(50, 10, iconv('UTF-8', 'windows-1252', $nomeAux), 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(68);

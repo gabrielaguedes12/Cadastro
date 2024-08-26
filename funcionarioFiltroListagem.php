@@ -14,10 +14,11 @@ include "js/girComum.php";
                     <th class="text-center" style="min-width:30px;">Estado Civil</th>
                     <th class="text-center" style="min-width:30px;">Gênero</th>
                     <th class="text-center" style="min-width:10px;">Ativo</th>
-
+                    <th class="text-center" style="min-width:10px;">PDF</th>
                 </tr>
             </thead>
             <tbody>
+
                 <?php
                 $utils = new comum();
                 $reposit = new reposit();
@@ -26,10 +27,10 @@ include "js/girComum.php";
                 $cpf = $_POST['cpf'] ? $utils->formatarString($_POST['cpf']) : null;
                 $dataNascimentoInicial = $_POST['dataNascimentoInicial'] ? $utils->formataDataSql($_POST['dataNascimentoInicial']) : null;
                 $dataNascimentoFinal = $_POST['dataNascimentoFinal'] ? $utils->formataDataSql($_POST['dataNascimentoFinal']) : null;
-                $estadoCivil = $_POST['estadoCivil'] ;
-                $descricao = $_POST['descricao'] ;
+                $estadoCivil = $_POST['estadoCivil'];
+                $descricao = $_POST['descricao'];
                 $ativo =  $_POST['ativo'];
-
+               
                 $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
                 LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
                 LEFT JOIN dbo.genero G ON G.codigo = F.idGenero WHERE (0 = 0)";
@@ -70,7 +71,7 @@ include "js/girComum.php";
                     $id =  $row['codigo'];
                     $nome =  $row['nome'];
                     $cpf =  $row['cpf'];
-                    $dataNascimento =  $row['dataNascimento'];
+                    $dataNascimento = $utils->validaData($row['dataNascimento']);
                     $estadoCivil =  $row['estadoCivil'];
                     $descricao =  $row['descricao'];
                     $ativo = $row['ativo'];
@@ -91,6 +92,7 @@ include "js/girComum.php";
                     echo '</tr >';
                 }
                 ?>
+              
             </tbody>
         </table>
     </div>
@@ -170,6 +172,7 @@ include "js/girComum.php";
             "drawCallback": function(oSettings) {
                 responsiveHelper_datatable_tabletools.respond();
             }
+
         });
 
     });

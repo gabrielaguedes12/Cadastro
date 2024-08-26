@@ -496,6 +496,10 @@ include("inc/nav.php");
                                         </div>
 
                                         <footer>
+                                            <button type="button" id="btnPdf" class="btn btn-primary" aria-hidden="true" title="PDF" style="float:left; display:<?php echo $esconderBtnPdf ?>">
+                                                <span class="fa fa-file-pdf-o"></span>
+                                            </button>
+
                                             <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                                 <span class="fa fa-trash"></span>
                                             </button>
@@ -800,6 +804,15 @@ include("inc/scripts.php");
     $("#btnGravar").on("click", function() {
         gravar();
     });
+
+    
+    $("#btnPdf").on("click", function() {
+        pdf();
+    });
+
+    function pdf() {
+        $(location).attr('href', 'pdfIndividual.php');
+    }
 
     //telefone
     $('#btnAddTelefone').on("click", function() {
@@ -1581,8 +1594,8 @@ include("inc/scripts.php");
         } else {
             item["sequencialDependentes"] = +item["sequencialDependentes"];
             item["idFuncionario"] = +item["idFuncionario"];
-            item["nomeDependentes"] =  $('#nomeDependentes').val();
-            item["cpfDependentes"] =$('#cpfDependentes').val();
+            item["nomeDependentes"] = $('#nomeDependentes').val();
+            item["cpfDependentes"] = $('#cpfDependentes').val();
             item["dataNascimentoDependentes"] = $('#dataNascimentoDependentes').val();
             item["tipoDependentes"] = +item["tipoDependentes"];
 

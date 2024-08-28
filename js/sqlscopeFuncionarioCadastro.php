@@ -203,12 +203,10 @@ function recupera()
         return;
     }
 
-
     $id = $_POST["id"];
 
-
-    $sql = " SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero,cep,logradouro,numero,complemento,uf,bairro,cidade,emprego,pis
-    from dbo.funcionario WHERE (0 = 0) and codigo = $id ";
+    $sql = "SELECT codigo,nome,ativo,cpf,rg,dataNascimento,estadoCivil,idGenero,cep,logradouro,numero,complemento,uf,bairro,cidade,emprego,pis
+    from dbo.funcionario WHERE (0 = 0) and codigo = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -290,7 +288,7 @@ function recupera()
             $sequencialEmail = $row['sequencialEmail'];
             $email = $row['email'];
             $emailId = $row['emailId'];
-            $principal = $row['principal'];
+            $principalEmail = $row['principalEmail'];
             $idFunci = $row['idFunci'];
         }
 
@@ -299,7 +297,7 @@ function recupera()
             "sequencialEmail" =>   $sequencialEmail,
             "email"  => $email,
             "emailId"  => $emailId,
-            "principal"  => $principal,
+            "principalEmail"  => $principalEmail,
             "idFunci"  => $idFunci
         );
     }
@@ -325,7 +323,7 @@ function recupera()
             $idFuncionario = $row['idFuncionario'];
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
-            $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
+            $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
             $tipo = $row['tipo'];
         }
 

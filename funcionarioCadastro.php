@@ -811,7 +811,8 @@ include("inc/scripts.php");
     });
 
     function pdf() {
-        $(location).attr('href', 'pdfIndividual.php');
+         var id = $('#codigo').val();
+        $(location).attr('href', 'pdfIndividual.php?id=' + id);
     }
 
     //telefone

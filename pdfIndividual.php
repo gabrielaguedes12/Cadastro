@@ -1,7 +1,7 @@
 <?php
 
 include "repositorio.php";
-include "js/girComum.php"; 
+include "js/girComum.php";
 //initilize the page
 require_once("inc/init.php");
 //require UI configuration (nav, ribbon, etc.)
@@ -60,88 +60,38 @@ $fontWeight = 'B';
 
 $id = $_GET["id"];
 
-$sql = "SELECT F.codigo, nome, cpf,rg, dataNascimento,T.telefone, M.email,cep,logradouro,numero,complemento,uf,bairro,cidade,emprego,pis,E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
-				LEFT JOIN dbo.telefone T ON T.idFuncio= F.codigo 
-				LEFT JOIN dbo.email M ON M.idFunci= F.codigo                 	
-				LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
-                LEFT JOIN dbo.genero G ON G.codigo = F.idGenero ";
+$sql = "SELECT codigo,nome,ativo,cpf,rg,dataNascimento,cep,logradouro,numero,complemento,uf,bairro,cidade
+    from dbo.funcionario 
+    WHERE (0 = 0) and codigo = $id";
 
 $reposit = new reposit();
 $utils = new comum();
 $sql = $sql .  $where;
 $resultQuery = $reposit->RunQuery($sql);
 
+$y = 45;
+//dados do funcionario
 $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
 
-
-$pdf->setY(100);
-$pdf->setX(15);
-$pdf->Cell(40, 8, "Telefone", 1, 20, 'C', true, "");
-
-$pdf->setY(100);
-$pdf->setX(55);
-$pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
-
-$pdf->setY(100);
-$pdf->setX(75);
-$pdf->Cell(20, 8, 'Whatsapp', 1, 20, 'C', true, "");
-
-$pdf->setY(100);
-$pdf->setX(125);
-$pdf->Cell(50, 8, "Email", 1, 20, 'C', true, "");
-
-$pdf->setY(100);
-$pdf->setX(175);
-$pdf->Cell(20, 8, 'Principal', 1, 20, 'C', true, "");
-
-$y = $pdf->getY();
-
-//linhas
-$pdf->setY(130);
+$pdf->setY($y);
 $pdf->setX(5);
-$pdf->Cell(25, 8, "CEP", 1, 20, 'C', true, "");
+$pdf->Cell(50, 8, iconv('UTF-8', 'windows-1252', "Nome"), 1, 20, 'C', true, "");
 
-$pdf->setY(130);
-$pdf->setX(30);
-$pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252',"Logradouro"), 1, 20, 'C', true, "");
+$pdf->setY($y);
+$pdf->setX(55);
+$pdf->Cell(50, 8, "CPF", 1, 20, 'C', true, "");
 
-$pdf->setY(130);
-$pdf->setX(90);
-$pdf->Cell(20, 8, iconv('UTF-8', 'windows-1252','Número'), 1, 20, 'C', true, "");
 
-$pdf->setY(130);
-$pdf->setX(110);
-$pdf->Cell(30, 8,iconv('UTF-8', 'windows-1252', "Complemento"), 1, 20, 'C', true, "");
+$pdf->setY($y);
+$pdf->setX(105);
+$pdf->Cell(50, 8, 'RG', 1, 20, 'C', true, "");
 
-$pdf->setY(130);
-$pdf->setX(140);
-$pdf->Cell(10, 8, 'UF', 1, 20, 'C', true, "");
 
-$pdf->setY(130);
-$pdf->setX(150);
-$pdf->Cell(30, 8, 'Bairro', 1, 20, 'C', true, "");
 
-$pdf->setY(130);
-$pdf->setX(180);
-$pdf->Cell(25, 8, 'Cidade', 1, 20, 'C', true, "");
+$pdf->setY($y);
+$pdf->setX(155);
+$pdf->Cell(50, 8, "Data de nascimento", 1, 20, 'C', true, "");
 
-$y = $pdf->getY();
-
-$pdf->setY(230);
-$pdf->setX(15);
-$pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252',"Nome Dependente"), 1, 20, 'C', true, "");
-
-$pdf->setY(230);
-$pdf->setX(75);
-$pdf->Cell(40, 8, "CPF", 1, 20, 'C', true, "");
-
-$pdf->setY(230);
-$pdf->setX(115);
-$pdf->Cell(30, 8, 'Data Nascimento', 1, 20, 'C', true, "");
-
-$pdf->setY(230);
-$pdf->setX(145);
-$pdf->Cell(30, 8,iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
 
 
 foreach ($resultQuery as $row) {
@@ -150,13 +100,6 @@ foreach ($resultQuery as $row) {
     $cpf = $row['cpf'];
     $rg = $row['rg'];
     $dataNascimento = $utils->validaData($row['dataNascimento']);
-    $estadoCivil = $row['estadoCivil'];
-    $idGenero = $row['idGenero'];
-    $telefone = $row['telefone'];
-    $principal = $row['principal'];
-    $whats = $row['whats'];
-    $email = $row['email'];
-    $principal = $row['principal'];
     $cep = $row['cep'];
     $logradouro = $row['logradouro'];
     $numero = $row['numero'];
@@ -164,79 +107,222 @@ foreach ($resultQuery as $row) {
     $uf = $row['uf'];
     $bairro = $row['bairro'];
     $cidade = $row['cidade'];
-    $nomeDependentes = $row['nomeDependentes'];
-    $cpfDependentes = $row['cpfDependentes'];
-    $dataNascimentoDependentes = $row['dataNascimentoDependentes'];
-    $tipo = $row['tipo'];
-    
-    //telefone e email
+
+
+    $pdf->setY($y + 8);
+    $pdf->setX(5);
+    $pdf->Cell(50, 10, iconv('UTF-8', 'windows-1252', $nome), 1, 20, 'C', 0, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(55);
+    $pdf->Cell(50, 10, $cpf, 1, 20, 'C', 0, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(105);
+    $pdf->Cell(50, 10, $rg, 1, 20, 'C', 0, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(155);
+    $pdf->Cell(50, 10, iconv('UTF-8', 'windows-1252', $dataNascimento), 1, 20, 'C', 0, "");
+
+    // //endereço
+
+    $y = 125;
+
     $pdf->setY($y);
+    $pdf->setX(5);
+    $pdf->Cell(25, 8, "CEP", 1, 20, 'C', true, "");
+
+    $pdf->setY($y + 8);
     $pdf->setX(5);
     $pdf->Cell(25, 10, $cep, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(30);
-    $pdf->Cell(60, 10,iconv('UTF-8', 'windows-1252', $logradouro), 1, 20, 'C', 0, "");
+    $pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252', "Logradouro"), 1, 20, 'C', true, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(30);
+    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $logradouro), 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
+    $pdf->setX(90);
+    $pdf->Cell(20, 8, iconv('UTF-8', 'windows-1252', 'Número'), 1, 20, 'C', true, "");
+
+    $pdf->setY($y + 8);
     $pdf->setX(90);
     $pdf->Cell(20, 10, $numero, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(110);
-    $pdf->Cell(30, 10,iconv('UTF-8', 'windows-1252', $complemento), 1, 20, 'C', 0, "");
+    $pdf->Cell(30, 8, iconv('UTF-8', 'windows-1252', "Complemento"), 1, 20, 'C', true, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(110);
+    $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252', $complemento), 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(140);
-    $pdf->Cell(10, 10, $uf, 1, 20, 'C', 0, "");
+    $pdf->Cell(10, 8, 'UF', 1, 20, 'C', true, "");
 
-    //endereço
-    $pdf->setY($y);
-    $pdf->setX(5);
-    $pdf->Cell(25, 10, $cep, 1, 20, 'C', 0, "");
-
-    $pdf->setY($y);
-    $pdf->setX(30);
-    $pdf->Cell(60, 10,iconv('UTF-8', 'windows-1252', $logradouro), 1, 20, 'C', 0, "");
-
-    $pdf->setY($y);
-    $pdf->setX(90);
-    $pdf->Cell(20, 10, $numero, 1, 20, 'C', 0, "");
-
-    $pdf->setY($y);
-    $pdf->setX(110);
-    $pdf->Cell(30, 10,iconv('UTF-8', 'windows-1252', $complemento), 1, 20, 'C', 0, "");
-
-    $pdf->setY($y);
+    $pdf->setY($y + 8);
     $pdf->setX(140);
     $pdf->Cell(10, 10, $uf, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(150);
-    $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252',$bairro), 1, 20, 'C', 0, "");
+    $pdf->Cell(30, 8, 'Bairro', 1, 20, 'C', true, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(150);
+    $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252', $bairro), 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(180);
-    $pdf->Cell(25, 10,iconv('UTF-8', 'windows-1252', $cidade), 1, 20, 'C', 0, "");
+    $pdf->Cell(25, 8, 'Cidade', 1, 20, 'C', true, "");
+
+    $pdf->setY($y + 8);
+    $pdf->setX(180);
+    $pdf->Cell(25, 10, iconv('UTF-8', 'windows-1252', $cidade), 1, 20, 'C', 0, "");
 
     $y = $pdf->getY();
+}
 
-    //dependente
+$sql = "SELECT t.codigo, t.idFuncio, t.principal, t.sequencialTel, t.telefone, t.telefoneId, t.whats
+        FROM telefone t
+         WHERE idFuncio = $id ";
+
+$reposit = new reposit();
+$utils = new comum();
+$sql = $sql .  $where;
+$resultQuery = $reposit->RunQuery($sql);
+
+//contato
+$pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+$pdf->setY(85);
+$pdf->setX(15);
+$pdf->Cell(50, 8, "Telefone", 1, 20, 'C', true, "");
+
+$pdf->setY(85);
+$pdf->setX(65);
+$pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
+
+$pdf->setY(85);
+$pdf->setX(85);
+$pdf->Cell(20, 8, "Whatsapp", 1, 20, 'C', true, "");
+
+$y = $pdf->getY();
+
+foreach ($resultQuery as $row) {
+    $sequencialTel = $row['sequencialTel'];
+    $telefone = $row['telefone'];
+    $telefoneId = $row['telefoneId'];
+    $principal = $row['principal'];
+    $whats = $row['whats'];
+    $idFuncio = $row['idFuncio'];
+    // telefone e email
     $pdf->setY($y);
-    $pdf->setX(110);
-    $pdf->Cell(30, 10,iconv('UTF-8', 'windows-1252', $complemento), 1, 20, 'C', 0, "");
+    $pdf->setX(15);
+    $pdf->Cell(50, 10, $telefone, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
-    $pdf->setX(140);
-    $pdf->Cell(10, 10, $uf, 1, 20, 'C', 0, "");
+    $pdf->setX(65);
+    $pdf->Cell(20, 10, $principal, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
-    $pdf->setX(150);
-    $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252',$bairro), 1, 20, 'C', 0, "");
+    $pdf->setX(85);
+    $pdf->Cell(20, 10, $whats, 1, 20, 'C', 0, "");
+
+    $y = $pdf->getY();
+}
+
+$sql = "SELECT t.codigo,t.idFunci, t.principalEmail,t.sequencialEmail, t.email,t.emailId
+        FROM email t
+        WHERE idFunci = $id";
+
+$reposit = new reposit();
+$utils = new comum();
+$sql = $sql .  $where;
+$resultQuery = $reposit->RunQuery($sql);
+
+$pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+$pdf->setY(85);
+$pdf->setX(115);
+$pdf->Cell(60, 8, "Email", 1, 20, 'C', true, "");
+
+$pdf->setY(85);
+$pdf->setX(175);
+$pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
+$y = $pdf->getY();
+
+foreach ($resultQuery as $row) {
+    $sequencialEmail = $row['sequencialEmail'];
+    $email = $row['email'];
+    $emailId = $row['emailId'];
+    $principalEmail = $row['principalEmail'];
+    $idFunci = $row['idFunci'];
 
     $pdf->setY($y);
-    $pdf->setX(180);
-    $pdf->Cell(25, 10,iconv('UTF-8', 'windows-1252', $cidade), 1, 20, 'C', 0, "");
+    $pdf->setX(115);
+    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $email), 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(175);
+    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $principalEmail), 1, 20, 'C', 0, "");
+
+    $y = $pdf->getY();
+}
+
+$sql = "SELECT t.codigo,t.sequencialDependentes,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
+FROM dependentes t 
+ WHERE idFuncionario = $id";
+
+$reposit = new reposit();
+$utils = new comum();
+$sql = $sql .  $where;
+$resultQuery = $reposit->RunQuery($sql);
+
+$pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+$pdf->setY(165);
+$pdf->setX(15);
+$pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252', "Nome Dependente"), 1, 20, 'C', true, "");
+
+$pdf->setY(165);
+$pdf->setX(75);
+$pdf->Cell(50, 8, "CPF", 1, 20, 'C', true, "");
+
+$pdf->setY(165);
+$pdf->setX(125);
+$pdf->Cell(40, 8, 'Data Nascimento', 1, 20, 'C', true, "");
+
+$pdf->setY(165);
+$pdf->setX(165);
+$pdf->Cell(30, 8, iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
+$y = $pdf->getY();
+
+foreach ($resultQuery as $row) {
+    $sequencialDependentes = $row['sequencialDependentes'];
+    $idFuncionario = $row['idFuncionario'];
+    $nomeDependentes = $row['nomeDependentes'];
+    $cpfDependentes = $row['cpfDependentes'];
+    $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
+    $tipo = $row['tipo'];
+
+    $pdf->setY($y);
+    $pdf->setX(15);
+    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $nomeDependentes), 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(75);
+    $pdf->Cell(50, 10, $cpfDependentes, 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(125);
+    $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $dataNascimentoDependentes), 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(165);
+    $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252', $tipo), 1, 20, 'C', 0, "");
 
     $y = $pdf->getY();
 }

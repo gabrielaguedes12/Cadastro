@@ -260,9 +260,6 @@ include("inc/scripts.php");
         voltar();
     });
 
-
-
-
     function carregaPagina() {
         var urlx = window.document.URL.toString();
         var params = urlx.split("?");
@@ -309,14 +306,13 @@ include("inc/scripts.php");
         }
 
         excluirDependentes(id);
-        $(location).attr('href', 'filtroDependentes.php');
-        
+        $(location).attr('href', 'filtroDependentes.php');       
 
     }
 
     document.getElementById("tipo").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/, ".indexOf(chr) < 0)
             return false;
     };
 </script>

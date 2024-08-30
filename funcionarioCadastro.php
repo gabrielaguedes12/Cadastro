@@ -135,6 +135,7 @@ include("inc/nav.php");
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
                                                                         <option hidden select> Selecione </option>
+                                                                        <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -156,6 +157,7 @@ include("inc/nav.php");
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
                                                                         <option hidden select>Selecione</option>
+                                                                        <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
@@ -496,11 +498,11 @@ include("inc/nav.php");
                                         </div>
 
                                         <footer>
-                                            <button type="button" id="btnPdf" class="btn btn-primary" aria-hidden="true" title="PDF" style="float:left; display:<?php echo $esconderBtnPdf ?>">
+                                            <button type="button" id="btnPdf" class="btn btn-primary hidden" aria-hidden="true" title="PDF" style="float:left; display:<?php echo $esconderBtnPdf ?>">
                                                 <span class="fa fa-file-pdf-o"></span>
                                             </button>
 
-                                            <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                            <button type="button" id="btnExcluir" class="btn btn-danger hidden" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                                 <span class="fa fa-trash"></span>
                                             </button>
 
@@ -803,6 +805,7 @@ include("inc/scripts.php");
 
     $("#btnGravar").on("click", function() {
         gravar();
+        $(location).attr('href', 'funcionarioFiltro.php');
     });
 
     

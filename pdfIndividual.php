@@ -108,10 +108,35 @@ foreach ($resultQuery as $row) {
     $bairro = $row['bairro'];
     $cidade = $row['cidade'];
 
+    $abreviarNome = explode(" ", $nome);
+    $nomeAux =  "";
+    if (count($abreviarNome) >= 3) {
+        for ($i = 0; (count($abreviarNome)) > $i; $i++) {
+
+            if ($i == 0) {
+                $nomeAux = ucfirst($abreviarNome[$i]) . " ";
+            }
+            if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i<count($abreviarNome) - 1)) {
+
+                $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
+
+                if ($nomeAux != "") {
+                    $nomeAux = $nomeAux . ucfirst($abreviarNome[$i]) . " ";
+                } else {
+                    $nomeAux =  ucfirst($abreviarNome[$i]) . " ";
+                }
+            }
+            if($i == count($abreviarNome) - 1 ){
+                $nomeAux = $nomeAux . ucfirst($abreviarNome[$i]);
+            }
+        }
+    } else{
+        $nomeAux = $nome;
+    }
 
     $pdf->setY($y + 8);
     $pdf->setX(5);
-    $pdf->Cell(50, 10, iconv('UTF-8', 'windows-1252', $nome), 1, 20, 'C', 0, "");
+    $pdf->Cell(50, 10, iconv('UTF-8', 'windows-1252', $nomeAux), 1, 20, 'C', 0, "");
 
     $pdf->setY($y + 8);
     $pdf->setX(55);
@@ -187,10 +212,12 @@ foreach ($resultQuery as $row) {
 
     $y = $pdf->getY();
 }
+$id = $_GET["id"];
 
-$sql = "SELECT t.codigo, t.idFuncio, t.principal, t.sequencialTel, t.telefone, t.telefoneId, t.whats
+$sql = "SELECT t.codigo, t.idFuncio, t.principal, CASE WHEN t.principal = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipal , t.sequencialTel, t.telefone, t.telefoneId, t.whats,
+CASE WHEN t.whats = 1 THEN 'Sim' ELSE 'Não' END descricaoWhats	
         FROM telefone t
-         WHERE idFuncio = $id ";
+          WHERE (0 = 0) and idFuncio = $id ";
 
 $reposit = new reposit();
 $utils = new comum();
@@ -216,29 +243,31 @@ $y = $pdf->getY();
 foreach ($resultQuery as $row) {
     $sequencialTel = $row['sequencialTel'];
     $telefone = $row['telefone'];
+    $descricaoPrincipal = $row['descricaoPrincipal'];
     $telefoneId = $row['telefoneId'];
-    $principal = $row['principal'];
-    $whats = $row['whats'];
+    $descricaoWhats = $row['descricaoWhats'];
     $idFuncio = $row['idFuncio'];
-    // telefone e email
+
+    // telefone 
     $pdf->setY($y);
     $pdf->setX(15);
     $pdf->Cell(50, 10, $telefone, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(65);
-    $pdf->Cell(20, 10, $principal, 1, 20, 'C', 0, "");
+    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoPrincipal), 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
     $pdf->setX(85);
-    $pdf->Cell(20, 10, $whats, 1, 20, 'C', 0, "");
+    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoWhats), 1, 20, 'C', 0, "");
 
     $y = $pdf->getY();
 }
 
-$sql = "SELECT t.codigo,t.idFunci, t.principalEmail,t.sequencialEmail, t.email,t.emailId
+$sql = "SELECT t.codigo,t.idFunci, t.principalEmail,
+		CASE WHEN t.principalEmail = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipalEmail,t.sequencialEmail, t.email,t.emailId
         FROM email t
-        WHERE idFunci = $id";
+        WHERE (0 = 0) and idFunci = $id";
 
 $reposit = new reposit();
 $utils = new comum();
@@ -259,7 +288,7 @@ foreach ($resultQuery as $row) {
     $sequencialEmail = $row['sequencialEmail'];
     $email = $row['email'];
     $emailId = $row['emailId'];
-    $principalEmail = $row['principalEmail'];
+    $descricaoPrincipalEmail = $row['descricaoPrincipalEmail'];
     $idFunci = $row['idFunci'];
 
     $pdf->setY($y);
@@ -268,14 +297,15 @@ foreach ($resultQuery as $row) {
 
     $pdf->setY($y);
     $pdf->setX(175);
-    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $principalEmail), 1, 20, 'C', 0, "");
+    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoPrincipalEmail), 1, 20, 'C', 0, "");
 
     $y = $pdf->getY();
 }
 
-$sql = "SELECT t.codigo,t.sequencialDependentes,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
-FROM dependentes t 
- WHERE idFuncionario = $id";
+$id = $_GET["id"];
+$sql = "SELECT D.codigo,D.sequencialDependentes,D.idFuncionario,D.nomeDependentes,D.cpfDependentes,D.dataNascimentoDependentes,TD.tipo 
+FROM dbo.dependentes D
+LEFT JOIN dbo.tipoDependentes TD ON D.tipo = TD.codigo";
 
 $reposit = new reposit();
 $utils = new comum();
@@ -284,20 +314,20 @@ $resultQuery = $reposit->RunQuery($sql);
 
 $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
 $pdf->setY(165);
-$pdf->setX(15);
+$pdf->setX(10);
 $pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252', "Nome Dependente"), 1, 20, 'C', true, "");
 
 $pdf->setY(165);
-$pdf->setX(75);
+$pdf->setX(70);
 $pdf->Cell(50, 8, "CPF", 1, 20, 'C', true, "");
 
 $pdf->setY(165);
-$pdf->setX(125);
+$pdf->setX(120);
 $pdf->Cell(40, 8, 'Data Nascimento', 1, 20, 'C', true, "");
 
 $pdf->setY(165);
-$pdf->setX(165);
-$pdf->Cell(30, 8, iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
+$pdf->setX(160);
+$pdf->Cell(40, 8, iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
 $y = $pdf->getY();
 
 foreach ($resultQuery as $row) {
@@ -308,21 +338,47 @@ foreach ($resultQuery as $row) {
     $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
     $tipo = $row['tipo'];
 
-    $pdf->setY($y);
-    $pdf->setX(15);
-    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $nomeDependentes), 1, 20, 'C', 0, "");
+    $abreviarNome = explode(" ", $nomeDependentes);
+    $nomeAuxDependentes =  "";
+    if (count($abreviarNome) >= 3) {
+        for ($i = 0; (count($abreviarNome)) > $i; $i++) {
+
+            if ($i == 0) {
+                $nomeAuxDependentes = ucfirst($abreviarNome[$i]) . " ";
+            }
+            if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i<count($abreviarNome) - 1)) {
+
+                $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
+
+                if ($nomeAuxDependentes != "") {
+                    $nomeAuxDependentes = $nomeAuxDependentes . ucfirst($abreviarNome[$i]) . " ";
+                } else {
+                    $nomeAuxDependentes =  ucfirst($abreviarNome[$i]) . " ";
+                }
+            }
+            if($i == count($abreviarNome) - 1 ){
+                $nomeAuxDependentes = $nomeAuxDependentes . ucfirst($abreviarNome[$i]);
+            }
+        }
+    } else{
+        $nomeAuxDependentes = $nomeDependentes;
+    }
 
     $pdf->setY($y);
-    $pdf->setX(75);
+    $pdf->setX(10);
+    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $nomeAuxDependentes), 1, 20, 'C', 0, "");
+
+    $pdf->setY($y);
+    $pdf->setX(70);
     $pdf->Cell(50, 10, $cpfDependentes, 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
-    $pdf->setX(125);
+    $pdf->setX(120);
     $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $dataNascimentoDependentes), 1, 20, 'C', 0, "");
 
     $pdf->setY($y);
-    $pdf->setX(165);
-    $pdf->Cell(30, 10, iconv('UTF-8', 'windows-1252', $tipo), 1, 20, 'C', 0, "");
+    $pdf->setX(160);
+    $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $tipo), 1, 20, 'C', 0, "");
 
     $y = $pdf->getY();
 }

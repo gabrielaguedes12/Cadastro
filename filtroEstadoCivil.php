@@ -74,7 +74,7 @@ include("inc/nav.php");
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseFiltroEstadoCivil" class="">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
-                                                        Filtro
+                                                        Cadastro
                                                     </a>
                                                 </h4>
                                             </div>
@@ -102,7 +102,7 @@ include("inc/nav.php");
                                                                         }
                                                                         ?>
 
-                                                                    </select>
+                                                                    </select><i></i>
                                                                 </label>
                                                             </section>
 
@@ -210,6 +210,4 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
-
-   
 </script>

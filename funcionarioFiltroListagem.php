@@ -8,7 +8,7 @@ include "js/girComum.php";
         <table id="tableSearchResult" class="table table-bordered table-striped table-condensed table-hover dataTable">
             <thead>
                 <tr role="row">
-                    <th class="text-center" style="min-width:35px;">Nome</th>
+                    <th class="text-left" style="min-width:35px;">Nome</th>
                     <th class="text-center" style="min-width:30px;">CPF</th>
                     <th class="text-center" style="min-width:25px;">Data de Nascimento</th>
                     <th class="text-center" style="min-width:30px;">Estado Civil</th>
@@ -30,7 +30,7 @@ include "js/girComum.php";
                 $estadoCivil = $_POST['estadoCivil'];
                 $descricao = $_POST['descricao'];
                 $ativo =  $_POST['ativo'];
-                $pdf =  $_POST['pdf'];               
+                $pdf =  $_POST['pdf'];
 
                 $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
                 LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
@@ -63,7 +63,7 @@ include "js/girComum.php";
                 if ($ativo != "") {
                     $where = $where . " AND (F.ativo = $ativo)";
                 }
-              
+
                 $sql = $sql .  $where;
 
                 $result = $reposit->RunQuery($sql);
@@ -82,21 +82,20 @@ include "js/girComum.php";
                     } else {
                         $descricaoAtivo = "Não";
                     }
+
                     $pdf = $row['pdf'];
 
                     echo '<tr >';
-                    echo '<td class="text-center">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
+                    echo '<td class="text-left">  <a href="funcionarioCadastro.php?id=' . $id . '">' . $nome;
                     echo '<td class="text-center">' . $cpf . '</td>';
                     echo '<td class="text-center">' . $dataNascimento . '</td>';
                     echo '<td class="text-center">' . $estadoCivil . '</td>';
                     echo '<td class="text-center">' . $descricao . '</td>';
                     echo '<td class="text-center">' . $descricaoAtivo . '</td>';
-                    echo '<td class="text-center">' . $pdf . '</td>';
-
+                    echo '<td class="text-center"><a href="pdfIndividual.php?id=' . $id  .'" class="btnPdf btn btn-primary"><i class="fa fa-file-pdf-o"></i></button></td>';
                     echo '</tr >';
                 }
                 ?>
-              
             </tbody>
         </table>
     </div>

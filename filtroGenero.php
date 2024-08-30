@@ -74,7 +74,7 @@ include("inc/nav.php");
                                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseFiltroGenero" class="">
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
-                                                        Filtro
+                                                        Cadastro
                                                     </a>
                                                 </h4>
                                             </div>
@@ -102,8 +102,7 @@ include("inc/nav.php");
                                                                             echo "<option value='$codigo'>$descricao</option>";
                                                                         }
                                                                         ?>
-
-                                                                    </select>
+                                                                    </select><i></i>
                                                                 </label>
                                                             </section>
 
@@ -203,7 +202,7 @@ include("inc/scripts.php");
         var ativo = $('#ativo').val();
 
         $('#resultadoBusca').load('filtroListagemGenero.php?', {
-           descricao:descricao,
+            descricao: descricao,
             ativo: ativo
         });
     }
@@ -211,5 +210,4 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioCadastroGenero.php');
     }
- 
 </script>

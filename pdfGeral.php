@@ -93,32 +93,37 @@ $y = $pdf->getY();
 foreach ($resultQuery as $row) {
     $id =  $row['codigo'];
     $nome =  $row['nome'];
+    $cpf =  $row['cpf'];
+    $dataNascimento = $utils->validaData($row['dataNascimento']);
+    $estadoCivil =  $row['estadoCivil'];
+    $descricao =  $row['descricao'];
 
     $abreviarNome = explode(" ", $nome);
     $nomeAux =  "";
     if (count($abreviarNome) >= 3) {
         for ($i = 0; (count($abreviarNome)) > $i; $i++) {
 
-            if (strlen($abreviarNome[$i]) > 3) {
+            if ($i == 0) {
+                $nomeAux = ucfirst($abreviarNome[$i]) . " ";
+            }
+            if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i<count($abreviarNome) - 1)) {
 
                 $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
 
                 if ($nomeAux != "") {
-                    $nomeAux = $nomeAux . $abreviarNome[$i];
-                }else {
-                    $nomeAux = $abreviarNome[$i];
+                    $nomeAux = $nomeAux . ucfirst($abreviarNome[$i]) . " ";
+                } else {
+                    $nomeAux =  ucfirst($abreviarNome[$i]) . " ";
                 }
             }
+            if($i == count($abreviarNome) - 1 ){
+                $nomeAux = $nomeAux . ucfirst($abreviarNome[$i]);
+            }
         }
-    } else {
-        $nomeAux = $abreviarNome[0];
+    } else{
+        $nomeAux = $nome;
     }
-    $nome = $abreviarNome[$i];
 
-    $cpf =  $row['cpf'];
-    $dataNascimento = $utils->validaData($row['dataNascimento']);
-    $estadoCivil =  $row['estadoCivil'];
-    $descricao =  $row['descricao'];
 
 
     $pdf->setY($y);

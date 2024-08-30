@@ -192,12 +192,12 @@ function recuperaFuncionario(id) {
                 $("#emprego").val(emprego);
                 $("#pis").val(pis);
 
+                //voltar o botão
+                $("#btnPdf").removeClass("hidden")
                 //atribuindo valor 
-                // if (ativo === 1) {
-                //     $('#ativo').prop('checked', true);
-                // } else {
-                //     $('#ativo').prop('checked', false);
-                // }
+                if (ativo === 1) {
+                    $('#btnExcluir').removeClass('hidden');
+                }                 
 
                 idade($("#dataNascimento").val());
 

@@ -114,7 +114,7 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil">
-                                                                        <option hidden select></option>
+                                                                        <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -134,7 +134,7 @@ include("inc/nav.php");
                                                                 <label class="label">Gênero</label>
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao">
-                                                                        <option hidden select></option>
+                                                                        <option></option>
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
@@ -177,17 +177,20 @@ include("inc/nav.php");
                                             <button type="button" id="btnPdf" class="btn btn-primary" aria-hidden="true" title="PDF" style="display:<?php echo $esconderBtnPdf ?>">
                                                 <span class="fa fa-file-pdf-o"></span>
                                             </button>
-                                        <?php } ?>
+                                        <?php } ?>                                        
                                     </footer>
+                                    
+                                </form>
                             </div>
                         </div>
                     </div>
-                    </form>
                 </article>
             </div>
             <div id="resultadoBusca"></div>
         </section>
     </div>
+
+
 </div>
 </article>
 </div>
@@ -255,7 +258,7 @@ include("inc/scripts.php");
         var estadoCivil = $('#estadoCivil').val();
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
-        
+
         $('#resultadoBusca').load('funcionariofiltroListagem.php?', {
             nome: nome,
             cpf: cpf,
@@ -264,7 +267,7 @@ include("inc/scripts.php");
             estadoCivil: estadoCivil,
             descricao: descricao,
             ativo: ativo
-    
+
         });
     }
 

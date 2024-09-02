@@ -63,7 +63,10 @@ function recuperaGenero(codigo) {
                 $("#codigo").val(codigo);
                 $("#descricao").val(descricao);
                 $("#ativo").val(ativo);
-               
+                
+                if (ativo === 1) {
+                    $('#btnExcluir').removeClass('hidden');
+                } 
                 return;
             }
         },

@@ -63,9 +63,13 @@ function recuperaDependentes(codigo) {
                 $("#codigo").val(codigo);
                 $("#tipo").val(tipo);
                 $("#ativo").val(ativo);
+                if (ativo === 1) {
 
+                    $('#btnExcluir').removeClass('hidden');
+                }
                 return;
             }
+
         },
         error: function (xhr, er) {
 

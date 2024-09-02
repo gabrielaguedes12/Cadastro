@@ -63,7 +63,7 @@ function gravaEstadoCivil()
         $id = (int) $_POST["id"];
     }
 
-    $id = (int) $_POST["id"];
+    $codigo = (int) $_POST["codigo"];
     $estadoCivil = (string) $_POST["estadoCivil"];
     $ativo = 1;
 
@@ -76,7 +76,7 @@ function gravaEstadoCivil()
         session_start();
 
         $sql = "dbo.estadoCivil_atualiza 
-            $id,
+            $codigo,
             '$estadoCivil',
             $ativo
            ";

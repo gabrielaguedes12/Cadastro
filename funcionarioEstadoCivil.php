@@ -85,6 +85,7 @@ include("inc/nav.php");
                                             <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
+
                                                         <div class="row">
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Código</label>
@@ -99,7 +100,6 @@ include("inc/nav.php");
                                                                     <input id="estadoCivil" maxlength="255" name="estadoCivil" class="required" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
@@ -109,39 +109,41 @@ include("inc/nav.php");
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
+                                                        </div>
+
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
-                                        <footer>
-                                            <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
-                                                <span class="fa fa-trash"></span>
-                                            </button>
+                                    </div>
+                                    <footer>
+                                        <button type="button" id="btnExcluir" class="btn btn-danger hidden" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                            <span class="fa fa-trash"></span>
+                                        </button>
+                                        <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
+                                            <span class="fa fa-floppy-o"></span>
+                                        </button>
+                                        <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
+                                            <span class="fa fa-file-o"></span>
+                                        </button>
+                                        <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
+                                            <span class="fa fa-backward "></span>
+                                        </button>
+                                    </footer>
 
-                                            <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
-                                                <span class="fa fa-floppy-o"></span>
-                                            </button>
-                                            <button type="button" id="btnNovo" class="btn btn-primary" aria-hidden="true" title="Novo" style="display:<?php echo $esconderBtnGravar ?>">
-                                                <span class="fa fa-file-o"></span>
-                                            </button>
-                                            <button type="button" id="btnVoltar" class="btn btn-default" aria-hidden="true" title="Voltar">
-                                                <span class="fa fa-backward "></span>
-                                            </button>
-                                        </footer>
-
-                                        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
-                                            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-                                                <span id="ui-id-2" class="ui-dialog-title">
-                                                </span>
-                                            </div>
-                                            <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
-                                                <p>CONFIRMA A EXCLUSÃO? </p>
-                                            </div>
-                                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                                <div class="ui-dialog-buttonset">
-                                                </div>
+                                    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
+                                        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+                                            <span id="ui-id-2" class="ui-dialog-title">
+                                            </span>
+                                        </div>
+                                        <div id="dlgSimpleExcluir" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; max-height: none; height: auto;">
+                                            <p>CONFIRMA A EXCLUSÃO? </p>
+                                        </div>
+                                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                                            <div class="ui-dialog-buttonset">
                                             </div>
                                         </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -229,13 +231,8 @@ include("inc/scripts.php");
 
     //setTimeout-->para determinar o tempo//
     $("#btnGravar").on("click", function() {
-        setTimeout(() => {
-            $("#btnGravar").prop('disabled', true);
-            ("Delayed for 1 second.");
-        }, 600);
-        $("#btnGravar").prop('disabled', false);
+       
         gravar();
-
     });
 
     $("#btnExcluir").on("click", function() {
@@ -291,6 +288,12 @@ include("inc/scripts.php");
         var estadoCivil = $("#estadoCivil").val();
         var ativo = $("#ativo").val();
 
+        if (estadoCivil == "") {
+            smartAlert("Atenção", "Estado civil não preenchido.", "error")
+            estadoCivil = $("#estadoCivil").focus();
+            return
+        }
+
         gravaEstadoCivil(codigo, estadoCivil, ativo);
         $(location).attr('href', 'filtroEstadoCivil.php');
     }
@@ -308,7 +311,7 @@ include("inc/scripts.php");
 
     document.getElementById("estadoCivil").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ() ".indexOf(chr) < 0)
             return false;
     };
 </script>

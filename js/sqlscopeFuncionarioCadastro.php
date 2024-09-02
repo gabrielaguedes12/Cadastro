@@ -234,7 +234,7 @@ function recupera()
     }
 
     //telefone
-    $sql = "SELECT t.codigo, t.idFuncio, t.principal, t.sequencialTel, t.telefone, t.telefoneId, t.whats
+    $sql = "SELECT t.codigo, t.idFuncio, t.principal,  t.telefone, t.telefoneId, t.whats
         FROM telefone t
          WHERE idFuncio = $id";
 
@@ -248,7 +248,7 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-            $sequencialTel = $row['sequencialTel'];
+           
             $telefone = $row['telefone'];
             $telefoneId = $row['telefoneId'];
             $principal = $row['principal'];
@@ -256,9 +256,9 @@ function recupera()
             $idFuncio = $row['idFuncio'];
         }
 
-        $telefoneNum = $telefoneNum + 1;
+        $sequencialTel = $telefoneNum + 1;
         $arrayTelefone[] = array(
-            "sequencialTel" =>   $sequencialTel,
+            "sequencialTel"  => $sequencialTel,
             "telefone"  => $telefone,
             "telefoneId"  => $telefoneId,
             "principal"  => $principal,
@@ -271,7 +271,7 @@ function recupera()
 
 
     //Email
-    $sql = "SELECT t.codigo,t.idFunci, t.principalEmail,t.sequencialEmail, t.email,t.emailId
+    $sql = "SELECT t.codigo,t.idFunci, t.principalEmail,t.email,t.emailId
         FROM email t
         WHERE idFunci = $id";
 
@@ -285,14 +285,14 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-            $sequencialEmail = $row['sequencialEmail'];
+           
             $email = $row['email'];
             $emailId = $row['emailId'];
             $principalEmail = $row['principalEmail'];
             $idFunci = $row['idFunci'];
         }
 
-        $emailNum = $emailNum + 1;
+        $sequencialEmail = $emailNum + 1;
         $arrayEmail[] = array(
             "sequencialEmail" =>   $sequencialEmail,
             "email"  => $email,
@@ -305,7 +305,7 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT t.codigo,t.sequencialDependentes,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
+    $sql = "SELECT t.codigo,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
      FROM dependentes t 
       WHERE idFuncionario = $id";
 
@@ -319,7 +319,7 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-            $sequencialDependentes = $row['sequencialDependentes'];
+           
             $idFuncionario = $row['idFuncionario'];
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
@@ -327,7 +327,7 @@ function recupera()
             $tipo = $row['tipo'];
         }
 
-        $dependentesNum = $dependentesNum + 1;
+        $sequencialDependentes = $dependentesNum + 1;
         $arrayDependentes[] = array(
             "sequencialDependentes" => $sequencialDependentes,
             "idFuncionario"  => $idFuncionario,

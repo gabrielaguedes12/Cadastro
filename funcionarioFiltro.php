@@ -52,7 +52,6 @@ include("inc/nav.php");
 
     <!-- MAIN CONTENT -->
     <div id="content">
-
         <!-- widget grid -->
         <section id="widget-grid" class="">
             <div class="row">
@@ -63,7 +62,6 @@ include("inc/nav.php");
                             <h2>Funcionário</h2>
                         </header>
                         <div>
-
                             <div class="widget-body no-padding">
                                 <form action="javascript:gravar()" class="smart-form client-form" id="formUsuarioFiltro" method="post">
                                     <div class="panel-group smart-accordion-default" id="accordion">
@@ -81,7 +79,6 @@ include("inc/nav.php");
                                             <div id="collapseFiltro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
                                                         <div class="row">
                                                             <section class="col col-3">
                                                                 <label class="label">Nome</label>
@@ -126,7 +123,6 @@ include("inc/nav.php");
                                                                         }
                                                                         ?>
                                                                     </select><i></i>
-                                                                    </select>
                                                                 </label>
                                                             </section>
 
@@ -146,19 +142,19 @@ include("inc/nav.php");
                                                                         }
                                                                         ?>
                                                                     </select><i></i>
-                                                                    </select>
                                                                 </label>
                                                             </section>
 
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
-                                                                    <select id="ativo" name="ativo">
-                                                                        <option></option>
+                                                                    <select id="ativo" name="ativo">                                                                
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
+                                                                </label>
                                                             </section>
+
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -167,31 +163,34 @@ include("inc/nav.php");
                                     </div>
 
                                     <footer>
-                                        <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
-                                            <span class="fa fa-search"></span>
-                                        </button>
                                         <?php if ($condicaoGravarOK) { ?>
+                                            <button id="btnSearch" type="button" class="btn btn-primary pull-right" title="Buscar">
+                                                <span class="fa fa-search"></span>
+                                            </button>
+
                                             <button id="btnNovo" type="button" class="btn btn-primary pull-left" title="Novo">
                                                 <span class="fa fa-file"></span>
                                             </button>
+
                                             <button type="button" id="btnPdf" class="btn btn-primary" aria-hidden="true" title="PDF" style="display:<?php echo $esconderBtnPdf ?>">
                                                 <span class="fa fa-file-pdf-o"></span>
                                             </button>
-                                        <?php } ?>                                        
+                                        <?php }?>
                                     </footer>
                                     
                                 </form>
                             </div>
                         </div>
+                        <div id="resultadoBusca">
+                        </div>
                     </div>
                 </article>
             </div>
-            <div id="resultadoBusca"></div>
         </section>
     </div>
-
-
 </div>
+
+
 </article>
 </div>
 </section>

@@ -96,7 +96,9 @@ include("inc/nav.php");
                                                                         $result = $reposit->RunQuery($sql);
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
-                                                                            $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            $tipo = $row['tipo'];
+
+                                                                            // $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
 
                                                                             echo "<option value='$codigo'>$tipo</option>";
                                                                         }

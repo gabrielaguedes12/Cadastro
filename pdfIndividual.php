@@ -214,7 +214,7 @@ foreach ($resultQuery as $row) {
 }
 $id = $_GET["id"];
 
-$sql = "SELECT t.codigo, t.idFuncio, t.principal, CASE WHEN t.principal = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipal , t.sequencialTel, t.telefone, t.telefoneId, t.whats,
+$sql = "SELECT t.codigo, t.idFuncio, t.principal, CASE WHEN t.principal = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipal , t.telefone, t.telefoneId, t.whats,
 CASE WHEN t.whats = 1 THEN 'Sim' ELSE 'Não' END descricaoWhats	
         FROM telefone t
           WHERE (0 = 0) and idFuncio = $id ";
@@ -241,7 +241,7 @@ $pdf->Cell(20, 8, "Whatsapp", 1, 20, 'C', true, "");
 $y = $pdf->getY();
 
 foreach ($resultQuery as $row) {
-    $sequencialTel = $row['sequencialTel'];
+    
     $telefone = $row['telefone'];
     $descricaoPrincipal = $row['descricaoPrincipal'];
     $telefoneId = $row['telefoneId'];
@@ -265,7 +265,7 @@ foreach ($resultQuery as $row) {
 }
 
 $sql = "SELECT t.codigo,t.idFunci, t.principalEmail,
-		CASE WHEN t.principalEmail = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipalEmail,t.sequencialEmail, t.email,t.emailId
+		CASE WHEN t.principalEmail = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipalEmail, t.email,t.emailId
         FROM email t
         WHERE (0 = 0) and idFunci = $id";
 
@@ -284,8 +284,7 @@ $pdf->setX(175);
 $pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
 $y = $pdf->getY();
 
-foreach ($resultQuery as $row) {
-    $sequencialEmail = $row['sequencialEmail'];
+foreach ($resultQuery as $row) {    
     $email = $row['email'];
     $emailId = $row['emailId'];
     $descricaoPrincipalEmail = $row['descricaoPrincipalEmail'];
@@ -303,9 +302,10 @@ foreach ($resultQuery as $row) {
 }
 
 $id = $_GET["id"];
-$sql = "SELECT D.codigo,D.sequencialDependentes,D.idFuncionario,D.nomeDependentes,D.cpfDependentes,D.dataNascimentoDependentes,TD.tipo 
-FROM dbo.dependentes D
-LEFT JOIN dbo.tipoDependentes TD ON D.tipo = TD.codigo";
+$sql = "SELECT D.codigo,D.idFuncionario,D.nomeDependentes,D.cpfDependentes,D.dataNascimentoDependentes,TD.tipo 
+FROM dbo.dependentes D 
+
+LEFT JOIN dbo.tipoDependentes TD ON D.tipo = TD.codigo WHERE (0 = 0) and idFuncionario = $id";
 
 $reposit = new reposit();
 $utils = new comum();
@@ -331,7 +331,7 @@ $pdf->Cell(40, 8, iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
 $y = $pdf->getY();
 
 foreach ($resultQuery as $row) {
-    $sequencialDependentes = $row['sequencialDependentes'];
+    
     $idFuncionario = $row['idFuncionario'];
     $nomeDependentes = $row['nomeDependentes'];
     $cpfDependentes = $row['cpfDependentes'];

@@ -65,6 +65,9 @@ function recuperaEstadoCivil(codigo) {
                 $("#estadoCivil").val(estadoCivil);
                 $("#ativo").val(ativo);
 
+                if (ativo === 1) {
+                    $('#btnExcluir').removeClass('hidden');
+                } 
                 return;
             }
         },

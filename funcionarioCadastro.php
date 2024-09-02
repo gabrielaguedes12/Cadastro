@@ -126,7 +126,7 @@ include("inc/nav.php");
                                                             <section class="col col-1">
                                                                 <label class="label">Idade</label>
                                                                 <label class="input">
-                                                                    <input id="idade" name="idade" maxlength="2" type="text" class="readonly">
+                                                                    <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
 
@@ -135,7 +135,7 @@ include("inc/nav.php");
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
                                                                         <option hidden select> Selecione </option>
-                                                                        <option></option>
+
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -157,7 +157,7 @@ include("inc/nav.php");
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
                                                                         <option hidden select>Selecione</option>
-                                                                        <option></option>
+
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
@@ -198,7 +198,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
-                                                                    <input id="pis" name="pis" maxlength="15" type="text" placeholder="XXX.XXXXX.XX-X">
+                                                                    <input id="pis" name="pis" maxlength="15" class="required" type="text" placeholder="XXX.XXXXX.XX-X">
                                                                 </label>
                                                             </section>
                                                     </fieldset>
@@ -364,7 +364,7 @@ include("inc/nav.php");
                                                         <section class="col col-1">
                                                             <label class="label">Número</label>
                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
-                                                                <input id="numero" maxlength="6" name="numero" class="required" class="" type="text" placeholder=" " value="">
+                                                                <input id="numero" name="numero" class="required" class="" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
 
@@ -447,6 +447,8 @@ include("inc/nav.php");
                                                                     <label class="select">
                                                                         <select id="tipo" name="tipo">
                                                                             <option hidden select value="" select> Selecione </option>
+
+
                                                                             <?php
                                                                             $reposit = new reposit();
                                                                             $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
@@ -604,6 +606,19 @@ include("inc/scripts.php");
         $(".dataNascimentoDependentes").mask("99/99/9999");
 
 
+        //nome
+        $(document).ready(function() {
+            $('#nome').bind('cut copy paste', function(event) {
+                event.preventDefault();
+            });
+        });
+
+        //nome dependente
+        $(document).ready(function() {
+            $('#nomeDependentes').bind('cut copy paste', function(event) {
+                event.preventDefault();
+            });
+        });
         //funçoes
         $("#cpf").on('focusout', function() {
             validaCpf()
@@ -655,7 +670,6 @@ include("inc/scripts.php");
                 $("#dataNascimentoDependentes").val("");
             }
         });
-
         $("#dataNascimentoDependentes").on('change', function() {
             validaDataDependentes();
         });
@@ -735,7 +749,6 @@ include("inc/scripts.php");
         carregaPagina();
     });
 
-
     //condição com readondly
     $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
 
@@ -805,16 +818,14 @@ include("inc/scripts.php");
 
     $("#btnGravar").on("click", function() {
         gravar();
-        $(location).attr('href', 'funcionarioFiltro.php');
     });
 
-    
     $("#btnPdf").on("click", function() {
         pdf();
     });
 
     function pdf() {
-         var id = $('#codigo').val();
+        var id = $('#codigo').val();
         $(location).attr('href', 'pdfIndividual.php?id=' + id);
     }
 
@@ -842,16 +853,16 @@ include("inc/scripts.php");
 
     //dependentes
     $('#btnAddDependentes').on("click", function() {
-        var cpfUsuario = $("#cpf").val();
-        if (cpfUsuario == "") {
-            smartAlert("Atenção", "Preencha CPF do funcionário", "error");
-            $("#cpfDependentes").val("");
+        var cpfDependentes = $("#cpf").val();
+        if (cpfDependentes == "") {
+            smartAlert("Atenção", "Preencha CPF do dependente", "error");
         } else {
             validaCpfDependentes();
             if (validaDependentes() === true) {
                 adicionaDependentes();
             } else {
                 smartAlert("Atenção", "Dependente inválido, tente novamente", "error");
+                $("#cpfDependentes").val("");
             }
         }
     })
@@ -962,6 +973,11 @@ include("inc/scripts.php");
         if (emprego == "") {
             smartAlert("Atenção", "Primeiro emprego não preenchido.", "error")
             emprego = $("#emprego").focus();
+        }
+
+        if (pis == "") {
+            smartAlert("Atenção", "Primeiro PIS/PASED não preenchido.", "error")
+            pis = $("#pis").focus();
         }
 
         if (telefone == "") {
@@ -1173,9 +1189,9 @@ include("inc/scripts.php");
             clearFormTelefone();
             return false;
         }
-        if ((existePrincipal === true) && (telMarcado === 1)) {
+        if ((existePrincipal === true) && (telMarcado == 1)) {
             smartAlert("Erro", "Já existe um telefone principal", "error");
-            clearFormTelefone();
+            clearFormPrincipal();
             return false;
         }
         return true;
@@ -1309,7 +1325,7 @@ include("inc/scripts.php");
             $("#sequencialTel").val(item.sequencialTel);
             $("#telefoneId").val(item.telefoneId);
             $("#telefone").val(item.telefone);
-
+            $("#principal").val("");
         }
     }
 
@@ -1317,7 +1333,7 @@ include("inc/scripts.php");
         $("#sequencialTel").val("");
         $("#telefoneId").val("");
         $("#telefone").val("");
-
+        $("#principal").val("");
         return true;
     }
 

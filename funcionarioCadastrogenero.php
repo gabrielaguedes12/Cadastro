@@ -119,7 +119,7 @@ include("inc/nav.php");
                                     </div>
 
                                     <footer>
-                                        <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                        <button type="button" id="btnExcluir" class="btn btn-danger hidden" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                             <span class="fa fa-trash"></span>
                                         </button>
 
@@ -310,13 +310,18 @@ include("inc/scripts.php");
         var descricao = $("#descricao").val();
         var ativo = $("#ativo").val();
 
+        if (descricao == "") {
+            smartAlert("Atenção", "Gênero não preenchido.", "error")
+            descricao = $("#descricao").focus();
+            return
+        }
         gravaGenero(codigo, descricao, ativo);
         $(location).attr('href', 'filtroGenero.php');
     }
 
     document.getElementById("descricao").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ() ".indexOf(chr) < 0)
             return false;
     };
 </script>

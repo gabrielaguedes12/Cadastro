@@ -83,7 +83,7 @@ include("inc/nav.php");
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
 
-                                                        <div class="row">
+                                                    <div class="row">
                                                             <section class="col col-3">
                                                                 <label class="label">Tipo</label>
                                                                 <label class="select">
@@ -96,12 +96,12 @@ include("inc/nav.php");
                                                                         $result = $reposit->RunQuery($sql);
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
-                                                                            $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            // $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
+                                                                            $estadoCivil = $row['estadoCivil'];
 
                                                                             echo "<option value='$codigo'>$estadoCivil</option>";
                                                                         }
                                                                         ?>
-
                                                                     </select><i></i>
                                                                 </label>
                                                             </section>

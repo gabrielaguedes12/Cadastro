@@ -116,7 +116,7 @@ include("inc/nav.php");
                                     </div>
 
                                     <footer>
-                                        <button type="button" id="btnExcluir" class="btn btn-danger" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
+                                        <button type="button" id="btnExcluir" class="btn btn-danger hidden" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                             <span class="fa fa-trash"></span>
                                         </button>
                                         <button type="button" id="btnGravar" class="btn btn-success" aria-hidden="true" title="Gravar" style="display:<?php echo $esconderBtnGravar ?>">
@@ -293,6 +293,11 @@ include("inc/scripts.php");
         var tipo = $("#tipo").val();
         var ativo = $("#ativo").val();
 
+        if (tipo == "") {
+            smartAlert("Atenção", "Tipo de dependente não preenchido.", "error")
+            tipo = $("#tipo").focus();
+            return
+        }
         gravarDependentes(codigo, tipo, ativo);
         $(location).attr('href', 'filtroDependentes.php');
     }

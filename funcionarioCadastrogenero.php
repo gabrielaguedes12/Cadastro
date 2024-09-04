@@ -234,12 +234,7 @@ include("inc/scripts.php");
     });
 
     $("#btnGravar").on("click", function() {
-        setTimeout(() => {
-            $("#btnGravar").prop('disabled', true);
-            ("Delayed for 1 second.");
-        }, 600);
-        $("#btnGravar").prop('disabled', false);
-        gravar();
+      verificaGenero()
     });
 
     $("#btnExcluir").on("click", function() {
@@ -301,8 +296,27 @@ include("inc/scripts.php");
     }
 
     function verificaGenero() {
-        var descricao = $('#descricao').val()
-        verificarGenero(descricao) //variável "passa" nesse ()
+        var descricao = $('#descricao').val();
+        $.ajax({
+            url: 'js/sqlscopeFuncionarioGenero.php',
+            dataType: ' html',
+            type: 'post',
+            async: true,
+            data: {
+                funcao: 'verificaGenero',
+                descricao: descricao
+            },
+            success: function(data, textStatus) {
+                if (data.indexOf('failed') > -1) {
+                    smartAlert("Atenção", "Gênero já Cadastrado.", "error")
+                }else{
+                    gravar();
+                }
+            },
+            error: function(xhr, er) {
+                //tratamento de erro
+            }
+        });
     }
 
     function gravar() {

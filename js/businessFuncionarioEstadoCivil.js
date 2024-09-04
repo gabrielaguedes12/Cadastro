@@ -17,12 +17,12 @@ function gravaEstadoCivil(codigo, estadoCivil, ativo) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
-                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");         
+                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
                 }
                 return '';
             } else {
                 smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-               
+
             }
             //retorno dos dados
         },
@@ -67,7 +67,7 @@ function recuperaEstadoCivil(codigo) {
 
                 if (ativo === 1) {
                     $('#btnExcluir').removeClass('hidden');
-                } 
+                }
                 return;
             }
         },
@@ -113,26 +113,3 @@ function excluirEstadoCivil(codigo) {
     });
 }
 
-function verificarEstadoCivil(estadoCivil) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioEstadoCivil.php',
-        dataType: ' html',
-        type: 'post',
-        async: true,
-        data: { funcao: 'verificaEstadoCivil', estadoCivil: estadoCivil},
-        success: function (data, textStatus) {
-            if (data.indexOf('success') > -1) {
-                var piece = data.split("#");
-                var status = piece[0];
-                
-                if(status == 'success'){                    
-                    $("#estadoCivil").val('');
-                
-            }
-            }
-        },
-        error: function (xhr, er) {
-            //tratamento de erro
-        }
-    });
-}

@@ -22,9 +22,12 @@ if ($funcao == 'excluirEstadoCivil') {
 
 return;
 
+
+
 function verificaEstadoCivil()
 {
     $reposit = new reposit();
+    $utils = new comum();
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
         $id = 0;
@@ -32,24 +35,21 @@ function verificaEstadoCivil()
         $id = (int) $_POST["id"];
     }
 
-    $reposit = new reposit();
-    $utils = new comum();
-
     $estadoCivil = $utils->formatarString($_POST['estadoCivil']);
 
-    $sql = "SELECT estadoCivil from dbo.estadoCivil where estadoCivil = '$estadoCivil' AND codigo != $id";
+    $sql = "SELECT estadoCivil from dbo.estadoCivil where estadoCivil = $estadoCivil AND codigo != $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
 
     if (!$result) {
-        echo  "success";
-        return true;
+        echo  "success#";
+        return;
     } else {
         $mensagem = "Informe o estado civil";
         echo "failed#" . $mensagem . ' ';
+        return;
     }
-    return;
 }
 
 
@@ -95,7 +95,6 @@ function gravaEstadoCivil()
         }
         echo $ret;
         return;
-        
     } else {
         $mensagem = "Informe o estado civil";
         echo "failed#" . $mensagem . ' ';

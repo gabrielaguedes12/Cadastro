@@ -644,12 +644,13 @@ include("inc/scripts.php");
         $("#dataNascimento").on("change", function() {
             var dataNascimento = $("#dataNascimento").val();
             if (dataNascimento.length < 10) {
+
                 $("#idade").val("");
                 $("#dataNascimento").val("");
             }
 
             if (validaData(dataNascimento) == false) {
-                smartAlert("Atenção", "Data Inválida", "error");
+                smartAlert("Atenção", "Data de nascimento inválida", "error")
                 $("#idade").val("");
                 $("#dataNascimento").val("");
             }
@@ -844,12 +845,11 @@ include("inc/scripts.php");
     $('#btnAddEmail').on("click", function() {
         validaEmail();
         formataEmail();
-
-    })
+    });
 
     $('#btnRemoverEmail').on("click", function() {
         excluirEmail();
-    })
+    });
 
     //dependentes
     $('#btnAddDependentes').on("click", function() {
@@ -1068,6 +1068,7 @@ include("inc/scripts.php");
         if (idade > 14 && idade <= 150) {
             $("#idade").val(idade)
             $("#btnGravar").prop('disabled', false);
+
             return;
         }
         if (hoje) return false;
@@ -1320,12 +1321,23 @@ include("inc/scripts.php");
             return (item.sequencialTel === sequencialTel);
         });
         clearFormTelefone();
+
         if (arr.length > 0) {
             var item = arr[0];
             $("#sequencialTel").val(item.sequencialTel);
             $("#telefoneId").val(item.telefoneId);
             $("#telefone").val(item.telefone);
-            $("#principal").val("");
+            if (item.principal == 1) {
+                $('#principal').prop('checked', true);
+            } else {
+                $('#principal').prop('checked', false);
+            }
+            if (item.whats == 1) {
+                $('#whats').prop('checked', true);
+            } else {
+                $('#whats').prop('checked', false);
+            }
+           
         }
     }
 
@@ -1334,6 +1346,8 @@ include("inc/scripts.php");
         $("#telefoneId").val("");
         $("#telefone").val("");
         $("#principal").val("");
+        $("#whats").val("");
+
         return true;
     }
 
@@ -1381,7 +1395,6 @@ include("inc/scripts.php");
             emailmarcado = 1;
         }
         if (email === '') {
-
             return false;
         }
 
@@ -1404,7 +1417,7 @@ include("inc/scripts.php");
         }
         if ((existePrincipal === true) && (emailmarcado === 1)) {
             smartAlert("Erro", "Já existe um email principal", "error");
-            clearFormEmail();
+            clearFormPrincipal();
             return false;
         }
         return true;
@@ -1516,6 +1529,13 @@ include("inc/scripts.php");
             $("#sequencialEmail").val(item.sequencialEmail);
             $("#emailId").val(item.emailId);
             $("#email").val(item.email);
+            if (item.principalEmail == 1) {
+                $('#principalEmail').prop('checked', true);
+            } else {
+                $('#principalEmail').prop('checked', false);
+
+            }
+
         }
     }
 
@@ -1523,6 +1543,8 @@ include("inc/scripts.php");
         $("#sequencialEmail").val("");
         $("#emailId").val("");
         $("#email").val("");
+        $("#principalEmail").val("");
+
         return true;
     }
 

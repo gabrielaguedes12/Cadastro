@@ -111,27 +111,3 @@ function excluirGenero(codigo) {
         }
     });
 }
-
-function verificarGenero(descricao) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioGenero.php',
-        dataType: ' html',
-        type: 'post',
-        async: true,
-        data: { funcao: 'verificaGenero', descricao: descricao },
-        success: function (data, textStatus) {
-            if (data.indexOf('success') > -1) {
-                var piece = data.split("#");
-                var status = piece[0];
-                
-                if(status == 'success'){
-                    $("#descricao").val('');
-                }
-            }
-        
-        },
-        error: function (xhr, er) {
-            //tratamento de erro
-        }
-    });
-}

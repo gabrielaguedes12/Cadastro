@@ -24,6 +24,8 @@ return;
 function verificaDependentes()
 {
     $reposit = new reposit();
+    $utils = new comum();
+
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
         $id = 0;
@@ -36,19 +38,20 @@ function verificaDependentes()
 
     $tipo = $utils->formatarString($_POST['tipo']);
 
-    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = '$tipo' AND codigo != $id";
+    $sql = "SELECT tipo from dbo.tipoDependentes where tipo = $tipo AND codigo != $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
 
     if (!$result) {
         echo  "success";
-        return true;
+        return;
     } else {
         $mensagem = "Informe o Dependente";
-        echo "failed#" . $mensagem . ' ';
+        echo "failed#" . $mensagem . ' '; 
+        return;
     }
-    return;
+   
 }
 
 

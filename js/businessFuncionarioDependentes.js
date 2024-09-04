@@ -112,27 +112,3 @@ function excluirDependentes(codigo) {
         }
     });
 }
-
-function verificarDependentes(tipo) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioDependentes.php',
-        dataType: ' html',
-        type: 'post',
-        async: true,
-        data: { funcao: 'verificaDependentes', tipo: tipo },
-        success: function (data, textStatus) {
-            if (data.indexOf('success') > -1) {
-                var piece = data.split("#");
-                var status = piece[0];
-
-                if (status == 'success') {
-                    $("#tipo").val('');
-                }
-            }
-
-        },
-        error: function (xhr, er) {
-            //tratamento de erro
-        }
-    });
-}

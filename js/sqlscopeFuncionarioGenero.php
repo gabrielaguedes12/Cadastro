@@ -23,6 +23,7 @@ return;
 function verificaGenero()
 {
     $reposit = new reposit();
+    $utils = new comum();
 
     if (!((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])))) {
         $id = 0;
@@ -35,20 +36,19 @@ function verificaGenero()
 
     $descricao = $utils->formatarString($_POST['descricao']);
 
-    $sql = "SELECT descricao from dbo.genero where descricao = '$descricao' AND codigo != $id";
+    $sql = "SELECT descricao from dbo.genero where descricao = $descricao AND codigo != $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
 
     if (!$result) {
-        echo  "success";
-        return true;
+        echo  "success#";
+        return ;
     } else {
         $mensagem = "Informe o Gênero";
         echo "failed#" . $mensagem . ' ';
+        return;
     }
-
-    return;
 }
 
 function gravaGenero()

@@ -199,10 +199,11 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-
         $('#estadoCivil').on('change', function() {
             verificaEstadoCivil();
         });
+
+
         carregaPagina();
     })
 
@@ -231,8 +232,7 @@ include("inc/scripts.php");
 
     //setTimeout-->para determinar o tempo//
     $("#btnGravar").on("click", function() {
-       
-        gravar();
+        verificaEstadoCivil()
     });
 
     $("#btnExcluir").on("click", function() {
@@ -280,7 +280,26 @@ include("inc/scripts.php");
 
     function verificaEstadoCivil() {
         var estadoCivil = $('#estadoCivil').val();
-        verificarEstadoCivil(estadoCivil);
+        $.ajax({
+            url: 'js/sqlscopeFuncionarioEstadoCivil.php',
+            dataType: ' html',
+            type: 'post',
+            async: true,
+            data: {
+                funcao: 'verificaEstadoCivil',
+                estadoCivil: estadoCivil
+            },
+            success: function(data, textStatus) {
+                if (data.indexOf('failed') > -1) {
+                    smartAlert("Atenção", "Estado Civil já Cadastrado.", "error")
+                }else{
+                    gravar();
+                }
+            },
+            error: function(xhr, er) {
+                //tratamento de erro
+            }
+        });
     }
 
     function gravar() {
@@ -311,7 +330,7 @@ include("inc/scripts.php");
 
     document.getElementById("estadoCivil").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ() ".indexOf(chr) < 0)
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/ ".indexOf(chr) < 0)
             return false;
     };
 </script>

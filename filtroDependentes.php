@@ -83,28 +83,11 @@ include("inc/nav.php");
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
 
-                                                        <div class="row">
+                                                    <div class="row">
                                                             <section class="col col-3">
-                                                                <label class="label">Tipo</label>
-                                                                <label class="select">
-                                                                    <select id="tipo" name="tipo">
-                                                                        <option hidden select value> Selecione </option>
-                                                                        <option></option>
-                                                                        <?php
-                                                                        $reposit = new reposit();
-                                                                        $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
-                                                                        $result = $reposit->RunQuery($sql);
-                                                                        foreach ($result as $row) {
-                                                                            $codigo = (int) $row['codigo'];
-                                                                            $tipo = $row['tipo'];
-
-                                                                            // $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
-
-                                                                            echo "<option value='$codigo'>$tipo</option>";
-                                                                        }
-                                                                        ?>
-
-                                                                    </select><i></i>
+                                                                <label class="label">Tipo de Dependente</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="tipo" maxlength="255" name="tipo" type="text" placeholder=" " value="">                                                                   
                                                                 </label>
                                                             </section>
 

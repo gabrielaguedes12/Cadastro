@@ -3,7 +3,7 @@ function gravaGenero(codigo, descricao, ativo) {
         url: 'js/sqlscopeFuncionarioGenero.php',
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'gravaGenero', codigo: codigo, descricao: descricao, ativo: ativo}, //valores enviados ao script
+        data: { funcao: 'gravaGenero', codigo: codigo, descricao: descricao, ativo: ativo }, //valores enviados ao script
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -11,18 +11,15 @@ function gravaGenero(codigo, descricao, ativo) {
             //função executada depois de terminar o ajax
         },
         success: function (data, textStatus) {
-            if (data.indexOf('success') < 0) {
+            if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
-                if (mensagem !== "") {
-                    smartAlert("Atenção", mensagem, "error"); 
-                } else {
-                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                }
+                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
                 return '';
             } else {
-                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-                             
+                smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+                setInterval(voltar(), 1500)
+               
             }
             //retorno dos dados
         },
@@ -30,8 +27,8 @@ function gravaGenero(codigo, descricao, ativo) {
             //tratamento de erro
         }
     });
-    return '';
 
+    return '';
 }
 
 function recuperaGenero(codigo) {
@@ -39,7 +36,7 @@ function recuperaGenero(codigo) {
         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'recuperaGenero', codigo: codigo}, //valores enviados ao script     
+        data: { funcao: 'recuperaGenero', codigo: codigo }, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },
@@ -59,14 +56,14 @@ function recuperaGenero(codigo) {
                 var codigo = +piece[0];
                 var descricao = piece[1];
                 var ativo = +piece[2];
-              
+
                 $("#codigo").val(codigo);
                 $("#descricao").val(descricao);
                 $("#ativo").val(ativo);
-                
+
                 if (ativo === 1) {
                     $('#btnExcluir').removeClass('hidden');
-                } 
+                }
                 return;
             }
         },
@@ -83,7 +80,7 @@ function excluirGenero(codigo) {
         url: 'js/sqlscopeFuncionarioGenero.php', //caminho do arquivo a ser executado
         dataType: 'html', //tipo do retorno
         type: 'post', //metodo de envio
-        data: { funcao: 'excluirGenero', codigo: codigo}, //valores enviados ao script     
+        data: { funcao: 'excluirGenero', codigo: codigo }, //valores enviados ao script     
         beforeSend: function () {
             //função chamada antes de realizar o ajax
         },

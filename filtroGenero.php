@@ -83,26 +83,11 @@ include("inc/nav.php");
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
 
-                                                        <div class="row">
+                                                    <div class="row">
                                                             <section class="col col-3">
-                                                                <label class="label">Tipo</label>
-                                                                <label class="select">
-                                                                    <select id="descricao" name="descricao">
-                                                                        <option hidden select value> Selecione </option>
-                                                                        <option></option>
-                                                                        <?php
-                                                                        $reposit = new reposit();
-                                                                        $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
-                                                                        $result = $reposit->RunQuery($sql);
-                                                                        foreach ($result as $row) {
-                                                                            $codigo = (int) $row['codigo'];
-                                                                            // $descricao = htmlspecialchars($row['descricao'], ENT_QUOTES); //evitando caracteres especiais
-                                                                            $descricao = $row['descricao'];
-
-                                                                            echo "<option value='$codigo'>$descricao</option>";
-                                                                        }
-                                                                        ?>
-                                                                    </select><i></i>
+                                                                <label class="label">Gênero</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="descricao" maxlength="255" name="descricao" type="text" placeholder=" " value="">                                                                   
                                                                 </label>
                                                             </section>
 
@@ -210,4 +195,10 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioCadastroGenero.php');
     }
+
+    document.getElementById("descricao").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
 </script>

@@ -199,11 +199,9 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        $('#estadoCivil').on('change', function() {
-            verificaEstadoCivil();
-        });
-
-
+        // $('#estadoCivil').on('change', function() {
+        //     verificaEstadoCivil();
+        // });
         carregaPagina();
     })
 

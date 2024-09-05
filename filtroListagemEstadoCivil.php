@@ -8,7 +8,7 @@ include "js/girComum.php";
         <table id="tableSearchResult" class="table table-bordered table-striped table-condensed table-hover dataTable">
             <thead>
                 <tr role="row">
-                   
+
                     <th class="text-left" style="min-width:35px;">Estado Civil</th>
                     <th class="text-left" style="min-width:10px;">Ativo</th>
 
@@ -19,15 +19,13 @@ include "js/girComum.php";
                 $utils = new comum();
                 $reposit = new reposit();
 
-                $sql = " SELECT  codigo, estadoCivil, ativo from dbo.estadoCivil ";
-                $where = "WHERE (0 = 0)";
+                $sql = " SELECT  codigo, estadoCivil, ativo from dbo.estadoCivil WHERE (0 = 0)";
 
-
-                $codigo = $_POST["estadoCivil"];
+                $estadoCivil = $_POST["estadoCivil"];
                 $ativo =  $_POST["ativo"];
 
-                if ($codigo != "") {
-                    $where = $where . " AND codigo = $codigo";
+                if ($estadoCivil) {
+                    $where = $where . " AND (estadoCivil like '%$estadoCivil%')";
                 }
 
                 if ($ativo != "") {

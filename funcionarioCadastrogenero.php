@@ -203,9 +203,9 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        $("#descricao").on('change', function() {
-            verificaGenero()
-        });
+        // $("#descricao").on('change', function() {
+        //     verificaGenero()
+        // });
 
         carregaPagina();
     })

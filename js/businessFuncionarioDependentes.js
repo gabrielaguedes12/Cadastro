@@ -11,18 +11,15 @@ function gravarDependentes(codigo, tipo, ativo) {
             //função executada depois de terminar o ajax
         },
         success: function (data, textStatus) {
-            if (data.indexOf('success') < 0) {
+            if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
-                if (mensagem !== "") {
-                    smartAlert("Atenção", mensagem, "error");
-                } else {
-                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                }
+                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
                 return '';
             } else {
-                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-                voltar();
+                smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+                setInterval(voltar(), 1500)
+               
             }
             //retorno dos dados
         },
@@ -30,9 +27,10 @@ function gravarDependentes(codigo, tipo, ativo) {
             //tratamento de erro
         }
     });
-    return '';
 
+    return '';
 }
+
 
 function recuperaDependentes(codigo) {
     $.ajax({

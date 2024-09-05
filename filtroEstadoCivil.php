@@ -82,27 +82,11 @@ include("inc/nav.php");
                                             <div id="collapseFiltroEstadoCivil" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
                                                     <div class="row">
                                                             <section class="col col-3">
-                                                                <label class="label">Tipo</label>
-                                                                <label class="select">
-                                                                    <select id="estadoCivil" name="estadoCivil">
-                                                                        <option hidden select value> Selecione </option>
-                                                                        <option></option>
-                                                                        <?php
-                                                                        $reposit = new reposit();
-                                                                        $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
-                                                                        $result = $reposit->RunQuery($sql);
-                                                                        foreach ($result as $row) {
-                                                                            $codigo = (int) $row['codigo'];
-                                                                            // $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
-                                                                            $estadoCivil = $row['estadoCivil'];
-
-                                                                            echo "<option value='$codigo'>$estadoCivil</option>";
-                                                                        }
-                                                                        ?>
-                                                                    </select><i></i>
+                                                                <label class="label">Estado Civil</label>
+                                                                <label class="input"><i class="icon-prepend fa fa-user"></i>
+                                                                    <input id="estadoCivil" maxlength="255" name="estadoCivil" type="text" placeholder=" " value="">                                                                   
                                                                 </label>
                                                             </section>
 
@@ -210,4 +194,10 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
+    
+    document.getElementById("estadoCivil").onkeypress = function(e) {
+        var chr = String.fromCharCode(e.which);
+        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+            return false;
+    };
 </script>

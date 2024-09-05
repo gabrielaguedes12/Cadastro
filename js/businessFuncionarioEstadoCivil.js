@@ -15,13 +15,15 @@ function gravaEstadoCivil(codigo, estadoCivil, ativo) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
                 if (mensagem !== "") {
-                    smartAlert("Atenção", mensagem, "error");
+                    smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                    return '';
                 } else {
                     smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+                    setInterval(voltar(), 1500)
                 }
-                return '';
-            } else {
-                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                // return '';
+            // } else {
+            //     smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
 
             }
             //retorno dos dados

@@ -199,9 +199,9 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        $("#tipo").on('change', function() {
-            verificaDependentes()
-        });
+        // $("#tipo").on('change', function() {
+        //     verificaDependentes()
+        // });
 
         carregaPagina();
     })

@@ -98,7 +98,7 @@ include("inc/nav.php");
                                                             <section class="col col-4">
                                                                 <label class="label">Nome Completo</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" value="" />
+                                                                    <input id="nome" maxlength="50" name="nome" class="required" type="text" value="">
                                                                 </label>
                                                             </section>
 
@@ -198,7 +198,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
-                                                                    <input id="pis" name="pis" maxlength="15" class="required" type="text" placeholder="XXX.XXXXX.XX-X">
+                                                                    <input id="pis" name="pis" maxlength="15" type="text" placeholder="XXX.XXXXX.XX-X" class="readonly" readonly>
                                                                 </label>
                                                             </section>
                                                     </fieldset>
@@ -751,7 +751,12 @@ include("inc/scripts.php");
     });
 
     //condição com readondly
-    $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
+    // $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
+    if(emprego==1){
+
+    }else{
+        
+    }
 
     //---------------->não permitir caracteres especiais e numeros<------------------//
     document.getElementById("nome").onkeypress = function(e) {
@@ -819,6 +824,7 @@ include("inc/scripts.php");
 
     $("#btnGravar").on("click", function() {
         gravar();
+
     });
 
     $("#btnPdf").on("click", function() {
@@ -912,7 +918,7 @@ include("inc/scripts.php");
         //cadastro
         var id = +($("#codigo").val());
         var ativo = $("#ativo").val();
-        var nome = $("#nome").val(); //pegando valor da variavel
+        var nome = $("#nome").val().trim(); //pegando valor da variavel
         var cpf = $("#cpf").val();
         var rg = $("#rg").val();
         var dataNascimento = $("#dataNascimento").val();
@@ -975,10 +981,10 @@ include("inc/scripts.php");
             emprego = $("#emprego").focus();
         }
 
-        if (pis == "") {
-            smartAlert("Atenção", "Primeiro PIS/PASED não preenchido.", "error")
-            pis = $("#pis").focus();
-        }
+        // if (pis == "") {
+        //     smartAlert("Atenção", "Primeiro PIS/PASED não preenchido.", "error")
+        //     pis = $("#pis").focus();
+        // }
 
         if (telefone == "") {
             smartAlert("Atenção", "Telefone não preenchido.", "error")
@@ -1014,8 +1020,7 @@ include("inc/scripts.php");
             smartAlert("Atenção", "Cidade não preenchido.", "error")
             cidade = $("#cidade").focus();
         }
-
-
+        
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray);
     }
 
@@ -1027,7 +1032,7 @@ include("inc/scripts.php");
         if (cpfFuncionario == cpfDependentes) {
             smartAlert("Atenção", "CPF dependente repetido", "error")
             $("#cpfDependentes").val("");
-        } else {}
+        } else {}       
     }
 
     //------------------>valida data e idade<---------------//
@@ -1337,7 +1342,7 @@ include("inc/scripts.php");
             } else {
                 $('#whats').prop('checked', false);
             }
-           
+
         }
     }
 
@@ -1570,7 +1575,7 @@ include("inc/scripts.php");
     function validaDependentes() {
         var contido = false;
         var sequencial = +$('#sequencialDependentes').val();
-        var nomeDependentes = $('#nomeDependentes').val();
+        var nomeDependentes = $('#nomeDependentes').val().trim();
         var cpfDependentes = $('#cpfDependentes').val();
         var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
         var tipo = $('#tipo').val();
@@ -1593,6 +1598,12 @@ include("inc/scripts.php");
 
         if (tipo === '') {
             smartAlert("Erro", "Informe o tipo de dependente", "error");
+            return false;
+        }
+
+        if(cpfDependentes === cpf){
+            smartAlert("CPF dependente igual ao do funcionário");
+            $("#cpf").val("");
             return false;
         }
 

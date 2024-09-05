@@ -15,8 +15,10 @@ function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil,
                 return '';
             } else {
                 smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                setInterval(novo(), 1500)
-               
+                $('#btnGravar').attr('disabled', true);
+
+                setInterval(voltar(), 1500)
+
             }
             //retorno dos dados
         },
@@ -41,7 +43,7 @@ function verificarCpf(cpf) {
 
                 if (mensagem !== "") {
                     smartAlert("Atenção", "CPF já cadastrado", "error");
-                    $('#cpf').val("");               
+                    $('#cpf').val("");
                 }
             }
         },
@@ -198,7 +200,7 @@ function recuperaFuncionario(id) {
                 //atribuindo valor 
                 if (ativo === 1) {
                     $('#btnExcluir').removeClass('hidden');
-                } 
+                }
 
                 idade($("#dataNascimento").val());
 

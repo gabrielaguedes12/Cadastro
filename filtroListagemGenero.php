@@ -19,15 +19,13 @@ include "js/girComum.php";
                 $utils = new comum();
                 $reposit = new reposit();
 
-                $sql = " SELECT  codigo, descricao, ativo from dbo.genero ";
-                $where = "WHERE (0 = 0)";
+                $sql = " SELECT  codigo, descricao, ativo from dbo.genero WHERE (0 = 0)";
 
-
-                $codigo = $_POST["descricao"];
+                $descricao = $_POST["descricao"];
                 $ativo =  $_POST["ativo"];
 
-                if ($codigo != "") {
-                    $where = $where . " AND codigo = $codigo";
+                if ($descricao) {
+                    $where = $where . " AND (descricao like '%$descricao%')";
                 }
 
                 if ($ativo != "") {

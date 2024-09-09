@@ -59,7 +59,7 @@ function gravar()
     $cidade = $utils->formatarString($_POST['cidade']);
     $emprego = $_POST['emprego'];
     $pis = $utils->formatarString($_POST['pis']);
-    $nomeDependentes = $_POST['jsonDependentesArray'];
+    $nomeDependentes = $_POST['jsonDependentesArray'] ? $_POST['jsonDependentesArray'] : [] ;
 
     //telefone
     $nomeXml = "ArrayTelefone";
@@ -91,7 +91,7 @@ function gravar()
     }
     $xmlJsonTelefone = "'" . $xmlJsonTelefone . "'";
 
-    //email
+    //-------------------->email<------------------------//
     $nomeXmlEmail = "ArrayEmail";
     $nomeTabelaEmail = "TabelaEmail";
     if (sizeof($email) > 0) {
@@ -136,7 +136,6 @@ function gravar()
             $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeTabelaDependentes . ">";
         }
         $xmlJsonDependentes = $xmlJsonDependentes . "</" . $nomeXmlDependentes . ">";
-
     } else {
 
         $xmlJsonDependentes = '<?xml version="1.0"?>';
@@ -248,7 +247,7 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-           
+
             $telefone = $row['telefone'];
             $telefoneId = $row['telefoneId'];
             $principal = $row['principal'];
@@ -285,7 +284,7 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-           
+
             $email = $row['email'];
             $emailId = $row['emailId'];
             $principalEmail = $row['principalEmail'];
@@ -306,6 +305,7 @@ function recupera()
 
     //dependentes
     $sql = "SELECT t.codigo,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
+    
      FROM dependentes t 
       WHERE idFuncionario = $id";
 
@@ -319,7 +319,7 @@ function recupera()
 
         $out = "";
         if ($row = $result[0]) {
-           
+
             $idFuncionario = $row['idFuncionario'];
             $nomeDependentes = $row['nomeDependentes'];
             $cpfDependentes = $row['cpfDependentes'];
@@ -414,31 +414,10 @@ function validaCpf()
     }
 }
 
-//verificar se já foi cadastrado
-function verificaCpf()
-{
-    $reposit = new reposit();
-    $utils = new comum();
-
-    $cpf = $utils->formatarString($_POST['cpf']);
-
-    $sql = "SELECT cpf from dbo.funcionario where cpf = $cpf";
-
-    $reposit = new reposit();
-    $result = $reposit->RunQuery($sql);
-
-    $ret = 'sucess# CPF ok';
-    if (count($result) > 0) {
-        $ret = 'failed# CPF já cadastrado';
-    }
-    echo $ret;
-
-    return;
-}
-
 //validar cpf(exem: 111.111.111-11)
 function validaCpfDependentes()
 {
+
     $utils = new comum();
 
     $result = $utils->validaCpfDependentes($_POST['cpfDependentes']);
@@ -450,21 +429,58 @@ function validaCpfDependentes()
     }
 }
 
+//verificar se já foi cadastrado
+function verificaCpf()
+{
+    $reposit = new reposit();
+    $utils = new comum();
+
+    $cpf = $utils->formatarString($_POST['cpf']);
+
+    $id = (int)$_POST["id"];
+
+    if ($id == 0) {
+        $sql = "SELECT cpf  from dbo.funcionario where cpf = $cpf";
+    } else {
+        $sql = "SELECT cpf, codigo  from dbo.funcionario where cpf = $cpf and codigo != $id";
+    }
+
+    $reposit = new reposit();
+    $result = $reposit->RunQuery($sql);
+    if ($result == 0) {
+        $ret = 'success# CPF OK';
+    } else {
+        if (count($result) > 0) {
+            $ret = 'failed# CPF já cadastrado';
+        }
+    }
+    echo $ret;
+
+    return;
+}
+
 function verificaRg()
 {
     $reposit = new reposit();
     $utils = new comum();
 
     $rg = $utils->formatarString($_POST['rg']);
+    $id = (int)$_POST["id"];
 
-    $sql = "SELECT rg from dbo.funcionario where rg = $rg";
+    if ($id == 0) {
+        $sql = "SELECT rg from dbo.funcionario where rg = $rg";
+    } else {
+        $sql = "SELECT rg, codigo  from dbo.funcionario where rg = $rg and codigo != $id";
+    }
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
-
-    $ret = 'sucess# RG ok';
-    if (count($result) > 0) {
-        $ret = 'failed# RG já cadastrado';
+    if ($result == 0) {
+        $ret = 'sucess# RG ok';
+    } else {
+        if (count($result) > 0) {
+            $ret = 'failed# RG já cadastrado';
+        }
     }
     echo $ret;
     return;

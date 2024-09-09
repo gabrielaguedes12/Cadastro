@@ -321,7 +321,7 @@ include("inc/scripts.php");
 
     function gravar() {
         var codigo = +($("#codigo").val());
-        var descricao = $("#descricao").val();
+        var descricao = $("#descricao").val().trim();
         var ativo = $("#ativo").val();
 
         if (descricao == "") {

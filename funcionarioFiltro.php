@@ -90,7 +90,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" placeholder="999.999.999-99" value="">
+                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" placeholder="XXX.XXX.XXX-XX" value="">
                                                                 </label>
                                                             </section>
 
@@ -148,7 +148,7 @@ include("inc/nav.php");
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
-                                                                    <select id="ativo" name="ativo">                                                                
+                                                                    <select id="ativo" name="ativo">
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
@@ -175,13 +175,13 @@ include("inc/nav.php");
                                             <button type="button" id="btnPdf" class="btn btn-primary" aria-hidden="true" title="PDF" style="display:<?php echo $esconderBtnPdf ?>">
                                                 <span class="fa fa-file-pdf-o"></span>
                                             </button>
-                                        <?php }?>
+                                        <?php } ?>
                                     </footer>
-                                    
+
                                 </form>
                             </div>
-                        </div>
-                        <div id="resultadoBusca">
+                            <div id="resultadoBusca">
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -234,6 +234,184 @@ include("inc/scripts.php");
 
 <script>
     $(".cpf").inputmask("999.999.999-99");
+    $(".dataNascimento").mask("99/99/9999");
+    //funçoes
+    $("#cpf").on('focusout', function() {
+        validaCpf()
+    });
+ 
+    
+    $("#dataNascimentoInicial").on('change', function() {
+        validaDataInicial();
+    });
+
+    //Inicial       
+    $("#dataNascimentoInicial").on("change", function() {
+        var dataNascimentoInicial = $("#dataNascimentoInicial").val();
+        if (dataNascimentoInicial.length < 10) {
+            $("#dataNascimentoInicial").val("");
+        }
+        if (validaDataInicial(dataNascimentoInicial) == false) {
+            smartAlert("Atenção", "Data Inválida", "error");
+            $("#dataNascimentoInicial").val("");
+        }
+    });
+
+
+   $("#dataNascimentoFinal").on('change', function() {
+        validaDataFinal();
+    });
+    //Final       
+    $("#dataNascimentoFinal").on("change", function() {
+        var dataNascimentoFinal = $("#dataNascimentoFinal").val();
+        if (dataNascimentoFinal.length < 10) {
+            $("#dataNascimentoFinal").val("");
+        }
+        if (validaDataFinal(dataNascimentoFinal) == false) {
+            smartAlert("Atenção", "Data Inválida", "error");
+            $("#dataNascimentoFinal").val("");
+        }
+    });
+
+    //validar cpf(exem: 111.111.111-11)
+    function validaCpf() {
+        var cpf = $('#cpf').val();
+        validarCpf(cpf)
+    }
+
+    function validarCpf(cpf) {
+        $.ajax({
+            url: 'js/sqlscopeFuncionarioCadastro.php',
+            dataType: ' html',
+            type: 'post',
+            data: {
+                funcao: 'validaCpf',
+                cpf: cpf
+            },
+            success: function(data, textStatus) {
+                if (data.indexOf('failed') > -1) {
+                    var piece = data.split("#");
+                    var mensagem = piece[1];
+
+                    if (mensagem !== "") {
+                        smartAlert("Atenção", mensagem, "error");
+                    } else {
+                        smartAlert("Atenção", "CPF inválido", "error");
+                        $('#cpf').val("");
+
+                    }
+                }
+            },
+            error: function(xhr, er) {
+                //tratamento de erro
+            }
+        });
+    }
+
+    function validaDataInicial(dataNascimentoInicial) {
+        var anoAtual = new Date();
+        var anoHoje = anoAtual.getFullYear()
+
+        // Verifica se a entrada é uma string
+        if (typeof dataNascimentoInicial !== 'string') {
+            return false
+        }
+
+        // Verifica formado da data
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoInicial)) {
+            return false
+        }
+
+        // Divide a data para o objeto "data"
+        const partesData = dataNascimentoInicial.split('/')
+        const data = {
+            dia: partesData[0],
+            mes: partesData[1],
+            ano: partesData[2]
+        }
+
+        // Converte strings em número
+        const dia = parseInt(data.dia)
+        const mes = parseInt(data.mes)
+        const ano = parseInt(data.ano)
+
+        // Dias de cada mês, incluindo ajuste para ano bissexto
+        const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+        // Atualiza os dias do mês de fevereiro para ano bisexto
+        if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
+            diasNoMes[2] = 29
+        }
+
+        // Regras de validação:
+        // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
+        if (mes < 1 || mes > 12 || dia < 1) {
+            return false
+        }
+        if (ano > anoHoje || ano < (anoHoje - 150)) {
+            return false;
+        }
+        // Valida número de dias do mês
+        else if (dia > diasNoMes[mes]) {
+            return false
+        }
+
+        // Passou nas validações
+        return true
+    }
+
+
+    function validaDataFinal(dataNascimentoFinal) {
+        var anoAtual = new Date();
+        var anoHoje = anoAtual.getFullYear()
+
+        // Verifica se a entrada é uma string
+        if (typeof dataNascimentoFinal !== 'string') {
+            return false
+        }
+
+        // Verifica formado da data
+        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoFinal)) {
+            return false
+        }
+
+        // Divide a data para o objeto "data"
+        const partesData = dataNascimentoFinal.split('/')
+        const data = {
+            dia: partesData[0],
+            mes: partesData[1],
+            ano: partesData[2]
+        }
+
+        // Converte strings em número
+        const dia = parseInt(data.dia)
+        const mes = parseInt(data.mes)
+        const ano = parseInt(data.ano)
+
+        // Dias de cada mês, incluindo ajuste para ano bissexto
+        const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+        // Atualiza os dias do mês de fevereiro para ano bisexto
+        if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
+            diasNoMes[2] = 29
+        }
+
+        // Regras de validação:
+        // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
+        if (mes < 1 || mes > 12 || dia < 1) {
+            return false
+        }
+        if (ano > anoHoje || ano < (anoHoje - 150)) {
+            return false;
+        }
+        // Valida número de dias do mês
+        else if (dia > diasNoMes[mes]) {
+            return false
+        }
+
+        // Passou nas validações
+        return true
+    }
 
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
@@ -249,8 +427,10 @@ include("inc/scripts.php");
         });
     });
 
+
+
     function listarFiltro() {
-        var nome = $('#nome').val();
+        var nome = $('#nome').val().trim();
         var cpf = $('#cpf').val();
         var dataNascimentoInicial = $('#dataNascimentoInicial').val();
         var dataNascimentoFinal = $('#dataNascimentoFinal').val();

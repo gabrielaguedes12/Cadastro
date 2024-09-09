@@ -302,7 +302,7 @@ include("inc/scripts.php");
 
     function gravar() {
         var codigo = +($("#codigo").val());
-        var estadoCivil = $("#estadoCivil").val();
+        var estadoCivil = $("#estadoCivil").val().trim();
         var ativo = $("#ativo").val();
 
         if (estadoCivil == "") {

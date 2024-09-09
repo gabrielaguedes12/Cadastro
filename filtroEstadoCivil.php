@@ -182,7 +182,7 @@ include("inc/scripts.php");
     });
 
     function listarFiltro() {
-        var estadoCivil = $('#estadoCivil').val();
+        var estadoCivil = $('#estadoCivil').val().trim();
         var ativo = $('#ativo').val();
 
         $('#resultadoBusca').load('filtroListagemEstadoCivil.php?', {

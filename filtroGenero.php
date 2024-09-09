@@ -183,7 +183,7 @@ include("inc/scripts.php");
     });
 
     function listarFiltro() {
-        var descricao = $('#descricao').val();
+        var descricao = $('#descricao').val().trim();
         var ativo = $('#ativo').val();
 
         $('#resultadoBusca').load('filtroListagemGenero.php?', {

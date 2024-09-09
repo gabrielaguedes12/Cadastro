@@ -183,7 +183,7 @@ include("inc/scripts.php");
     });
 
     function listarFiltro() {
-        var tipo = $('#tipo').val();
+        var tipo = $('#tipo').val().trim();
         var ativo = $('#ativo').val();
 
         $('#resultadoBusca').load('filtroListagemDependentes.php?', {

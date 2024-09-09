@@ -306,7 +306,7 @@ include("inc/scripts.php");
 
     function gravar() {
         var codigo = +($("#codigo").val());
-        var tipo = $("#tipo").val();
+        var tipo = $("#tipo").val().trim();
         var ativo = $("#ativo").val();
 
         if (tipo == "") {

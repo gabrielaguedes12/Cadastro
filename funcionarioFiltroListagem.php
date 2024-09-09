@@ -32,6 +32,20 @@ include "js/girComum.php";
                 $ativo =  $_POST['ativo'];
                 $pdf =  $_POST['pdf'];
 
+                function validaCpf()
+                {
+                    $utils = new comum();
+
+                    $result = $utils->validaCpf($_POST['cpf']);
+
+                    if ($result) {
+                        echo 'sucess#';
+                    } else {
+                        echo 'failed#';
+                    }
+                }
+
+
                 $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
                 LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 
                 LEFT JOIN dbo.genero G ON G.codigo = F.idGenero WHERE (0 = 0)";
@@ -92,7 +106,7 @@ include "js/girComum.php";
                     echo '<td class="text-center">' . $estadoCivil . '</td>';
                     echo '<td class="text-center">' . $descricao . '</td>';
                     echo '<td class="text-center">' . $descricaoAtivo . '</td>';
-                    echo '<td class="text-center"><a href="pdfIndividual.php?id=' . $id  .'" class="btnPdf btn btn-primary"><i class="fa fa-file-pdf-o"></i></button></td>';
+                    echo '<td class="text-center"><a href="pdfIndividual.php?id=' . $id  . '" class="btnPdf btn btn-primary"><i class="fa fa-file-pdf-o"></i></button></td>';
                     echo '</tr >';
                 }
                 ?>

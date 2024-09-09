@@ -30,29 +30,6 @@ function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil,
     return '';
 }
 
-function verificarCpf(cpf) {
-    $.ajax({
-        url: 'js/sqlscopeFuncionarioCadastro.php',
-        dataType: ' html',
-        type: 'post',
-        data: { funcao: 'verificaCpf', cpf: cpf },
-        success: function (data, textStatus) {
-            if (data.indexOf('failed') > -1) {
-                var piece = data.split("#");
-                var mensagem = piece[1];
-
-                if (mensagem !== "") {
-                    smartAlert("Atenção", "CPF já cadastrado", "error");
-                    $('#cpf').val("");
-                }
-            }
-        },
-        error: function (xhr, er) {
-            //tratamento de erro
-        }
-    });
-}
-
 function validarCpf(cpf) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
@@ -91,11 +68,9 @@ function validarCpfDependentes(cpfDependentes) {
                 var mensagem = piece[1];
 
                 if (mensagem !== "") {
-                    smartAlert("Atenção", mensagem, "error");
-                } else {
                     smartAlert("Atenção", "CPF dependente inválido", "error");
                     $("#cpfDependentes").val("");
-
+                    return;
                 }
             }
         },
@@ -105,23 +80,43 @@ function validarCpfDependentes(cpfDependentes) {
     });
 }
 
-
-function verificarRg(rg) {
+function verificarCpf(id, cpf) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        data: { funcao: 'verificaRg', rg: rg },
+        data: { funcao: 'verificaCpf', id: id, cpf: cpf },
         success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
 
                 if (mensagem !== "") {
-                    smartAlert("Atenção", mensagem, "error");
-                    $('#rg').val("");
-                } else {
+                    smartAlert("Atenção", "CPF já cadastrado", "error");
+                    $('#cpf').val("");
+                }
+            }
+        },
+        error: function (xhr, er) {
+            //tratamento de erro
+        }
+    });
+}
+
+function verificarRg(id, rg) {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioCadastro.php',
+        dataType: ' html',
+        type: 'post',
+        data: { funcao: 'verificaRg', id: id, rg: rg },
+        success: function (data, textStatus) {
+            if (data.indexOf('failed') > -1) {
+                var piece = data.split("#");
+                var mensagem = piece[1];
+
+                if (mensagem !== "") {
                     smartAlert("Atenção", "RG já cadastrado", "error");
+                    $('#rg').val("");
 
                 }
             }
@@ -202,6 +197,13 @@ function recuperaFuncionario(id) {
                     $('#btnExcluir').removeClass('hidden');
                 }
 
+                if (emprego == 0) {
+                    $('#pis').removeClass("readonly").attr("disabled", false)
+                } else {
+                    $('#pis').addClass("readonly").attr("disabled", true).val("")
+                }
+
+
                 idade($("#dataNascimento").val());
 
                 $("#jsonTelefone").val(strarrayTelefone)
@@ -250,7 +252,7 @@ function excluirFuncionario(id) {
                 novo();
             } else {
                 smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                novo();
+                voltar();
             }
         },
         error: function (xhr, er) {

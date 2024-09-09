@@ -105,7 +105,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
-                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class=required placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
+                                                                    <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
 
@@ -134,7 +134,7 @@ include("inc/nav.php");
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
-                                                                        <option hidden select> Selecione </option>
+                                                                        <option></option>
 
                                                                         <?php
                                                                         $reposit = new reposit();
@@ -156,7 +156,7 @@ include("inc/nav.php");
                                                                 <label class="label">Gênero</label>
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
-                                                                        <option hidden select>Selecione</option>
+                                                                        <option></option>
 
                                                                         <?php
                                                                         $reposit = new reposit();
@@ -189,7 +189,7 @@ include("inc/nav.php");
                                                                 <label class="label">Primeiro emprego</label>
                                                                 <label class="select">
                                                                     <select id="emprego" name="emprego" class="required" onpaste="return false" ondrop="return">
-                                                                        <option hidden select>Selecione</option>
+                                                                        <option></option>
                                                                         <option value="1">Sim</option>
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
@@ -198,7 +198,7 @@ include("inc/nav.php");
                                                             <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
-                                                                    <input id="pis" name="pis" maxlength="15" type="text" placeholder="XXX.XXXXX.XX-X" class="readonly" readonly>
+                                                                    <input id="pis" name="pis" maxlength="14" type="text" placeholder="XXX.XXXXX.XX-X" class="readonly" onpaste="return false" ondrop="return">
                                                                 </label>
                                                             </section>
                                                     </fieldset>
@@ -597,14 +597,14 @@ include("inc/scripts.php");
         jsonDependentesArray = JSON.parse($("#jsonDependentes").val());
 
         //mascaras
-        $(".cpf").mask("999.999.999-99");
+        $(".cpf").inputmask("999.999.999-99");
         $(".rg").mask("99.999.999-9");
         $(".dataNascimento").mask("99/99/9999"); //classe--> geral
         $("#cep").mask("99999-999");
         $("#pis").mask("999.99999.99-9");
-        $(".cpfDependentes").mask("999.999.999-99");
+        $(".cpfDependentes").inputmask("999.999.999-99");
         $(".dataNascimentoDependentes").mask("99/99/9999");
-
+        $("#telefone").mask("(XX) XXXXX-XXXX");
 
         //nome
         $(document).ready(function() {
@@ -619,6 +619,14 @@ include("inc/scripts.php");
                 event.preventDefault();
             });
         });
+
+        //pis
+        $(document).ready(function() {
+            $('#pis').bind('cut copy paste', function(event) {
+                event.preventDefault();
+            });
+        });
+
         //funçoes
         $("#cpf").on('focusout', function() {
             validaCpf()
@@ -636,9 +644,8 @@ include("inc/scripts.php");
 
         });
 
-        $(".rg").on('change', function() {
+        $("#rg").on('change', function() {
             verificaRg()
-
         });
 
         $("#dataNascimento").on("change", function() {
@@ -657,7 +664,11 @@ include("inc/scripts.php");
         });
 
         $("#dataNascimento").on('change', function() {
+            // var idade = 
             validaData();
+            if ($("#dataNascimento").val())
+                idade($("#dataNascimento").val())
+
         });
 
         //dependentes       
@@ -673,6 +684,18 @@ include("inc/scripts.php");
         });
         $("#dataNascimentoDependentes").on('change', function() {
             validaDataDependentes();
+        });
+
+        //pis e emprego
+        $("#emprego").on('change', function() {
+            var emprego = $("#emprego").val();
+            var pis = $("#pis").val();
+
+            if (emprego == 0) {
+                $('#pis').removeClass("readonly").attr("disabled", false)
+            } else {
+                $('#pis').addClass("readonly").attr("disabled", true).val("")
+            }
         });
 
         //id--> input unico
@@ -750,14 +773,6 @@ include("inc/scripts.php");
         carregaPagina();
     });
 
-    //condição com readondly
-    // $('#emprego').on("change", campo => +campo.currentTarget.value ? $('#pis').addClass("readonly").attr("disabled", true).val("") : $('#pis').removeClass("readonly").attr("disabled", false))
-    if(emprego==1){
-
-    }else{
-        
-    }
-
     //---------------->não permitir caracteres especiais e numeros<------------------//
     document.getElementById("nome").onkeypress = function(e) {
         var chr = String.fromCharCode(e.which);
@@ -812,6 +827,7 @@ include("inc/scripts.php");
         if (id !== 0) {
             $('#dlgSimpleExcluir').dialog('open');
         }
+
     });
 
     $("#btnNovo").on("click", function() {
@@ -859,7 +875,7 @@ include("inc/scripts.php");
 
     //dependentes
     $('#btnAddDependentes').on("click", function() {
-        var cpfDependentes = $("#cpf").val();
+        var cpfDependentes = $("#cpfDependentes").val();
         if (cpfDependentes == "") {
             smartAlert("Atenção", "Preencha CPF do dependente", "error");
         } else {
@@ -912,6 +928,7 @@ include("inc/scripts.php");
         }
 
         excluirFuncionario(id);
+
     }
 
     function gravar() {
@@ -950,35 +967,39 @@ include("inc/scripts.php");
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
             nome = $("#nome").focus();
-            return
+            return;
         }
 
         if (cpf == "") {
             smartAlert("Atenção", "CPF não preenchido.", "error")
             cpf = $("#cpf").focus();
-            return
+            return;
         }
         if (rg == "") {
             smartAlert("Atenção", "RG não preenchido.", "error")
             rg = $("#rg").focus();
-            return
+            return;
         }
         if (dataNascimento == "") {
             smartAlert("Atenção", "Data de nascimento não preenchido.", "error")
             dataNascimento = $("#dataNascimento").focus();
+            return;
         }
         if (estadoCivil == "") {
             smartAlert("Atenção", "Estado Civil não preenchido.", "error")
             estadoCivil = $("#estadoCivil").focus();
+            return;
         }
         if (descricao == "") {
             smartAlert("Atenção", "Gênero não preenchido.", "error")
             descricao = $("#descricao").focus();
+            return;
         }
 
         if (emprego == "") {
             smartAlert("Atenção", "Primeiro emprego não preenchido.", "error")
             emprego = $("#emprego").focus();
+            return;
         }
 
         // if (pis == "") {
@@ -986,41 +1007,64 @@ include("inc/scripts.php");
         //     pis = $("#pis").focus();
         // }
 
-        if (telefone == "") {
+        if (telefone == "[]") {
             smartAlert("Atenção", "Telefone não preenchido.", "error")
             telefone = $("#jsonTelefone").focus();
+            return;
         }
 
-        if (email == "") {
+        if (verificaPrincipal() == false) {
+            smartAlert("Atenção", "Cadastre pelo menos um telefone principal.", "error");
+            return;
+        }
+
+        if (email == "[]") {
             smartAlert("Atenção", "Email não preenchido.", "error")
             email = $("#jsonEmail").focus();
+            return;
+        }
+
+        if (verificaPrincipalEmail() == false) {
+            smartAlert("Atenção", "Cadastre pelo menos um email principal.", "error");
+            return;
         }
 
         if (cep == "") {
             smartAlert("Atenção", "CEP não preenchido.", "error")
             cep = $("#cep").focus();
+            return;
         }
 
         if (logradouro == "") {
             smartAlert("Atenção", "Logradouro não preenchido.", "error")
             logradouro = $("#logradouro").focus();
+            return;
+        }
+
+        if (numero == "") {
+            smartAlert("Atenção", "Número não preenchido.", "error")
+            numero = $("#numero").focus();
+            return;
         }
 
         if (uf == "") {
             smartAlert("Atenção", "UF não preenchido.", "error")
             uf = $("#uf").focus();
+            return;
         }
 
         if (bairro == "") {
             smartAlert("Atenção", "Bairro não preenchido.", "error")
             bairro = $("#bairro").focus();
+            return;
         }
 
         if (cidade == "") {
             smartAlert("Atenção", "Cidade não preenchido.", "error")
             cidade = $("#cidade").focus();
+            return;
         }
-        
+
         gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray);
     }
 
@@ -1031,8 +1075,9 @@ include("inc/scripts.php");
 
         if (cpfFuncionario == cpfDependentes) {
             smartAlert("Atenção", "CPF dependente repetido", "error")
-            $("#cpfDependentes").val("");
-        } else {}       
+            $("#cpf").val("");
+        } else {}
+        return;
     }
 
     //------------------>valida data e idade<---------------//
@@ -1082,7 +1127,9 @@ include("inc/scripts.php");
     //------------------>valida data dependentes<---------------//
     function validaDataDependentes(dataNascimentoDependentes) {
         var anoAtual = new Date();
-        var anoHoje = anoAtual.getFullYear()
+        var anoHoje = anoAtual.getFullYear();
+        var mesHoje = anoAtual.getMonth();
+        var diaHoje = anoAtual.getDay();
 
         // Verifica se a entrada é uma string
         if (typeof dataNascimentoDependentes !== 'string') {
@@ -1118,8 +1165,17 @@ include("inc/scripts.php");
         // Regras de validação:
         // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
         if (mes < 1 || mes > 12 || dia < 1) {
-            return false
+            return false;           
         }
+
+        if (mes > mesHoje ){
+            return false;          
+        }
+
+        if (dia > diaHoje ){
+            return false;          
+        }
+
         if (ano > anoHoje || ano < (anoHoje - 150)) {
             return false;
         }
@@ -1141,8 +1197,9 @@ include("inc/scripts.php");
 
     //verificar se já foi cadastrado
     function verificaCpf() {
+        var id = $('#codigo').val();
         var cpf = $('#cpf').val();
-        verificarCpf(cpf) //variável "passa" nesse ()
+        verificarCpf(id, cpf) //variável "passa" nesse ()
     }
 
     function validaCpfDependentes() {
@@ -1152,6 +1209,7 @@ include("inc/scripts.php");
 
     //verificar se já foi cadastrado
     function verificaRg() {
+        var id = $('#codigo').val();
         var rg = $('#rg').val()
         verificarRg(rg)
     }
@@ -1159,6 +1217,26 @@ include("inc/scripts.php");
     //------------------------------->TELEFONE<----------------------------------//
     function mascaraTelefone() {
         var telefone = $('#telefone').val()
+    }
+
+    function verificaPrincipal() {
+        jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
+        var achouPrincipal = "";
+
+        for (i = jsonTelefoneArray.length - 1; i >= 0; i--) {
+
+            if ((jsonTelefoneArray[i].principal == 1)) {
+                achouPrincipal = true;
+                break;
+            } else if ((jsonTelefoneArray[i].principal == 0)) {
+                achouPrincipal = false;
+            }
+        }
+        if (achouPrincipal == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function validaTelefone() {
@@ -1175,6 +1253,12 @@ include("inc/scripts.php");
 
         if (telefone === '') {
             smartAlert("Erro", "Informe um telefone", "error");
+            return false;
+        }
+
+        if (telefone === '(') {
+            smartAlert("Erro", "Informe um telefone", "error");
+            clearFormTelefone();
             return false;
         }
 
@@ -1386,6 +1470,28 @@ include("inc/scripts.php");
         } else {
             adicionaEmail();
         }
+    }
+
+    function verificaPrincipalEmail() {
+        jsonEmailArray = JSON.parse($("#jsonEmail").val());
+        var achouPrincipalEmail = "";
+
+        for (i = jsonEmailArray.length - 1; i >= 0; i--) {
+
+            if ((jsonEmailArray[i].principalEmail == 1)) {
+                achouPrincipalEmail = true;
+                break;
+            } else if ((jsonEmailArray[i].principalEmail == 0)) {
+                achouPrincipalEmail = false;
+            }
+        }
+        if (achouPrincipalEmail == true) {
+            return true;
+        } else {
+            return false;
+        }
+
+
     }
 
     function validaEmail() {
@@ -1601,9 +1707,9 @@ include("inc/scripts.php");
             return false;
         }
 
-        if(cpfDependentes === cpf){
+        if (cpfDependentes === cpf) {
             smartAlert("CPF dependente igual ao do funcionário");
-            $("#cpf").val("");
+            $("#cpfDependentes").val("");
             return false;
         }
 

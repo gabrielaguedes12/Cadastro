@@ -36,6 +36,7 @@ include("inc/header.php");
 
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
+$page_nav['cadastro']['sub']["funcionario"]["active"] = true;
 
 include("inc/nav.php");
 ?>
@@ -46,7 +47,7 @@ include("inc/nav.php");
     <?php
     //configure ribbon (breadcrumbs) array("name"=>"url"), leave url empty if no url
     //$breadcrumbs["New Crumb"] => "http://url.com"
-    $breadcrumbs["Tabela Básica"] = "";
+    $breadcrumbs["Filtro"] = "";
     include("inc/ribbon.php");
     ?>
 
@@ -233,51 +234,21 @@ include("inc/scripts.php");
 
 
 <script>
+    $(document).ready(function() {
+        $('#btnSearch').on("click", () => listarFiltro());
+
+        $('#btnNovo').on("click", () => novo());
+
+        $("#btnPdf").on("click", () => pdf());
+
+        carregaPagina();
+    });
+
     $(".cpf").inputmask("999.999.999-99");
     $(".dataNascimento").mask("99/99/9999");
+
     //funçoes
-    $("#cpf").on('focusout', function() {
-        validaCpf()
-    });
- 
-    
-    $("#dataNascimentoInicial").on('change', function() {
-        validaDataInicial();
-    });
-
-    //Inicial       
-    $("#dataNascimentoInicial").on("change", function() {
-        var dataNascimentoInicial = $("#dataNascimentoInicial").val();
-        if (dataNascimentoInicial.length < 10) {
-            $("#dataNascimentoInicial").val("");
-        }
-        if (validaDataInicial(dataNascimentoInicial) == false) {
-            smartAlert("Atenção", "Data Inválida", "error");
-            $("#dataNascimentoInicial").val("");
-        }
-    });
-
-
-   $("#dataNascimentoFinal").on('change', function() {
-        validaDataFinal();
-    });
-    //Final       
-    $("#dataNascimentoFinal").on("change", function() {
-        var dataNascimentoFinal = $("#dataNascimentoFinal").val();
-        if (dataNascimentoFinal.length < 10) {
-            $("#dataNascimentoFinal").val("");
-        }
-        if (validaDataFinal(dataNascimentoFinal) == false) {
-            smartAlert("Atenção", "Data Inválida", "error");
-            $("#dataNascimentoFinal").val("");
-        }
-    });
-
-    //validar cpf(exem: 111.111.111-11)
-    function validaCpf() {
-        var cpf = $('#cpf').val();
-        validarCpf(cpf)
-    }
+    $("#cpf").on('focusout', campo => validarCpf(campo.currentTarget.value));
 
     function validarCpf(cpf) {
         $.ajax({
@@ -298,7 +269,6 @@ include("inc/scripts.php");
                     } else {
                         smartAlert("Atenção", "CPF inválido", "error");
                         $('#cpf').val("");
-
                     }
                 }
             },
@@ -307,6 +277,19 @@ include("inc/scripts.php");
             }
         });
     }
+
+    //Inicial       
+    $("#dataNascimentoInicial").on("change", function(campo) {
+
+        var dataNascimentoInicial = campo.currentTarget.value;
+        if (dataNascimentoInicial.length < 10) {
+            $("#dataNascimentoInicial").val("");
+        }
+        if (validaDataInicial(dataNascimentoInicial) == false) {
+            smartAlert("Atenção", "Data Inválida", "error");
+            $("#dataNascimentoInicial").val("");
+        }
+    });
 
     function validaDataInicial(dataNascimentoInicial) {
         var anoAtual = new Date();
@@ -360,6 +343,17 @@ include("inc/scripts.php");
         return true
     }
 
+    //Final       
+    $("#dataNascimentoFinal").on("change", function() {
+        var dataNascimentoFinal = campo.currentTarget.value;
+        if (dataNascimentoFinal.length < 10) {
+            $("#dataNascimentoFinal").val("");
+        }
+        if (validaDataFinal(dataNascimentoFinal) == false) {
+            smartAlert("Atenção", "Data Inválida", "error");
+            $("#dataNascimentoFinal").val("");
+        }
+    });
 
     function validaDataFinal(dataNascimentoFinal) {
         var anoAtual = new Date();
@@ -413,22 +407,6 @@ include("inc/scripts.php");
         return true
     }
 
-    $(document).ready(function() {
-        $('#btnSearch').on("click", function() {
-            listarFiltro();
-        });
-
-        $('#btnNovo').on("click", function() {
-            novo();
-        });
-
-        $("#btnPdf").on("click", function() {
-            pdf();
-        });
-    });
-
-
-
     function listarFiltro() {
         var nome = $('#nome').val().trim();
         var cpf = $('#cpf').val();
@@ -455,12 +433,14 @@ include("inc/scripts.php");
     }
 
     function pdf() {
-        $(location).attr('href', 'pdfGeral.php');
+        // $(location).attr('href', 'pdfGeral.php');
+        window.open('pdfgeral.php');
+
     }
 
-    document.getElementById("nome").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
-            return false;
-    };
+    // $("nome").on('keypress', function(e) {
+    //     var chr = String.fromCharCode(e.which);
+    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+    //         return false;
+    // })
 </script>

@@ -59,7 +59,7 @@ function gravar()
     $cidade = $utils->formatarString($_POST['cidade']);
     $emprego = $_POST['emprego'];
     $pis = $utils->formatarString($_POST['pis']);
-    $nomeDependentes = $_POST['jsonDependentesArray'] ? $_POST['jsonDependentesArray'] : [] ;
+    $nomeDependentes = $_POST['jsonDependentesArray'] ? $_POST['jsonDependentesArray'] : [];
 
     //telefone
     $nomeXml = "ArrayTelefone";
@@ -304,10 +304,9 @@ function recupera()
     $strarrayEmail = json_encode($arrayEmail);
 
     //dependentes
-    $sql = "SELECT t.codigo,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo
-    
+    $sql = "SELECT t.codigo,t.idFuncionario,t.nomeDependentes,t.cpfDependentes,t.dataNascimentoDependentes,t.tipo    
      FROM dependentes t 
-      WHERE idFuncionario = $id";
+    WHERE idFuncionario = $id";
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -318,14 +317,14 @@ function recupera()
     foreach ($result as $row) {
 
         $out = "";
-        if ($row = $result[0]) {
 
-            $idFuncionario = $row['idFuncionario'];
-            $nomeDependentes = $row['nomeDependentes'];
-            $cpfDependentes = $row['cpfDependentes'];
-            $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
-            $tipo = $row['tipo'];
-        }
+
+        $idFuncionario = $row['idFuncionario'];
+        $nomeDependentes = $row['nomeDependentes'];
+        $cpfDependentes = $row['cpfDependentes'];
+        $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
+        $tipo = $row['tipo'];
+
 
         $sequencialDependentes = $dependentesNum + 1;
         $arrayDependentes[] = array(
@@ -428,6 +427,21 @@ function validaCpfDependentes()
         echo 'failed#';
     }
 }
+
+//validar cpf(exem: 111.111.111-11)
+function validaRg()
+{
+    $utils = new comum();
+
+    $result = $utils->validaRg($_POST['rg']);
+
+    if ($result) {
+        echo 'sucess#';
+    } else {
+        echo 'failed#';
+    }
+}
+
 
 //verificar se já foi cadastrado
 function verificaCpf()

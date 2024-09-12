@@ -46,7 +46,6 @@ function validarCpf(cpf) {
                 } else {
                     smartAlert("Atenção", "CPF inválido", "error");
                     $('#cpf').val("");
-
                 }
             }
         },
@@ -56,25 +55,61 @@ function validarCpf(cpf) {
     });
 }
 
+
 function validarCpfDependentes(cpfDependentes) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: ' html',
         type: 'post',
-        data: { funcao: 'validaCpfDependentes', cpfDependentes: cpfDependentes },
-        success: function (data, textStatus) {
+        data: {
+            funcao: 'validaCpfDependentes',
+            cpfDependentes: cpfDependentes
+        },
+        success: function(data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
 
                 if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error");
+                } else {
                     smartAlert("Atenção", "CPF dependente inválido", "error");
-                    $("#cpfDependentes").val("");
-                    return;
+                    $('#cpfDependentes').val("");
+
                 }
             }
         },
-        error: function (xhr, er) {
+        error: function(xhr, er) {
+            //tratamento de erro
+        }
+    });
+}
+
+
+function validarRg(rg) {
+    $.ajax({
+        url: 'js/sqlscopeFuncionarioCadastro.php',
+        dataType: ' html',
+        type: 'post',
+        data: {
+            funcao: 'validaRg',
+            rg: rg
+        },
+        success: function(data, textStatus) {
+            if (data.indexOf('failed') > -1) {
+                var piece = data.split("#");
+                var mensagem = piece[1];
+
+                if (mensagem !== "") {
+                    smartAlert("Atenção", mensagem, "error");
+                } else {
+                    smartAlert("Atenção", "RG dependente inválido", "error");
+                    $('#rg').val("");
+
+                }
+            }
+        },
+        error: function(xhr, er) {
             //tratamento de erro
         }
     });
@@ -203,8 +238,9 @@ function recuperaFuncionario(id) {
                     $('#pis').addClass("readonly").attr("disabled", true).val("")
                 }
 
+                // idade($("#dataNascimento").val());
 
-                idade($("#dataNascimento").val());
+                validaData();
 
                 $("#jsonTelefone").val(strarrayTelefone)
                 jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());

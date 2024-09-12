@@ -37,7 +37,6 @@ class PDF extends FPDF
         $this->SetXY(100, 40);
         $this->Cell(15, -1, iconv('UTF-8', 'windows-1252', 'Dados do Funcionário'), 0, 0, "C", false, '');
         $this->Ln(24); #Quebra de Linhas
-
         $this->SetTextColor(255, 192, 203);
         // $this->Image('C:\inetpub\wwwroot\Cadastro\img\marcaDagua.png', 35, 45, 135, 145, 'PNG');
     }
@@ -116,7 +115,7 @@ foreach ($resultQuery as $row) {
             if ($i == 0) {
                 $nomeAux = ucfirst($abreviarNome[$i]) . " ";
             }
-            if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i<count($abreviarNome) - 1)) {
+            if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i < count($abreviarNome) - 1)) {
 
                 $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
 
@@ -126,11 +125,11 @@ foreach ($resultQuery as $row) {
                     $nomeAux =  ucfirst($abreviarNome[$i]) . " ";
                 }
             }
-            if($i == count($abreviarNome) - 1 ){
+            if ($i == count($abreviarNome) - 1) {
                 $nomeAux = $nomeAux . ucfirst($abreviarNome[$i]);
             }
         }
-    } else{
+    } else {
         $nomeAux = $nome;
     }
 
@@ -211,177 +210,186 @@ foreach ($resultQuery as $row) {
     $pdf->Cell(25, 10, iconv('UTF-8', 'windows-1252', $cidade), 1, 20, 'C', 0, "");
 
     $y = $pdf->getY();
-}
-$id = $_GET["id"];
 
-$sql = "SELECT t.codigo, t.idFuncio, t.principal, CASE WHEN t.principal = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipal , t.telefone, t.telefoneId, t.whats,
-CASE WHEN t.whats = 1 THEN 'Sim' ELSE 'Não' END descricaoWhats	
+
+    $sql = "SELECT t.codigo, t.idFuncio, t.principal, CASE WHEN t.principal = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipal , t.telefone, t.telefoneId, t.whats,
+        CASE WHEN t.whats = 1 THEN 'Sim' ELSE 'Não' END descricaoWhats	
         FROM telefone t
           WHERE (0 = 0) and idFuncio = $id ";
 
-$reposit = new reposit();
-$utils = new comum();
-$sql = $sql .  $where;
-$resultQuery = $reposit->RunQuery($sql);
+    $reposit = new reposit();
+    $utils = new comum();
+    $sql = $sql .  $where;
+    $resultQuery = $reposit->RunQuery($sql);
 
-//contato
-$pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
-$pdf->setY(85);
-$pdf->setX(15);
-$pdf->Cell(50, 8, "Telefone", 1, 20, 'C', true, "");
-
-$pdf->setY(85);
-$pdf->setX(65);
-$pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
-
-$pdf->setY(85);
-$pdf->setX(85);
-$pdf->Cell(20, 8, "Whatsapp", 1, 20, 'C', true, "");
-
-$y = $pdf->getY();
-
-foreach ($resultQuery as $row) {
-    
-    $telefone = $row['telefone'];
-    $descricaoPrincipal = $row['descricaoPrincipal'];
-    $telefoneId = $row['telefoneId'];
-    $descricaoWhats = $row['descricaoWhats'];
-    $idFuncio = $row['idFuncio'];
-
-    // telefone 
-    $pdf->setY($y);
+    //contato
+    $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+    $pdf->setY(85);
     $pdf->setX(15);
-    $pdf->Cell(50, 10, $telefone, 1, 20, 'C', 0, "");
+    $pdf->Cell(50, 8, "Telefone", 1, 20, 'C', true, "");
 
-    $pdf->setY($y);
+    $pdf->setY(85);
     $pdf->setX(65);
-    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoPrincipal), 1, 20, 'C', 0, "");
+    $pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
 
-    $pdf->setY($y);
+    $pdf->setY(85);
     $pdf->setX(85);
-    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoWhats), 1, 20, 'C', 0, "");
+    $pdf->Cell(20, 8, "Whatsapp", 1, 20, 'C', true, "");
 
     $y = $pdf->getY();
-}
 
-$sql = "SELECT t.codigo,t.idFunci, t.principalEmail,
+    foreach ($resultQuery as $row) {
+
+        $telefone = $row['telefone'];
+        $descricaoPrincipal = $row['descricaoPrincipal'];
+        $telefoneId = $row['telefoneId'];
+        $descricaoWhats = $row['descricaoWhats'];
+        $idFuncio = $row['idFuncio'];
+
+        // telefone 
+        $pdf->setY($y);
+        $pdf->setX(15);
+        $pdf->Cell(50, 10, $telefone, 1, 20, 'C', 0, "");
+
+        $pdf->setY($y);
+        $pdf->setX(65);
+        $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoPrincipal), 1, 20, 'C', 0, "");
+
+        $pdf->setY($y);
+        $pdf->setX(85);
+        $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoWhats), 1, 20, 'C', 0, "");
+
+        $y = $pdf->getY();
+    }
+
+    $sql = "SELECT t.codigo,t.idFunci, t.principalEmail,
 		CASE WHEN t.principalEmail = 1 THEN 'Sim' ELSE 'Não' END descricaoPrincipalEmail, t.email,t.emailId
         FROM email t
         WHERE (0 = 0) and idFunci = $id";
 
-$reposit = new reposit();
-$utils = new comum();
-$sql = $sql .  $where;
-$resultQuery = $reposit->RunQuery($sql);
+    $reposit = new reposit();
+    $utils = new comum();
+    $sql = $sql .  $where;
+    $resultQuery = $reposit->RunQuery($sql);
 
-$pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
-$pdf->setY(85);
-$pdf->setX(115);
-$pdf->Cell(60, 8, "Email", 1, 20, 'C', true, "");
-
-$pdf->setY(85);
-$pdf->setX(175);
-$pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
-$y = $pdf->getY();
-
-foreach ($resultQuery as $row) {    
-    $email = $row['email'];
-    $emailId = $row['emailId'];
-    $descricaoPrincipalEmail = $row['descricaoPrincipalEmail'];
-    $idFunci = $row['idFunci'];
-
-    $pdf->setY($y);
+    $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+    $pdf->setY(85);
     $pdf->setX(115);
-    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $email), 1, 20, 'C', 0, "");
+    $pdf->Cell(60, 8, "Email", 1, 20, 'C', true, "");
 
-    $pdf->setY($y);
+    $pdf->setY(85);
     $pdf->setX(175);
-    $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoPrincipalEmail), 1, 20, 'C', 0, "");
-
+    $pdf->Cell(20, 8, "Principal", 1, 20, 'C', true, "");
     $y = $pdf->getY();
-}
 
-$id = $_GET["id"];
-$sql = "SELECT D.codigo,D.idFuncionario,D.nomeDependentes,D.cpfDependentes,D.dataNascimentoDependentes,TD.tipo 
-FROM dbo.dependentes D 
+    foreach ($resultQuery as $row) {
+        $email = $row['email'];
+        $emailId = $row['emailId'];
+        $descricaoPrincipalEmail = $row['descricaoPrincipalEmail'];
+        $idFunci = $row['idFunci'];
 
-LEFT JOIN dbo.tipoDependentes TD ON D.tipo = TD.codigo WHERE (0 = 0) and idFuncionario = $id";
+        $pdf->setY($y);
+        $pdf->setX(115);
+        $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $email), 1, 20, 'C', 0, "");
 
-$reposit = new reposit();
-$utils = new comum();
-$sql = $sql .  $where;
-$resultQuery = $reposit->RunQuery($sql);
+        $pdf->setY($y);
+        $pdf->setX(175);
+        $pdf->Cell(20, 10, iconv('UTF-8', 'windows-1252', $descricaoPrincipalEmail), 1, 20, 'C', 0, "");
 
-$pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
-$pdf->setY(165);
-$pdf->setX(10);
-$pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252', "Nome Dependente"), 1, 20, 'C', true, "");
-
-$pdf->setY(165);
-$pdf->setX(70);
-$pdf->Cell(50, 8, "CPF", 1, 20, 'C', true, "");
-
-$pdf->setY(165);
-$pdf->setX(120);
-$pdf->Cell(40, 8, 'Data Nascimento', 1, 20, 'C', true, "");
-
-$pdf->setY(165);
-$pdf->setX(160);
-$pdf->Cell(40, 8, iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
-$y = $pdf->getY();
-
-foreach ($resultQuery as $row) {
-    
-    $idFuncionario = $row['idFuncionario'];
-    $nomeDependentes = $row['nomeDependentes'];
-    $cpfDependentes = $row['cpfDependentes'];
-    $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
-    $tipo = $row['tipo'];
-
-    $abreviarNome = explode(" ", $nomeDependentes);
-    $nomeAuxDependentes =  "";
-    if (count($abreviarNome) >= 3) {
-        for ($i = 0; (count($abreviarNome)) > $i; $i++) {
-
-            if ($i == 0) {
-                $nomeAuxDependentes = ucfirst($abreviarNome[$i]) . " ";
-            }
-            if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i<count($abreviarNome) - 1)) {
-
-                $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
-
-                if ($nomeAuxDependentes != "") {
-                    $nomeAuxDependentes = $nomeAuxDependentes . ucfirst($abreviarNome[$i]) . " ";
-                } else {
-                    $nomeAuxDependentes =  ucfirst($abreviarNome[$i]) . " ";
-                }
-            }
-            if($i == count($abreviarNome) - 1 ){
-                $nomeAuxDependentes = $nomeAuxDependentes . ucfirst($abreviarNome[$i]);
-            }
-        }
-    } else{
-        $nomeAuxDependentes = $nomeDependentes;
+        $y = $pdf->getY();
     }
 
-    $pdf->setY($y);
+    $sql = "SELECT D.codigo,D.idFuncionario,D.nomeDependentes,D.cpfDependentes,D.dataNascimentoDependentes,TD.tipo 
+        FROM dbo.dependentes D 
+
+        LEFT JOIN dbo.tipoDependentes TD ON D.tipo = TD.codigo WHERE (0 = 0) and idFuncionario = $id";
+
+    $reposit = new reposit();
+    $utils = new comum();
+    $sql = $sql .  $where;
+    $resultQuery = $reposit->RunQuery($sql);
+
+    $pdf->SetFont($tipoDeFonte, $fontWeightRegular, $tamanhoFonte);
+    $pdf->setY(165);
     $pdf->setX(10);
-    $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $nomeAuxDependentes), 1, 20, 'C', 0, "");
+    $pdf->Cell(60, 8, iconv('UTF-8', 'windows-1252', "Nome Dependente"), 1, 20, 'C', true, "");
 
-    $pdf->setY($y);
+    $pdf->setY(165);
     $pdf->setX(70);
-    $pdf->Cell(50, 10, $cpfDependentes, 1, 20, 'C', 0, "");
+    $pdf->Cell(50, 8, "CPF", 1, 20, 'C', true, "");
 
-    $pdf->setY($y);
+    $pdf->setY(165);
     $pdf->setX(120);
-    $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $dataNascimentoDependentes), 1, 20, 'C', 0, "");
+    $pdf->Cell(40, 8, "Data Nascimento", 1, 20, 'C', true, "");
 
-    $pdf->setY($y);
+    $pdf->setY(165);
     $pdf->setX(160);
-    $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $tipo), 1, 20, 'C', 0, "");
-
+    $pdf->Cell(40, 8, iconv('UTF-8', 'windows-1252', "Tipo"), 1, 20, 'C', true, "");
     $y = $pdf->getY();
-}
 
+    foreach ($resultQuery as $row) {
+
+        $idFuncionario = $row['idFuncionario'];
+        $nomeDependentes = $row['nomeDependentes'];
+        $cpfDependentes = $row['cpfDependentes'];
+        $dataNascimentoDependentes = $utils->validaData($row['dataNascimentoDependentes']);
+        $tipo = $row['tipo'];
+
+        $abreviarNome = explode(" ", $nomeDependentes);
+        $nomeAuxDependentes =  "";
+        if (count($abreviarNome) >= 3) {
+            for ($i = 0; (count($abreviarNome)) > $i; $i++) {
+
+                if ($i == 0) {
+                    $nomeAuxDependentes = ucfirst($abreviarNome[$i]) . " ";
+                }
+                if ($i > 0 && strlen($abreviarNome[$i]) > 3 && ($i < count($abreviarNome) - 1)) {
+
+                    $abreviarNome[$i] = substr($abreviarNome[$i], 0, 1) . ".";
+
+                    if ($nomeAuxDependentes != "") {
+                        $nomeAuxDependentes = $nomeAuxDependentes . ucfirst($abreviarNome[$i]) . " ";
+                    } else {
+                        $nomeAuxDependentes =  ucfirst($abreviarNome[$i]) . " ";
+                    }
+                }
+                if ($i == count($abreviarNome) - 1) {
+                    $nomeAuxDependentes = $nomeAuxDependentes . ucfirst($abreviarNome[$i]);
+                }
+            }
+        } else {
+            $nomeAuxDependentes = $nomeDependentes;
+        }
+
+        $pdf->setY($y);
+        $pdf->setX(10);
+        $pdf->Cell(60, 10, iconv('UTF-8', 'windows-1252', $nomeAuxDependentes), 1, 20, 'C', 0, "");
+
+        $pdf->setY($y);
+        $pdf->setX(70);
+        $pdf->Cell(50, 10, $cpfDependentes, 1, 20, 'C', 0, "");
+
+        $pdf->setY($y);
+        $pdf->setX(120);
+        $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $dataNascimentoDependentes), 1, 20, 'C', 0, "");
+
+        $pdf->setY($y);
+        $pdf->setX(160);
+        $pdf->Cell(40, 10, iconv('UTF-8', 'windows-1252', $tipo), 1, 20, 'C', 0, "");
+
+        $y = $pdf->getY();
+
+        if ($y > 270) {
+            $y = 45;
+            $x = 5;
+            $pdf->AddPage();
+            $pdf->SetAutoPageBreak(true, 8);
+        } else {
+            $y = $pdf->getY();
+        }
+    }
+
+    $id = $_GET["id"];
+}
 $pdf->Ln(8);
 $pdf->Output();

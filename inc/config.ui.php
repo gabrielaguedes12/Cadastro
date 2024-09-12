@@ -78,8 +78,6 @@ $page_nav['filtro']['sub'] += array("estadoCivil" => array("title" => "Estado Ci
 $page_nav['filtro']['sub'] += array("genero" => array("title" => "Gênero","url" => APP_URL . "/filtroGenero.php"));
 $page_nav['filtro']['sub'] += array("dependentes" => array("title" => "Dependentes","url" => APP_URL . "/filtroDependentes.php"));
 
-
-
 $condicaoOperacaoOk = true;
 
 

@@ -447,8 +447,6 @@ include("inc/nav.php");
                                                                     <label class="select">
                                                                         <select id="tipo" name="tipo">
                                                                             <option hidden select value="" select> Selecione </option>
-
-
                                                                             <?php
                                                                             $reposit = new reposit();
                                                                             $sql = "SELECT codigo, tipo, ativo FROM dbo.tipoDependentes WHERE ativo = 1 ORDER BY tipo";
@@ -598,7 +596,7 @@ include("inc/scripts.php");
 
         //mascaras
         $(".cpf").inputmask("999.999.999-99");
-        $(".rg").mask("99.999.999-9");
+        $(".rg").inputmask("99.999.999-9");
         $(".dataNascimento").mask("99/99/9999"); //classe--> geral
         $("#cep").mask("99999-999");
         $("#pis").mask("999.99999.99-9");
@@ -606,27 +604,8 @@ include("inc/scripts.php");
         $(".dataNascimentoDependentes").mask("99/99/9999");
         $("#telefone").mask("(XX) XXXXX-XXXX");
 
-        //nome
-        $(document).ready(function() {
-            $('#nome').bind('cut copy paste', function(event) {
-                event.preventDefault();
-            });
-        });
-
-        //nome dependente
-        $(document).ready(function() {
-            $('#nomeDependentes').bind('cut copy paste', function(event) {
-                event.preventDefault();
-            });
-        });
-
-        //pis
-        $(document).ready(function() {
-            $('#pis').bind('cut copy paste', function(event) {
-                event.preventDefault();
-            });
-        });
-
+        $('#pis,#nome,#nomeDependentes').bind('cut copy paste', event => event.preventDefault() );
+        
         //funçoes
         $("#cpf").on('focusout', function() {
             validaCpf()
@@ -643,6 +622,11 @@ include("inc/scripts.php");
             comparaCpf()
 
         });
+
+        $("#rg").on('focusout', function() {
+            validaRg()
+        });
+
 
         $("#rg").on('change', function() {
             verificaRg()
@@ -680,6 +664,7 @@ include("inc/scripts.php");
             if (validaDataDependentes(dataNascimentoDependentes) == false) {
                 smartAlert("Atenção", "Data Inválida", "error");
                 $("#dataNascimentoDependentes").val("");
+                return;
             }
         });
         $("#dataNascimentoDependentes").on('change', function() {
@@ -849,7 +834,8 @@ include("inc/scripts.php");
 
     function pdf() {
         var id = $('#codigo').val();
-        $(location).attr('href', 'pdfIndividual.php?id=' + id);
+        window.open('pdfIndividual.php?id=' + id);
+        // $(location).attr('href', 'pdfIndividual.php?id=' + id);
     }
 
     //telefone
@@ -1002,13 +988,8 @@ include("inc/scripts.php");
             return;
         }
 
-        // if (pis == "") {
-        //     smartAlert("Atenção", "Primeiro PIS/PASED não preenchido.", "error")
-        //     pis = $("#pis").focus();
-        // }
-
         if (telefone == "[]") {
-            smartAlert("Atenção", "Telefone não preenchido.", "error")
+            smartAlert("Atenção", "Insira um telefone na tabela.", "error")
             telefone = $("#jsonTelefone").focus();
             return;
         }
@@ -1019,7 +1000,7 @@ include("inc/scripts.php");
         }
 
         if (email == "[]") {
-            smartAlert("Atenção", "Email não preenchido.", "error")
+            smartAlert("Atenção", "Insira um Email na tabela", "error")
             email = $("#jsonEmail").focus();
             return;
         }
@@ -1081,113 +1062,119 @@ include("inc/scripts.php");
     }
 
     //------------------>valida data e idade<---------------//
-    //data na ordem e contagem de idade
-    function idade(dataNascimento) {
-        const data = dataNascimento.split("/") //
-        dataNascimento = data[1] + "-" + data[0] + "-" + data[2];
-        const today = new Date();
-        const birthDate = new Date(dataNascimento);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const m = today.getMonth() - birthDate.getMonth();
+    function validaData(dataNascimento) {
+        var data = document.getElementById("dataNascimento").value; // pega o valor do input
+        data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
+        var data_array = data.split("-"); // quebra a data em array
 
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        $("#idade").val(age)
-        return age;
-    }
-
-    function validaData() {
-        var data = $("#dataNascimento").val();
-        data = data.replace(" /g, /");
-        var data_array = data.split("/"); //responsável por quebrar a data em array
-
-        //Inserir formato DD/MM/YYYY
+        // para o IE onde será inserido no formato dd/MM/yyyy
         if (data_array[0].length != 4) {
             data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
         }
 
-        //Calculo da idade referente a Data de Nascimento
+        // compara as datas e calcula a idade
         var hoje = new Date();
         var nasc = new Date(data);
         var idade = hoje.getFullYear() - nasc.getFullYear();
         var m = hoje.getMonth() - nasc.getMonth();
         if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
 
-        //validar idade maior que 14 e menor que 150
-        if (idade > 14 && idade <= 150) {
+        if (idade < 14) {
+            // alert("Pessoas menores de 14 não podem se cadastrar.");
             $("#idade").val(idade)
             $("#btnGravar").prop('disabled', false);
+            return false;
 
+        }
+
+        if (idade >= 18 && idade <= 150) {
+            // alert("Maior de 18, pode se cadastrar.");
+            $("#idade").val(idade)
+            $("#btnGravar").prop('disabled', false);
             return;
         }
-        if (hoje) return false;
+        if (hoje)
+            // se for maior que 60 não vai acontecer nada!
+            return false;
+
     }
 
     //------------------>valida data dependentes<---------------//
     function validaDataDependentes(dataNascimentoDependentes) {
-        var anoAtual = new Date();
-        var anoHoje = anoAtual.getFullYear();
-        var mesHoje = anoAtual.getMonth();
-        var diaHoje = anoAtual.getDay();
+        var data = document.getElementById("dataNascimentoDependentes").value; // pega o valor do input
+        data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
+        var data_array = data.split("-"); // quebra a data em array
 
-        // Verifica se a entrada é uma string
-        if (typeof dataNascimentoDependentes !== 'string') {
-            return false
+        // para o IE onde será inserido no formato dd/MM/yyyy
+        if (data_array[0].length != 4) {
+            data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
         }
 
-        // Verifica formado da data
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
-            return false
-        }
+        // compara as datas e calcula a idade
+        var diaHoje = new Date();
+        var nasc = new Date(data);
+        var idade = diaHoje.getFullYear() - nasc.getFullYear();
+        var m = diaHoje.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && diaHoje.getDate() < nasc.getDate()));
 
-        // Divide a data para o objeto "data"
-        const partesData = dataNascimentoDependentes.split('/')
-        const data = {
-            dia: partesData[0],
-            mes: partesData[1],
-            ano: partesData[2]
-        }
 
-        // Converte strings em número
-        const dia = parseInt(data.dia)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
-
-        // Dias de cada mês, incluindo ajuste para ano bissexto
-        const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        // Atualiza os dias do mês de fevereiro para ano bisexto
-        if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
-            diasNoMes[2] = 29
-        }
-
-        // Regras de validação:
-        // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
-        if (mes < 1 || mes > 12 || dia < 1) {
-            return false;           
-        }
-
-        if (mes > mesHoje ){
-            return false;          
-        }
-
-        if (dia > diaHoje ){
-            return false;          
-        }
-
-        if (ano > anoHoje || ano < (anoHoje - 150)) {
+        if (nasc>diaHoje)
+            // se for maior que 60 não vai acontecer nada!
             return false;
-        }
-        // Valida número de dias do mês
-        else if (dia > diasNoMes[mes]) {
-            return false
-        }
-
-        // Passou nas validações
-        return true
     }
 
+    // function validaDataDependentes(dataNascimentoDependentes) {
+    //     var anoAtual = new Date();
+    //     var anoHoje = anoAtual.getFullYear()
+
+    //     // Verifica se a entrada é uma string
+    //     if (typeof dataNascimentoDependentes !== 'string') {
+    //         return false
+    //     }
+
+    //     // Verifica formado da data
+    //     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
+    //         return false
+    //     }
+
+    //     // Divide a data para o objeto "data"
+    //     const partesData = dataNascimentoDependentes.split('/')
+    //     const data = {
+    //         dia: partesData[0],
+    //         mes: partesData[1],
+    //         ano: partesData[2]
+    //     }
+
+    //     // Converte strings em número
+    //     const dia = parseInt(data.dia)
+    //     const mes = parseInt(data.mes)
+    //     const ano = parseInt(data.ano)
+
+    //     // Dias de cada mês, incluindo ajuste para ano bissexto
+    //     const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    //     // Atualiza os dias do mês de fevereiro para ano bisexto
+    //     if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
+    //         diasNoMes[2] = 29
+    //     }
+
+    //     // Regras de validação:
+    //     // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
+    //     if (mes < 1 || mes > 12 || dia < 1) {
+    //         return false
+    //     }
+    //     if (ano > anoHoje || ano < (anoHoje - 150)) {
+    //         return false;
+    //     }
+
+    //     // Valida número de dias do mês
+    //     else if (dia > diasNoMes[mes]) {
+    //         return false
+    //     }
+
+    //     // Passou nas validações
+    //     return true
+    // }
     //---------------->validação cpf e rg<-------------------//
     //validar cpf(exem: 111.111.111-11)
     function validaCpf() {
@@ -1212,6 +1199,11 @@ include("inc/scripts.php");
         var id = $('#codigo').val();
         var rg = $('#rg').val()
         verificarRg(rg)
+    }
+
+    function validaRg() {
+        var rg = $('#rg').val();
+        validarRg(rg)
     }
 
     //------------------------------->TELEFONE<----------------------------------//
@@ -1748,7 +1740,7 @@ include("inc/scripts.php");
             var nomeDependentes = $('#nomeDependentes').val();
             var cpfDependentes = $('#cpfDependentes').val();
             var dataNascimentoDependentes = $('#dataNascimentoDependentes').val();
-            var tipoDependentes = $('#tipoDependentes').val();
+            var tipo = $('#tipo').val();
 
         } else {
             item["sequencialDependentes"] = +item["sequencialDependentes"];
@@ -1756,7 +1748,7 @@ include("inc/scripts.php");
             item["nomeDependentes"] = $('#nomeDependentes').val();
             item["cpfDependentes"] = $('#cpfDependentes').val();
             item["dataNascimentoDependentes"] = $('#dataNascimentoDependentes').val();
-            item["tipoDependentes"] = +item["tipoDependentes"];
+            item["tipo"] = +item["tipo"];
 
         }
 

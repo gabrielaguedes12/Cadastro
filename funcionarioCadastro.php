@@ -540,6 +540,7 @@ include("inc/scripts.php");
         $(".dataNascimentoDependentes").mask("99/99/9999");
         $("#telefone").mask("(XX) XXXXX-XXXX");
         $('#pis,#nome,#nomeDependentes').bind('cut copy paste', event => event.preventDefault());
+
         //------------- caixa de check-------------//
         $("#principalEmail,#principal,#whats").prop('checked', false);
        
@@ -549,10 +550,7 @@ include("inc/scripts.php");
         $("#rg").on('change', campo => verificaRg(campo.currentTarget.value));
         $("#dataNascimentoDependentes").on('change', campo => validaDataDependentes(campo.currentTarget.value));
 
-        $("#cpf").on('change', function() {
-            verificaCpf()
-            comparaCpf()
-        });
+        $("#cpf").on('change', campo => comparaCpf() ? verificaCpf(campo.currentTarget.value) : null );
 
         $("#cpfDependentes").on('focusout', function() {
             validaCpfDependentes()
@@ -574,8 +572,9 @@ include("inc/scripts.php");
 
         $("#dataNascimento").on('change', function() {
             validaData();
-            if ($("#dataNascimento").val())
+            if ($("#dataNascimento").val()){
                 idade($("#dataNascimento").val())
+            }
         });
 
         //dependentes       
@@ -593,9 +592,7 @@ include("inc/scripts.php");
 
         //pis e emprego
         $("#emprego").on('change', function(campo) {
-            var emprego = campo.currentTarget.value;
-            var pis = $("#pis").val();
-            if (emprego == 0) {
+            if ( campo.currentTarget.value == 0) {
                 $('#pis').removeClass("readonly").attr("disabled", false)
             } else {
                 $('#pis').addClass("readonly").attr("disabled", true).val("")
@@ -615,51 +612,8 @@ include("inc/scripts.php");
         $('#telefone').mask(SPMaskBehavior, spOptions);
 
         //cep
-        $("#cep").blur(function() {
-            //Nova variável "cep" somente com dígitos.
-            var cep = $(this).val().replace(/\D/g, '');
-
-            //Verifica se campo cep possui valor informado.
-            if (cep != "") {
-                var validacep = /^[0-9]{8}$/;
-                //Valida o formato do CEP.
-                if (validacep.test(cep)) {
-                    //Preenche os campos com "..." enquanto consulta webservice.
-                    $("#logradouro").val("...");
-                    $("#uf").val("...");
-                    $("#bairro").val("...");
-                    $("#cidade").val("...");
-                    //Consulta o webservice viacep.com.br/
-                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-                        if (!("erro" in dados)) {
-                            //Atualiza os campos com os valores da consulta.
-                            $("#logradouro").val(dados.logradouro);
-                            $("#uf").val(dados.uf);
-                            $("#bairro").val(dados.bairro);
-                            $("#cidade").val(dados.localidade);
-                        } //end if.
-                        else {
-                            //CEP pesquisado não foi encontrado.
-                            limpa_formulário_cep();
-                            smartAlert("Atenção", "CEP não encontrado.", "error")
-                        }
-                    });
-                } //end if.
-                else {
-                    //cep é inválido.
-                    limpa_formulário_cep();
-                    smartAlert("Atenção", "Formato de CEP inválido.", "error");
-                }
-            } //end if.
-            else {
-                //cep sem valor, limpa formulário.
-                limpa_formulário_cep();
-            }
-        });
-
-        function limpa_formulário_cep() {
-            $('#cep').val("");
-        }
+        $("#cep").on('focusout', () => buscarCEP() );
+     
         //---------------->não permitir caracteres especiais e numeros<------------------//
         document.getElementById("nome").onkeypress = function(e) {
             var chr = String.fromCharCode(e.which);
@@ -769,10 +723,25 @@ include("inc/scripts.php");
             var idx = id.split("=");
             var idd = idx[1];
             if (idd !== "") {
-                recuperaFuncionario(idd);
-                fillTableEmail();
-                fillTableTelefone();
-                fillTableDependentes();
+                recuperaFuncionario(idd, results => {
+                    if (data.indexOf('sucess') < 0) {
+                        var piece = data.split("#");
+                        var mensagem = piece[1];
+                        if (mensagem !== "") {
+                            smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                            return '';
+                        } else {
+                            smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+                            $('#btnGravar').attr('disabled', true);
+                            setInterval(voltar(), 1500)
+
+                            fillTableEmail();
+                            fillTableTelefone();
+                            fillTableDependentes();
+                        }
+                    }
+                });
+              
             }
         }
         $("#nome").focus();
@@ -933,8 +902,10 @@ include("inc/scripts.php");
         if (cpfFuncionario == cpfDependentes) {
             smartAlert("Atenção", "CPF dependente repetido", "error")
             $("#cpf").val("");
-        } else {}
-        return;
+            return false;
+        }
+
+        return true;
     }
 
     //------------------>valida data e idade<---------------//
@@ -1015,9 +986,8 @@ include("inc/scripts.php");
         verificarRg(id, rg)
     }
 
-    function verificaCpf() {
+    function verificaCpf(cpf) {
         var id = $('#codigo').val();
-        var cpf = $('#cpf').val();
         verificarCpf(id, cpf) //variável "passa" nesse ()
     }
 
@@ -1684,5 +1654,48 @@ include("inc/scripts.php");
             fillTableDependentes();
         } else
             smartAlert("Erro", "Selecione pelo menos 1 dependente para excluir.", "error");
+    }
+
+    function buscarCEP( cep ){
+         //Nova variável "cep" somente com dígitos.
+         var cep = cep.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+            var validacep = /^[0-9]{8}$/;
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+                //Preenche os campos com "..." enquanto consulta webservice.
+                $("#logradouro").val("...");
+                $("#uf").val("...");
+                $("#bairro").val("...");
+                $("#cidade").val("...");
+                //Consulta o webservice viacep.com.br/
+                $.getJSON(`https://viacep.com.br/ws/${cep}/json/?callback=?`, function(dados) {
+                    if (!("erro" in dados)) {
+                        //Atualiza os campos com os valores da consulta.
+                        $("#logradouro").val(dados.logradouro);
+                        $("#uf").val(dados.uf);
+                        $("#bairro").val(dados.bairro);
+                        $("#cidade").val(dados.localidade);
+                    } //end if.
+                    else {
+                        //CEP pesquisado não foi encontrado.
+                        $('#cep').val("");
+                        smartAlert("Atenção", "CEP não encontrado.", "error")
+                    }
+                });
+            } //end if.
+            else {
+                //cep é inválido.
+                $('#cep').val("");
+                smartAlert("Atenção", "Formato de CEP inválido.", "error");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            $('#cep').val("");
+        }
+
     }
 </script>

@@ -1,4 +1,5 @@
-function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero, complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray) {
+function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil, descricao, jsonTelefoneArray, jsonEmailArray, cep, logradouro, numero,
+     complemento, uf, bairro, cidade, emprego, pis, jsonDependentesArray,callback) {
     $.ajax({
         url: 'js/sqlscopeFuncionarioCadastro.php',
         dataType: 'html', //tipo do retorno
@@ -7,21 +8,7 @@ function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil,
             funcao: "gravar", id: id, ativo: ativo, nome: nome, cpf: cpf, rg: rg, dataNascimento: dataNascimento, estadoCivil: estadoCivil, descricao: descricao, jsonTelefoneArray: jsonTelefoneArray, jsonEmailArray: jsonEmailArray,
             cep: cep, logradouro: logradouro, numero: numero, complemento: complemento, uf: uf, bairro: bairro, cidade: cidade, emprego: emprego, pis: pis, jsonDependentesArray: jsonDependentesArray
         },
-        success: function (data, textStatus) {
-            if (data.indexOf('sucess') < 0) {
-                var piece = data.split("#");
-                var mensagem = piece[1];
-                if (mensagem !== "") {
-                    smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-                    return '';
-                } else {
-                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                    $('#btnGravar').attr('disabled', true);
-                    setInterval(voltar(), 1500)
-                }
-            }
-            //retorno dos dados
-        },
+        success: results => callback(results),
         error: function (xhr, er) {
             //tratamento de erro
         }

@@ -53,7 +53,6 @@ include("inc/nav.php");
 
     <!-- MAIN CONTENT -->
     <div id="content">
-
         <!-- widget grid -->
         <section id="widget-grid" class="">
             <div class="row">
@@ -64,7 +63,6 @@ include("inc/nav.php");
                             <h2>Gênero</h2>
                         </header>
                         <div>
-
                             <div class="widget-body no-padding">
                                 <form action="javascript:gravar()" class="smart-form client-form" id="formUsuarioFiltro" method="post">
                                     <div class="panel-group smart-accordion-default" id="accordion">
@@ -78,16 +76,14 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseFiltroGenero" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
-                                                    <div class="row">
+                                                        <div class="row">
                                                             <section class="col col-3">
                                                                 <label class="label">Gênero</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="descricao" maxlength="255" name="descricao" type="text" placeholder=" " value="">                                                                   
+                                                                    <input id="descricao" maxlength="255" name="descricao" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
 
@@ -101,7 +97,6 @@ include("inc/nav.php");
                                                                     </select><i></i>
                                                                 </label>
                                                             </section>
-
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -168,8 +163,6 @@ include("inc/scripts.php");
 <!--<script src="/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>-->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/fullcalendar.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>
-
-
 <script>
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
@@ -180,6 +173,11 @@ include("inc/scripts.php");
             novo();
         });
 
+        document.getElementById("descricao").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+                return false;
+        };
     });
 
     function listarFiltro() {
@@ -195,10 +193,5 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioCadastroGenero.php');
     }
-
-    document.getElementById("descricao").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
-            return false;
-    };
+    
 </script>

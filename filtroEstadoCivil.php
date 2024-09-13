@@ -82,11 +82,11 @@ include("inc/nav.php");
                                             <div id="collapseFiltroEstadoCivil" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-                                                    <div class="row">
+                                                        <div class="row">
                                                             <section class="col col-3">
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="estadoCivil" maxlength="255" name="estadoCivil" type="text" placeholder=" " value="">                                                                   
+                                                                    <input id="estadoCivil" maxlength="255" name="estadoCivil" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
 
@@ -167,8 +167,6 @@ include("inc/scripts.php");
 <!--<script src="/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>-->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/fullcalendar.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>
-
-
 <script>
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
@@ -179,6 +177,11 @@ include("inc/scripts.php");
             novo();
         });
 
+        document.getElementById("estadoCivil").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+                return false;
+        };
     });
 
     function listarFiltro() {
@@ -194,10 +197,4 @@ include("inc/scripts.php");
     function novo() {
         $(location).attr('href', 'funcionarioEstadoCivil.php');
     }
-    
-    document.getElementById("estadoCivil").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
-            return false;
-    };
 </script>

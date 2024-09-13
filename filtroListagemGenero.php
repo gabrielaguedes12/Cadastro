@@ -7,11 +7,9 @@ include "js/girComum.php";
     <div class="table-responsive" style="min-height: 115px; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
         <table id="tableSearchResult" class="table table-bordered table-striped table-condensed table-hover dataTable">
             <thead>
-                <tr role="row">
-                   
+                <tr role="row">                   
                     <th class="text-left" style="min-width:35px;">Gênero</th>
                     <th class="text-left" style="min-width:10px;">Ativo</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -33,9 +31,7 @@ include "js/girComum.php";
                 }
 
                 $sql = $sql . $where;
-
                 $result = $reposit->RunQuery($sql);
-
 
                 foreach ($result as $row) {
                     $codigo =  $row['codigo'];

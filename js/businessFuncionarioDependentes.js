@@ -14,12 +14,13 @@ function gravarDependentes(codigo, tipo, ativo) {
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
-                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-                return '';
-            } else {
-                smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                setInterval(voltar(), 1500)
-               
+                if (mensagem !== "") {
+                    smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                    return '';
+                } else {
+                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+                    setInterval(voltar(), 1500)
+                }
             }
             //retorno dos dados
         },

@@ -82,7 +82,6 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
@@ -101,41 +100,35 @@ include("inc/nav.php");
                                                                     <input id="nome" maxlength="50" name="nome" class="required" type="text" value="">
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">CPF</label>
                                                                 <label class="input">
                                                                     <input class="cpf" maxlength="20" id="cpf" type="text" class="required" placeholder="XXX.XXX.XXX-XX" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">RG</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                     <input class="rg" maxlength="20" id="rg" type="text" class="required" placeholder="XX.XXX.XXX-X" value="" style="background-color: rgb(255, 255, 192);">
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">Data de Nascimento</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-calendar"></i>
                                                                     <input id="dataNascimento" name="dataNascimento" type="text" class="datepicker required" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="XX/XX/XXXX" style="text-align: center" autocomplete="off">
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-1">
                                                                 <label class="label">Idade</label>
                                                                 <label class="input">
                                                                     <input id="idade" name="idade" maxlength="2" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">Estado Civil</label>
                                                                 <label class="select">
                                                                     <select id="estadoCivil" name="estadoCivil" class="required">
                                                                         <option></option>
-
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, estadoCivil, ativo FROM dbo.estadoCivil WHERE ativo = 1 ORDER BY estadoCivil";
@@ -143,7 +136,6 @@ include("inc/nav.php");
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
                                                                             $estadoCivil = htmlspecialchars($row['estadoCivil'], ENT_QUOTES); //evitando caracteres especiais
-
                                                                             echo "<option value='$codigo'>$estadoCivil</option>";
                                                                         }
                                                                         ?>
@@ -151,13 +143,11 @@ include("inc/nav.php");
                                                                     </select>
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">Gênero</label>
                                                                 <label class="select">
                                                                     <select id="descricao" name="descricao" class="required">
                                                                         <option></option>
-
                                                                         <?php
                                                                         $reposit = new reposit();
                                                                         $sql = "SELECT codigo, descricao, ativo FROM dbo.genero WHERE ativo = 1 ORDER BY descricao";
@@ -165,16 +155,13 @@ include("inc/nav.php");
                                                                         foreach ($result as $row) {
                                                                             $codigo = (int) $row['codigo'];
                                                                             $descricao = htmlspecialchars($row['descricao'], ENT_QUOTES); //evitando caracteres especiais
-
                                                                             echo "<option value='$codigo'>$descricao</option>";
                                                                         }
-
                                                                         ?>
                                                                     </select><i></i>
                                                                     </select>
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
@@ -184,7 +171,6 @@ include("inc/nav.php");
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">Primeiro emprego</label>
                                                                 <label class="select">
@@ -194,7 +180,6 @@ include("inc/nav.php");
                                                                         <option value="0">Não</option>
                                                                     </select><i></i>
                                                             </section>
-
                                                             <section class="col col-2">
                                                                 <label class="label">PIS/PASEP</label>
                                                                 <label class="input">
@@ -205,7 +190,6 @@ include("inc/nav.php");
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
@@ -216,7 +200,6 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseContato" class="panel-collapse collapse">
                                                 <div class="panel-body no-padding">
                                                     <fieldset class="col col-6">
@@ -231,7 +214,6 @@ include("inc/nav.php");
                                                                         <input id="telefone" maxlength="15" name="telefone" class="required" placeholder="(XX) XXXXX-XXXX" value="">
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-2">
                                                                     <label class="label">&nbsp;</label>
                                                                     <label id="labelPrincipal" class="checkbox">
@@ -239,7 +221,6 @@ include("inc/nav.php");
                                                                         Principal
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-2">
                                                                     <label class="label">&nbsp;</label>
                                                                     <label id="labelWhats" class="checkbox">
@@ -247,20 +228,17 @@ include("inc/nav.php");
                                                                         Whatsapp
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-md-2">
                                                                     <label class="label">&nbsp;</label>
                                                                     <button id="btnAddTelefone" type="button" class="btn btn-primary">
                                                                         <i class="fa fa-plus"></i>
                                                                     </button>
-
                                                                     <button id="btnRemoverTelefone" type="button" class="btn btn-danger">
                                                                         <i class="fa fa-minus"></i>
                                                                     </button>
                                                                 </section>
                                                             </div>
                                                         </div>
-
                                                         <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
                                                             <table id="tableTelefone" class="table table-bordered table-striped table-condensed table-hover dataTable">
                                                                 <thead>
@@ -272,15 +250,10 @@ include("inc/nav.php");
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-
                                                                 </tbody>
                                                             </table>
                                                         </div>
-
                                                     </fieldset>
-
-
-
                                                     <fieldset class="col col-6">
                                                         <div id="formEmail">
                                                             <input type="" id="jsonEmail" value="[]" hidden>
@@ -293,7 +266,6 @@ include("inc/nav.php");
                                                                         <input id="email" maxlength="255" name="email" class="required" placeholder="seuEmail@gmail.com" value="" type="email">
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-2">
                                                                     <label class="label">&nbsp;</label>
                                                                     <label id="labelPrincipalEmail" class="checkbox">
@@ -301,19 +273,16 @@ include("inc/nav.php");
                                                                         Principal
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-md-2">
                                                                     <label class="label">&nbsp;</label>
                                                                     <button id="btnAddEmail" type="button" class="btn btn-primary">
                                                                         <i class="fa fa-plus"></i>
                                                                     </button>
-
                                                                     <button id="btnRemoverEmail" type="button" class="btn btn-danger">
                                                                         <i class="fa fa-minus"></i>
                                                                     </button>
                                                                 </section>
                                                             </div>
-
                                                             <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
                                                                 <table id="tableEmail" class="table table-bordered table-striped table-condensed table-hover dataTable">
                                                                     <thead>
@@ -332,7 +301,6 @@ include("inc/nav.php");
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
@@ -343,7 +311,6 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseEndereço" class="panel-collapse collapse">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
@@ -360,47 +327,40 @@ include("inc/nav.php");
                                                                 <input id="logradouro" maxlength="50" name="logradouro" class="required" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
-
                                                         <section class="col col-1">
                                                             <label class="label">Número</label>
                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
                                                                 <input id="numero" name="numero" class="required" class="" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
-
                                                         <section class="col col-3">
                                                             <label class="label">Complemento</label>
                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
                                                                 <input id="complemento" maxlength="255" name="complemento" class="" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
-
                                                         <section class="col col-1">
                                                             <label class="label">UF</label>
                                                             <label class="input">
                                                                 <input id="uf" name="uf" maxlength="2" type="text" class="required">
                                                             </label>
                                                         </section>
-
                                                         <section class="col col-2">
                                                             <label class="label">Bairro</label>
                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
                                                                 <input id="bairro" maxlength="50" name="bairro" class="required" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
-
                                                         <section class="col col-3">
                                                             <label class="label">Cidade</label>
                                                             <label class="input"><i class="icon-prepend fa fa-home"></i>
                                                                 <input id="cidade" maxlength="50" name="cidade" class="required" type="text" placeholder=" " value="">
                                                             </label>
                                                         </section>
-
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
@@ -411,7 +371,6 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseDependente" class="panel-collapse collapse">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
@@ -420,28 +379,24 @@ include("inc/nav.php");
                                                             <div class="row">
                                                                 <input type="" id="sequencialDependentes" name="sequencialDependentes" value="" hidden>
                                                                 <input type="" id="idFuncionario" name="idFuncionario" value="" hidden>
-
                                                                 <section class="col col-3">
                                                                     <label class="label">Nome Completo</label>
                                                                     <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                         <input id="nomeDependentes" maxlength="50" name="nomeDependentes" type="text" value="" />
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-2">
                                                                     <label class="label">CPF</label>
                                                                     <label class="input"><i class="icon-prepend fa fa-user"></i>
                                                                         <input class="cpfDependentes" maxlength="20" id="cpfDependentes" type="text" placeholder="XXX.XXX.XXX-XX" value="">
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-2">
                                                                     <label class="label">Data de Nascimento</label>
                                                                     <label class="input"><i class="icon-prepend fa fa-calendar"></i>
                                                                         <input id="dataNascimentoDependentes" name="dataNascimentoDependentes" type="text" class="datepicker" placeholder="dd/mm/aaaa" data-dateformat="dd/mm/yy" value="" data-mask="99/99/9999" data-mask-placeholder="XX/XX/XXXX" style="text-align: center" autocomplete="off">
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-2">
                                                                     <label class="label">Tipo</label>
                                                                     <label class="select">
@@ -456,25 +411,21 @@ include("inc/nav.php");
                                                                                 $tipo = htmlspecialchars($row['tipo'], ENT_QUOTES); //evitando caracteres especiais
                                                                                 echo "<option value='$codigo'>$tipo</option>";
                                                                             }
-
                                                                             ?>
                                                                         </select><i></i>
                                                                         </select>
                                                                     </label>
                                                                 </section>
-
                                                                 <section class="col col-md-2">
                                                                     <label class="label">&nbsp;</label>
                                                                     <button id="btnAddDependentes" type="button" class="btn btn-primary">
                                                                         <i class="fa fa-plus"></i>
                                                                     </button>
-
                                                                     <button id="btnRemoverDependentes" type="button" class="btn btn-danger">
                                                                         <i class="fa fa-minus"></i>
                                                                     </button>
                                                                 </section>
                                                             </div>
-
                                                             <div class="table-responsive" style="min-height: 115px; width:95%; border: 1px solid #ddd; margin-bottom: 13px; overflow-x: auto;">
                                                                 <table id="tableDependentes" class="table table-bordered table-striped table-condensed table-hover dataTable">
                                                                     <thead>
@@ -487,16 +438,13 @@ include("inc/nav.php");
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <footer>
                                             <button type="button" id="btnPdf" class="btn btn-primary hidden" aria-hidden="true" title="PDF" style="float:left; display:<?php echo $esconderBtnPdf ?>">
                                                 <span class="fa fa-file-pdf-o"></span>
@@ -537,31 +485,22 @@ include("inc/nav.php");
                 </article>
             </div>
         </section>
-
-
         <!-- end widget grid -->
-
     </div>
     <!-- END MAIN CONTENT -->
-
 </div>
 <!-- END MAIN PANEL -->
-
 <!-- ==========================CONTENT ENDS HERE ========================== -->
-
 <!-- PAGE FOOTER -->
 <?php
 include("inc/footer.php");
 ?>
 <!-- END PAGE FOOTER -->
-
 <?php
 //include required scripts
 include("inc/scripts.php");
 ?>
-
 <script src="<?php echo ASSETS_URL; ?>/js/businessFuncionarioCadastro.js" type="text/javascript"></script>
-
 <!-- PAGE RELATED PLUGIN(S) 
 <script src="..."></script>-->
 <!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip -->
@@ -584,10 +523,7 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/form2js.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
-
-
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
         jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());
@@ -603,14 +539,15 @@ include("inc/scripts.php");
         $(".cpfDependentes").inputmask("999.999.999-99");
         $(".dataNascimentoDependentes").mask("99/99/9999");
         $("#telefone").mask("(XX) XXXXX-XXXX");
-
-        $('#pis,#nome,#nomeDependentes').bind('cut copy paste', event => event.preventDefault() );
-        
+        $('#pis,#nome,#nomeDependentes').bind('cut copy paste', event => event.preventDefault());
+        //------------- caixa de check-------------//
+        $("#principalEmail,#principal,#whats").prop('checked', false);
+       
         //funçoes
-        $("#cpf").on('focusout', function() {
-            validaCpf()
-
-        });
+        $("#cpf").on('focusout', campo => validaCpf(campo.currentTarget.value));
+        $("#rg").on('focusout', campo => validaRg(campo.currentTarget.value));
+        $("#rg").on('change', campo => verificaRg(campo.currentTarget.value));
+        $("#dataNascimentoDependentes").on('change', campo => validaDataDependentes(campo.currentTarget.value));
 
         $("#cpf").on('change', function() {
             verificaCpf()
@@ -620,26 +557,14 @@ include("inc/scripts.php");
         $("#cpfDependentes").on('focusout', function() {
             validaCpfDependentes()
             comparaCpf()
-
         });
 
-        $("#rg").on('focusout', function() {
-            validaRg()
-        });
-
-
-        $("#rg").on('change', function() {
-            verificaRg()
-        });
-
-        $("#dataNascimento").on("change", function() {
-            var dataNascimento = $("#dataNascimento").val();
+        $("#dataNascimento").on("change", function(campo) {
+            var dataNascimento = campo.currentTarget.value;
             if (dataNascimento.length < 10) {
-
                 $("#idade").val("");
                 $("#dataNascimento").val("");
             }
-
             if (validaData(dataNascimento) == false) {
                 smartAlert("Atenção", "Data de nascimento inválida", "error")
                 $("#idade").val("");
@@ -648,16 +573,14 @@ include("inc/scripts.php");
         });
 
         $("#dataNascimento").on('change', function() {
-            // var idade = 
             validaData();
             if ($("#dataNascimento").val())
                 idade($("#dataNascimento").val())
-
         });
 
         //dependentes       
-        $("#dataNascimentoDependentes").on("change", function() {
-            var dataNascimentoDependentes = $("#dataNascimentoDependentes").val();
+        $("#dataNascimentoDependentes").on("change", function(campo) {
+            var dataNascimentoDependentes = campo.currentTarget.value;
             if (dataNascimentoDependentes.length < 10) {
                 $("#dataNascimentoDependentes").val("");
             }
@@ -667,23 +590,17 @@ include("inc/scripts.php");
                 return;
             }
         });
-        $("#dataNascimentoDependentes").on('change', function() {
-            validaDataDependentes();
-        });
 
         //pis e emprego
-        $("#emprego").on('change', function() {
-            var emprego = $("#emprego").val();
+        $("#emprego").on('change', function(campo) {
+            var emprego = campo.currentTarget.value;
             var pis = $("#pis").val();
-
             if (emprego == 0) {
                 $('#pis').removeClass("readonly").attr("disabled", false)
             } else {
                 $('#pis').addClass("readonly").attr("disabled", true).val("")
             }
         });
-
-        //id--> input unico
 
         //mascara celular e telefone
         var SPMaskBehavior = function(val) {
@@ -697,34 +614,23 @@ include("inc/scripts.php");
 
         $('#telefone').mask(SPMaskBehavior, spOptions);
 
-        //------------- caixa de check-------------//
-        $("#principalEmail").prop('checked', false);
-        $("#principal").prop('checked', false);
-        $("#whats").prop('checked', false);
-
         //cep
         $("#cep").blur(function() {
-
             //Nova variável "cep" somente com dígitos.
             var cep = $(this).val().replace(/\D/g, '');
 
             //Verifica se campo cep possui valor informado.
             if (cep != "") {
-
                 var validacep = /^[0-9]{8}$/;
-
                 //Valida o formato do CEP.
                 if (validacep.test(cep)) {
-
                     //Preenche os campos com "..." enquanto consulta webservice.
                     $("#logradouro").val("...");
                     $("#uf").val("...");
                     $("#bairro").val("...");
                     $("#cidade").val("...");
-
                     //Consulta o webservice viacep.com.br/
                     $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-
                         if (!("erro" in dados)) {
                             //Atualiza os campos com os valores da consulta.
                             $("#logradouro").val(dados.logradouro);
@@ -749,136 +655,111 @@ include("inc/scripts.php");
                 //cep sem valor, limpa formulário.
                 limpa_formulário_cep();
             }
-
         });
 
         function limpa_formulário_cep() {
             $('#cep').val("");
         }
+        //---------------->não permitir caracteres especiais e numeros<------------------//
+        document.getElementById("nome").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ.       ".indexOf(chr) < 0)
+                return false;
+        };
+
+        document.getElementById("nomeDependentes").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ.       ".indexOf(chr) < 0)
+                return false;
+        };
+
+        document.getElementById("pis").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("0912345678".indexOf(chr) < 0)
+                return false;
+        };
+
+        $('#dlgSimpleExcluir').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            modal: true,
+            title: 'Confirma Exclusão',
+            buttons: [{
+                html: "Excluir registro",
+                "class": "btn btn-success",
+                click: function() {
+                    $(this).dialog("close");
+                    excluir();
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
+                "class": "btn btn-default",
+                click: function() {
+                    $(this).dialog("close");
+                }
+            }]
+        });
+
+        //------------------------------>BOTÕES<--------------------------//
+        $("#btnExcluir").on("click", function() {
+            var id = +$("#codigo").val();
+            if (id === 0) {
+                smartAlert("Atenção", "Selecione um registro para excluir!", "error");
+                $("#nome").focus();
+                return;
+            }
+            if (id !== 0) {
+                $('#dlgSimpleExcluir').dialog('open');
+            }
+        });
+
+        $('#btnAddTelefone').on("click", function() {
+            validaTelefone();
+            adicionaTelefone();
+        });
+
+        $('#btnAddEmail').on("click", function() {
+            validaEmail();
+            formataEmail();
+        });
+
+        $('#btnAddDependentes').on("click", function() {
+            var cpfDependentes = $("#cpfDependentes").val();
+            if (cpfDependentes == "") {
+                smartAlert("Atenção", "Preencha CPF do dependente", "error");
+            } else {
+                validaCpfDependentes();
+                if (validaDependentes() === true) {
+                    adicionaDependentes();
+                } else {
+                    smartAlert("Atenção", "Dependente inválido, tente novamente", "error");
+                    $("#cpfDependentes").val("");
+                }
+            }
+        })
+
+        $('#btnNovo').on("click", () => novo());
+
+        $("#btnVoltar").on("click", () => voltar());
+
+        $("#btnGravar").on("click", () => gravar());
+
+        $("#btnPdf").on("click", () => pdf());
+
+        $('#btnRemoverDependentes').on("click", () => excluirDependentes());
+
+        $('#btnRemoverTelefone').on("click", () => excluirContato());
+
+        $('#btnRemoverEmail').on("click", () => excluirEmail());
+
         carregaPagina();
     });
-
-    //---------------->não permitir caracteres especiais e numeros<------------------//
-    document.getElementById("nome").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ.       ".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("nomeDependentes").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ.       ".indexOf(chr) < 0)
-            return false;
-    };
-
-    document.getElementById("pis").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("0912345678".indexOf(chr) < 0)
-            return false;
-    };
-    //------------------------------>BOTÕES<--------------------------//
-    $('#dlgSimpleExcluir').dialog({
-
-        autoOpen: false,
-        width: 400,
-        resizable: false,
-        modal: true,
-        title: 'Confirma Exclusão',
-        buttons: [{
-            html: "Excluir registro",
-            "class": "btn btn-success",
-            click: function() {
-                $(this).dialog("close");
-                excluir();
-            }
-        }, {
-            html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
-            "class": "btn btn-default",
-            click: function() {
-                $(this).dialog("close");
-            }
-        }]
-    });
-
-    $("#btnExcluir").on("click", function() {
-        var id = +$("#codigo").val();
-
-        if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
-            $("#nome").focus();
-            return;
-        }
-
-        if (id !== 0) {
-            $('#dlgSimpleExcluir').dialog('open');
-        }
-
-    });
-
-    $("#btnNovo").on("click", function() {
-        novo();
-    });
-
-    $("#btnVoltar").on("click", function() {
-        voltar();
-    });
-
-    $("#btnGravar").on("click", function() {
-        gravar();
-
-    });
-
-    $("#btnPdf").on("click", function() {
-        pdf();
-    });
-
+    //------------------------->FUNÇÕES<----------------------//
     function pdf() {
         var id = $('#codigo').val();
         window.open('pdfIndividual.php?id=' + id);
-        // $(location).attr('href', 'pdfIndividual.php?id=' + id);
     }
-
-    //telefone
-    $('#btnAddTelefone').on("click", function() {
-        validaTelefone();
-        adicionaTelefone();
-    });
-
-
-    $('#btnRemoverTelefone').on("click", function() {
-        excluirContato();
-    });
-
-    //Email
-    $('#btnAddEmail').on("click", function() {
-        validaEmail();
-        formataEmail();
-    });
-
-    $('#btnRemoverEmail').on("click", function() {
-        excluirEmail();
-    });
-
-    //dependentes
-    $('#btnAddDependentes').on("click", function() {
-        var cpfDependentes = $("#cpfDependentes").val();
-        if (cpfDependentes == "") {
-            smartAlert("Atenção", "Preencha CPF do dependente", "error");
-        } else {
-            validaCpfDependentes();
-            if (validaDependentes() === true) {
-                adicionaDependentes();
-            } else {
-                smartAlert("Atenção", "Dependente inválido, tente novamente", "error");
-                $("#cpfDependentes").val("");
-            }
-        }
-    })
-
-    $('#btnRemoverDependentes').on("click", function() {
-        excluirDependentes();
-    })
-
 
     function carregaPagina() {
         var urlx = window.document.URL.toString();
@@ -907,14 +788,11 @@ include("inc/scripts.php");
 
     function excluir() {
         var id = +$("#codigo").val();
-
         if (id === 0) {
             smartAlert("Atenção", "Selecione um registro para excluir!", "error");
             return;
         }
-
         excluirFuncionario(id);
-
     }
 
     function gravar() {
@@ -927,7 +805,6 @@ include("inc/scripts.php");
         var dataNascimento = $("#dataNascimento").val();
         var estadoCivil = $("#estadoCivil").val();
         var descricao = $("#descricao").val();
-
 
         //contato
         var telefone = $("#jsonTelefone").val();
@@ -948,7 +825,6 @@ include("inc/scripts.php");
 
         //dependentes
         var nomeDependentes = $("#jsonDependentes").val();
-
 
         if (nome == "") {
             smartAlert("Atenção", "Nome não preenchido.", "error")
@@ -1084,7 +960,6 @@ include("inc/scripts.php");
             $("#idade").val(idade)
             $("#btnGravar").prop('disabled', false);
             return false;
-
         }
 
         if (idade >= 18 && idade <= 150) {
@@ -1096,7 +971,6 @@ include("inc/scripts.php");
         if (hoje)
             // se for maior que 60 não vai acontecer nada!
             return false;
-
     }
 
     //------------------>valida data dependentes<---------------//
@@ -1117,93 +991,34 @@ include("inc/scripts.php");
         var m = diaHoje.getMonth() - nasc.getMonth();
         if (m < 0 || (m === 0 && diaHoje.getDate() < nasc.getDate()));
 
-
-        if (nasc>diaHoje)
+        if (nasc > diaHoje)
             // se for maior que 60 não vai acontecer nada!
             return false;
     }
 
-    // function validaDataDependentes(dataNascimentoDependentes) {
-    //     var anoAtual = new Date();
-    //     var anoHoje = anoAtual.getFullYear()
-
-    //     // Verifica se a entrada é uma string
-    //     if (typeof dataNascimentoDependentes !== 'string') {
-    //         return false
-    //     }
-
-    //     // Verifica formado da data
-    //     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoDependentes)) {
-    //         return false
-    //     }
-
-    //     // Divide a data para o objeto "data"
-    //     const partesData = dataNascimentoDependentes.split('/')
-    //     const data = {
-    //         dia: partesData[0],
-    //         mes: partesData[1],
-    //         ano: partesData[2]
-    //     }
-
-    //     // Converte strings em número
-    //     const dia = parseInt(data.dia)
-    //     const mes = parseInt(data.mes)
-    //     const ano = parseInt(data.ano)
-
-    //     // Dias de cada mês, incluindo ajuste para ano bissexto
-    //     const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-    //     // Atualiza os dias do mês de fevereiro para ano bisexto
-    //     if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
-    //         diasNoMes[2] = 29
-    //     }
-
-    //     // Regras de validação:
-    //     // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
-    //     if (mes < 1 || mes > 12 || dia < 1) {
-    //         return false
-    //     }
-    //     if (ano > anoHoje || ano < (anoHoje - 150)) {
-    //         return false;
-    //     }
-
-    //     // Valida número de dias do mês
-    //     else if (dia > diasNoMes[mes]) {
-    //         return false
-    //     }
-
-    //     // Passou nas validações
-    //     return true
-    // }
-    //---------------->validação cpf e rg<-------------------//
-    //validar cpf(exem: 111.111.111-11)
-    function validaCpf() {
-        var cpf = $('#cpf').val();
+    //---------------->validação e verificação cpf e rg<-------------------//
+    function validaCpf(cpf) {
         validarCpf(cpf)
     }
 
-    //verificar se já foi cadastrado
+    function validaCpfDependentes(cpfDependentes) {
+        validarCpf(cpf)
+    }
+
+    function validaRg(rg) {
+        validarRg(rg)
+    }
+
+    function verificaRg() {
+        var id = $('#codigo').val();
+        var rg = $('#rg').val()
+        verificarRg(id, rg)
+    }
+
     function verificaCpf() {
         var id = $('#codigo').val();
         var cpf = $('#cpf').val();
         verificarCpf(id, cpf) //variável "passa" nesse ()
-    }
-
-    function validaCpfDependentes() {
-        var cpfDependentes = $('#cpfDependentes').val();
-        validarCpfDependentes(cpfDependentes)
-    }
-
-    //verificar se já foi cadastrado
-    function verificaRg() {
-        var id = $('#codigo').val();
-        var rg = $('#rg').val()
-        verificarRg(rg)
-    }
-
-    function validaRg() {
-        var rg = $('#rg').val();
-        validarRg(rg)
     }
 
     //------------------------------->TELEFONE<----------------------------------//
@@ -1636,7 +1451,6 @@ include("inc/scripts.php");
                 $('#principalEmail').prop('checked', true);
             } else {
                 $('#principalEmail').prop('checked', false);
-
             }
 
         }
@@ -1719,7 +1533,6 @@ include("inc/scripts.php");
         return true;
     }
 
-    //adiciona dependentes
     function adicionaDependentes() {
         var item = $("#formDependentes").toObject({
             mode: 'combine',
@@ -1771,7 +1584,6 @@ include("inc/scripts.php");
 
     }
 
-    //append-> adicionar um elemento no final da lista
     function fillTableDependentes() {
         $("#tableDependentes tbody").empty();
         for (var i = 0; i < jsonDependentesArray.length; i++) {

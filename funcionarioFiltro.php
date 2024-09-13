@@ -236,20 +236,44 @@ include("inc/scripts.php");
 <script>
     $(document).ready(function() {
         $('#btnSearch').on("click", () => listarFiltro());
-
         $('#btnNovo').on("click", () => novo());
-
         $("#btnPdf").on("click", () => pdf());
 
+        $(".cpf").inputmask("999.999.999-99");
+        $(".dataNascimento").mask("99/99/9999");
+
+        $("#cpf").on('focusout', campo => validarCpf(campo.currentTarget.value));
+        //Inicial       
+        $("#dataNascimentoInicial").on("change", function(campo) {
+            var dataNascimentoInicial = campo.currentTarget.value;
+            if (dataNascimentoInicial.length < 10) {
+                $("#dataNascimentoInicial").val("");
+            }
+            if (validaDataInicial(dataNascimentoInicial) == false) {
+                smartAlert("Atenção", "Data Inválida", "error");
+                $("#dataNascimentoInicial").val("");
+            }
+        });
+        //Final       
+        $("#dataNascimentoFinal").on("change", function(campo) {
+            var dataNascimentoFinal = campo.currentTarget.value;
+            if (dataNascimentoFinal.length < 10) {
+                $("#dataNascimentoFinal").val("");
+            }
+            if (validaDataFinal(dataNascimentoFinal) == false) {
+                smartAlert("Atenção", "Data Inválida", "error");
+                $("#dataNascimentoFinal").val("");
+            }
+        });
+
+        document.getElementById("nome").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+                return false;
+        };
         carregaPagina();
     });
-
-    $(".cpf").inputmask("999.999.999-99");
-    $(".dataNascimento").mask("99/99/9999");
-
     //funçoes
-    $("#cpf").on('focusout', campo => validarCpf(campo.currentTarget.value));
-
     function validarCpf(cpf) {
         $.ajax({
             url: 'js/sqlscopeFuncionarioCadastro.php',
@@ -278,133 +302,48 @@ include("inc/scripts.php");
         });
     }
 
-    //Inicial       
-    $("#dataNascimentoInicial").on("change", function(campo) {
-
-        var dataNascimentoInicial = campo.currentTarget.value;
-        if (dataNascimentoInicial.length < 10) {
-            $("#dataNascimentoInicial").val("");
-        }
-        if (validaDataInicial(dataNascimentoInicial) == false) {
-            smartAlert("Atenção", "Data Inválida", "error");
-            $("#dataNascimentoInicial").val("");
-        }
-    });
-
     function validaDataInicial(dataNascimentoInicial) {
-        var anoAtual = new Date();
-        var anoHoje = anoAtual.getFullYear()
+        var data = document.getElementById("dataNascimentoInicial").value; // pega o valor do input
+        data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
+        var data_array = data.split("-"); // quebra a data em array
 
-        // Verifica se a entrada é uma string
-        if (typeof dataNascimentoInicial !== 'string') {
-            return false
+        // para o IE onde será inserido no formato dd/MM/yyyy
+        if (data_array[0].length != 4) {
+            data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
         }
 
-        // Verifica formado da data
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoInicial)) {
-            return false
-        }
+        // compara as datas e calcula a idade
+        var diaHoje = new Date();
+        var nasc = new Date(data);
+        var idade = diaHoje.getFullYear() - nasc.getFullYear();
+        var m = diaHoje.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && diaHoje.getDate() < nasc.getDate()));
 
-        // Divide a data para o objeto "data"
-        const partesData = dataNascimentoInicial.split('/')
-        const data = {
-            dia: partesData[0],
-            mes: partesData[1],
-            ano: partesData[2]
-        }
-
-        // Converte strings em número
-        const dia = parseInt(data.dia)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
-
-        // Dias de cada mês, incluindo ajuste para ano bissexto
-        const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        // Atualiza os dias do mês de fevereiro para ano bisexto
-        if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
-            diasNoMes[2] = 29
-        }
-
-        // Regras de validação:
-        // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
-        if (mes < 1 || mes > 12 || dia < 1) {
-            return false
-        }
-        if (ano > anoHoje || ano < (anoHoje - 150)) {
+        if (nasc > diaHoje)
+            // se for maior que 60 não vai acontecer nada!
             return false;
-        }
-        // Valida número de dias do mês
-        else if (dia > diasNoMes[mes]) {
-            return false
-        }
-
-        // Passou nas validações
-        return true
     }
 
-    //Final       
-    $("#dataNascimentoFinal").on("change", function() {
-        var dataNascimentoFinal = campo.currentTarget.value;
-        if (dataNascimentoFinal.length < 10) {
-            $("#dataNascimentoFinal").val("");
-        }
-        if (validaDataFinal(dataNascimentoFinal) == false) {
-            smartAlert("Atenção", "Data Inválida", "error");
-            $("#dataNascimentoFinal").val("");
-        }
-    });
-
     function validaDataFinal(dataNascimentoFinal) {
-        var anoAtual = new Date();
-        var anoHoje = anoAtual.getFullYear()
+        var data = document.getElementById("dataNascimentoFinal").value; // pega o valor do input
+        data = data.replace(/\//g, "-"); // substitui eventuais barras (ex. IE) "/" por hífen "-"
+        var data_array = data.split("-"); // quebra a data em array
 
-        // Verifica se a entrada é uma string
-        if (typeof dataNascimentoFinal !== 'string') {
-            return false
+        // para o IE onde será inserido no formato dd/MM/yyyy
+        if (data_array[0].length != 4) {
+            data = data_array[2] + "-" + data_array[1] + "-" + data_array[0];
         }
 
-        // Verifica formado da data
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dataNascimentoFinal)) {
-            return false
-        }
+        // compara as datas e calcula a idade
+        var diaHoje = new Date();
+        var nasc = new Date(data);
+        var idade = diaHoje.getFullYear() - nasc.getFullYear();
+        var m = diaHoje.getMonth() - nasc.getMonth();
+        if (m < 0 || (m === 0 && diaHoje.getDate() < nasc.getDate()));
 
-        // Divide a data para o objeto "data"
-        const partesData = dataNascimentoFinal.split('/')
-        const data = {
-            dia: partesData[0],
-            mes: partesData[1],
-            ano: partesData[2]
-        }
-
-        // Converte strings em número
-        const dia = parseInt(data.dia)
-        const mes = parseInt(data.mes)
-        const ano = parseInt(data.ano)
-
-        // Dias de cada mês, incluindo ajuste para ano bissexto
-        const diasNoMes = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        // Atualiza os dias do mês de fevereiro para ano bisexto
-        if (ano % 400 === 0 || ano % 4 === 0 && ano % 100 !== 0) {
-            diasNoMes[2] = 29
-        }
-
-        // Regras de validação:
-        // Mês deve estar entre 1 e 12, e o dia deve ser maior que zero
-        if (mes < 1 || mes > 12 || dia < 1) {
-            return false
-        }
-        if (ano > anoHoje || ano < (anoHoje - 150)) {
+        if (nasc > diaHoje)
+            // se for maior que 60 não vai acontecer nada!
             return false;
-        }
-        // Valida número de dias do mês
-        else if (dia > diasNoMes[mes]) {
-            return false
-        }
-
-        // Passou nas validações
-        return true
     }
 
     function listarFiltro() {
@@ -437,10 +376,4 @@ include("inc/scripts.php");
         window.open('pdfgeral.php');
 
     }
-
-    // $("nome").on('keypress', function(e) {
-    //     var chr = String.fromCharCode(e.which);
-    //     if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
-    //         return false;
-    // })
 </script>

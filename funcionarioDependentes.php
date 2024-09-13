@@ -81,11 +81,9 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
                                                         <div class="row">
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Código</label>
@@ -195,66 +193,63 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/form2js.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
-
-
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        // $("#tipo").on('change', function() {
-        //     verificaDependentes()
-        // });
+        $("#btnGravar").on("click", function() {
+            verificaDependentes()
+        });
 
+        $("#btnExcluir").on("click", function() {
+            var id = +$("#codigo").val();
+
+            if (id === 0) {
+                smartAlert("Atenção", "Selecione um registro para excluir!", "error");
+                $("#nome").focus();
+                return;
+            }
+            if (id !== 0) {
+                $('#dlgSimpleExcluir').dialog('open');
+            }
+        });
+
+        $("#btnNovo").on("click", function() {
+            novo();
+        });
+
+        $("#btnVoltar").on("click", function() {
+            voltar();
+        });
+
+        //caixa de diálogo
+        $('#dlgSimpleExcluir').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            modal: true,
+            title: 'Confirma Exclusão',
+            buttons: [{
+                html: "Excluir registro",
+                "class": "btn btn-success",
+                click: function() {
+                    $(this).dialog("close");
+                    excluir();
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
+                "class": "btn btn-default",
+                click: function() {
+                    $(this).dialog("close");
+                }
+            }]
+        });
+
+        document.getElementById("tipo").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/, ".indexOf(chr) < 0)
+                return false;
+        };
         carregaPagina();
     })
-
-    //caixa de diálogo
-    $('#dlgSimpleExcluir').dialog({
-        autoOpen: false,
-        width: 400,
-        resizable: false,
-        modal: true,
-        title: 'Confirma Exclusão',
-        buttons: [{
-            html: "Excluir registro",
-            "class": "btn btn-success",
-            click: function() {
-                $(this).dialog("close");
-                excluir();
-            }
-        }, {
-            html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
-            "class": "btn btn-default",
-            click: function() {
-                $(this).dialog("close");
-            }
-        }]
-    });
-
-    $("#btnGravar").on("click", function() {
-      verificaDependentes()
-    });
-
-
-    $("#btnExcluir").on("click", function() {
-        var id = +$("#codigo").val();
-
-        if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
-            $("#nome").focus();
-            return;
-        }
-
-        if (id !== 0) {
-            $('#dlgSimpleExcluir').dialog('open');
-        }
-    });
-
-    $("#btnNovo").on("click", function() {
-        novo();
-    });
-
-    $("#btnVoltar").on("click", function() {
-        voltar();
-    });
 
     function carregaPagina() {
         var urlx = window.document.URL.toString();
@@ -271,39 +266,6 @@ include("inc/scripts.php");
 
     }
 
-    function novo() {
-        $(location).attr('href', 'funcionarioDependentes.php');
-    }
-
-    function voltar() {
-        $(location).attr('href', 'filtroDependentes.php');
-    }
-
-    function verificaDependentes() {
-        var tipo = $('#tipo').val();
-        $.ajax({
-            url: 'js/sqlscopeFuncionarioDependentes.php',
-            dataType: ' html',
-            type: 'post',
-            async: true,
-            data: {
-                funcao: 'verificaDependentes',
-               tipo : tipo
-            },
-            success: function(data, textStatus) {
-                if (data.indexOf('failed') > -1) {
-                    smartAlert("Atenção", "Dependente já Cadastrado.", "error")
-                }else{
-                    gravar();
-                }
-            },
-            error: function(xhr, er) {
-                //tratamento de erro
-            }
-        });
-    }
-    
-
     function gravar() {
         var codigo = +($("#codigo").val());
         var tipo = $("#tipo").val().trim();
@@ -318,6 +280,14 @@ include("inc/scripts.php");
         $(location).attr('href', 'filtroDependentes.php');
     }
 
+    function novo() {
+        $(location).attr('href', 'funcionarioDependentes.php');
+    }
+
+    function voltar() {
+        $(location).attr('href', 'filtroDependentes.php');
+    }
+
     function excluir() {
         var id = +$("#codigo").val();
 
@@ -327,13 +297,31 @@ include("inc/scripts.php");
         }
 
         excluirDependentes(id);
-        $(location).attr('href', 'filtroDependentes.php');       
+        $(location).attr('href', 'filtroDependentes.php');
 
     }
 
-    document.getElementById("tipo").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/, ".indexOf(chr) < 0)
-            return false;
-    };
+    function verificaDependentes() {
+        var tipo = $('#tipo').val();
+        $.ajax({
+            url: 'js/sqlscopeFuncionarioDependentes.php',
+            dataType: ' html',
+            type: 'post',
+            async: true,
+            data: {
+                funcao: 'verificaDependentes',
+                tipo: tipo
+            },
+            success: function(data, textStatus) {
+                if (data.indexOf('failed') > -1) {
+                    smartAlert("Atenção", "Dependente já Cadastrado.", "error")
+                } else {
+                    gravar();
+                }
+            },
+            error: function(xhr, er) {
+                //tratamento de erro
+            }
+        });
+    }
 </script>

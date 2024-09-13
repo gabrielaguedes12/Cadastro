@@ -54,7 +54,6 @@ function verificaDependentes()
    
 }
 
-
 function gravarDependentes()
 {
     $reposit = new reposit();
@@ -107,16 +106,12 @@ function gravarDependentes()
 function recuperaDependentes()
 {
     $utils = new comum();
-
     $condicaoId = !((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])));
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
-
     $codigo = $_POST["codigo"];
 
-
     $sql = "SELECT codigo,tipo,ativo from dbo.tipoDependentes WHERE (0 = 0) and codigo = $codigo ";
-
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);

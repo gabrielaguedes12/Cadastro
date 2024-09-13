@@ -26,24 +26,18 @@ if ($condicaoExcluirOK === false) {
 }
 
 /* ---------------- PHP Custom Scripts ---------
-
   YOU CAN SET CONFIGURATION VARIABLES HERE BEFORE IT GOES TO NAV, RIBBON, ETC.
   E.G. $page_title = "Custom Title" */
-
 $page_title = "Gênero";
-
 /* ---------------- END PHP Custom Scripts ------------- */
-
 //include header
 //you can add your custom css in $page_css array.
 //Note: all css files are inside css/ folder
 $page_css[] = "your_style.css";
 include("inc/header.php");
-
 //include left panel (navigation)
 //follow the tree in inc/config.ui.php
 $page_nav["filtro"]["sub"]["genero"]["active"] = true;
-
 include("inc/nav.php");
 ?>
 <!-- ==========================CONTENT STARTS HERE ========================== -->
@@ -55,7 +49,6 @@ include("inc/nav.php");
     $breadcrumbs["Tabela Básica"] = "";
     include("inc/ribbon.php");
     ?>
-
     <!-- MAIN CONTENT -->
     <div id="content">
         <!-- widget grid -->
@@ -78,15 +71,12 @@ include("inc/nav.php");
                                                         <i class="fa fa-lg fa-angle-down pull-right"></i>
                                                         <i class="fa fa-lg fa-angle-up pull-right"></i>
                                                         Filtro
-
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
                                                         <div class="row">
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Código</label>
@@ -94,7 +84,6 @@ include("inc/nav.php");
                                                                     <input id="codigo" name="codigo" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-4">
                                                                 <label class="select">Descrição</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
@@ -111,13 +100,11 @@ include("inc/nav.php");
                                                                     </select><i></i>
                                                             </section>
                                                         </div>
-
                                                     </fieldset>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <footer>
                                         <button type="button" id="btnExcluir" class="btn btn-danger hidden" aria-hidden="true" title="Excluir" style="display:<?php echo $esconderBtnExcluir ?>">
                                             <span class="fa fa-trash"></span>
@@ -133,8 +120,6 @@ include("inc/nav.php");
                                             <span class="fa fa-backward "></span>
                                         </button>
                                     </footer>
-
-
                                     <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable" tabindex="-1" role="dialog" aria-describedby="dlgSimpleExcluir" aria-labelledby="ui-id-1" style="height: auto; width: 600px; top: 220px; left: 262px; display: none;">
                                         <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
                                             <span id="ui-id-2" class="ui-dialog-title">
@@ -203,62 +188,62 @@ include("inc/scripts.php");
 
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        // $("#descricao").on('change', function() {
-        //     verificaGenero()
-        // });
+        $("#btnGravar").on("click", function() {
+            verificaGenero()
+        });
 
+        $("#btnExcluir").on("click", function() {
+            var id = +$("#codigo").val();
+
+            if (id === 0) {
+                smartAlert("Atenção", "Selecione um registro para excluir!", "error");
+                $("#nome").focus();
+                return;
+            }
+
+            if (id !== 0) {
+                $('#dlgSimpleExcluir').dialog('open');
+            }
+        });
+
+        $("#btnNovo").on("click", function() {
+            novo();
+        });
+
+        $("#btnVoltar").on("click", function() {
+            voltar();
+        });
+
+        //caixa de diálogo
+        $('#dlgSimpleExcluir').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            modal: true,
+            title: 'Confirma Exclusão',
+            buttons: [{
+                html: "Excluir registro",
+                "class": "btn btn-success",
+                click: function() {
+                    $(this).dialog("close");
+                    excluir();
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
+                "class": "btn btn-default",
+                click: function() {
+                    $(this).dialog("close");
+                }
+            }]
+        });
+
+        document.getElementById("descricao").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ() ".indexOf(chr) < 0)
+                return false;
+        };
         carregaPagina();
     })
-
-    //caixa de diálogo
-    $('#dlgSimpleExcluir').dialog({
-        autoOpen: false,
-        width: 400,
-        resizable: false,
-        modal: true,
-        title: 'Confirma Exclusão',
-        buttons: [{
-            html: "Excluir registro",
-            "class": "btn btn-success",
-            click: function() {
-                $(this).dialog("close");
-                excluir();
-            }
-        }, {
-            html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
-            "class": "btn btn-default",
-            click: function() {
-                $(this).dialog("close");
-            }
-        }]
-    });
-
-    $("#btnGravar").on("click", function() {
-      verificaGenero()
-    });
-
-    $("#btnExcluir").on("click", function() {
-        var id = +$("#codigo").val();
-
-        if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
-            $("#nome").focus();
-            return;
-        }
-
-        if (id !== 0) {
-            $('#dlgSimpleExcluir').dialog('open');
-        }
-    });
-
-    $("#btnNovo").on("click", function() {
-        novo();
-    });
-
-
-    $("#btnVoltar").on("click", function() {
-        voltar();
-    });
 
     function carregaPagina() {
         var urlx = window.document.URL.toString();
@@ -272,7 +257,20 @@ include("inc/scripts.php");
             }
         }
         $("#nome").focus();
+    }
 
+    function gravar() {
+        var codigo = +($("#codigo").val());
+        var descricao = $("#descricao").val().trim();
+        var ativo = $("#ativo").val();
+
+        if (descricao == "") {
+            smartAlert("Atenção", "Gênero não preenchido.", "error")
+            descricao = $("#descricao").focus();
+            return;
+        }
+        gravaGenero(codigo, descricao, ativo);
+        $(location).attr('href', 'filtroGenero.php');
     }
 
     function novo() {
@@ -309,7 +307,7 @@ include("inc/scripts.php");
             success: function(data, textStatus) {
                 if (data.indexOf('failed') > -1) {
                     smartAlert("Atenção", "Gênero já Cadastrado.", "error")
-                }else{
+                } else {
                     gravar();
                 }
             },
@@ -318,24 +316,4 @@ include("inc/scripts.php");
             }
         });
     }
-
-    function gravar() {
-        var codigo = +($("#codigo").val());
-        var descricao = $("#descricao").val().trim();
-        var ativo = $("#ativo").val();
-
-        if (descricao == "") {
-            smartAlert("Atenção", "Gênero não preenchido.", "error")
-            descricao = $("#descricao").focus();
-            return
-        }
-        gravaGenero(codigo, descricao, ativo);
-        $(location).attr('href', 'filtroGenero.php');
-    }
-
-    document.getElementById("descricao").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ() ".indexOf(chr) < 0)
-            return false;
-    };
 </script>

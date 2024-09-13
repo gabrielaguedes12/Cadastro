@@ -22,7 +22,6 @@ include "js/girComum.php";
                 <?php
                 $utils = new comum();
                 $reposit = new reposit();
-
                 $nome = $_POST['nome'] ? $_POST['nome'] : null;
                 $cpf = $_POST['cpf'] ? $utils->formatarString($_POST['cpf']) : null;
                 $dataNascimentoInicial = $_POST['dataNascimentoInicial'] ? $utils->formataDataSql($_POST['dataNascimentoInicial']) : null;
@@ -35,16 +34,13 @@ include "js/girComum.php";
                 function validaCpf()
                 {
                     $utils = new comum();
-
                     $result = $utils->validaCpf($_POST['cpf']);
-
                     if ($result) {
                         echo 'sucess#';
                     } else {
                         echo 'failed#';
                     }
                 }
-
 
                 $sql = "SELECT F.codigo, nome, cpf, dataNascimento, E.estadoCivil, G.descricao, F.ativo FROM dbo.funcionario F
                 LEFT JOIN dbo.estadoCivil E ON E.codigo= F.estadoCivil 

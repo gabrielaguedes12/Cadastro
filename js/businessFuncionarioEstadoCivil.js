@@ -21,10 +21,6 @@ function gravaEstadoCivil(codigo, estadoCivil, ativo) {
                     smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
                     setInterval(voltar(), 1500)
                 }
-                // return '';
-            // } else {
-            //     smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-
             }
             //retorno dos dados
         },
@@ -33,7 +29,6 @@ function gravaEstadoCivil(codigo, estadoCivil, ativo) {
         }
     });
     return '';
-
 }
 
 

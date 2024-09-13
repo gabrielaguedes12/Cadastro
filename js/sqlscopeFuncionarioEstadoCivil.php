@@ -105,16 +105,11 @@ function gravaEstadoCivil()
 function recuperaEstadoCivil()
 {
     $utils = new comum();
-
     $condicaoId = !((empty($_POST["id"])) || (!isset($_POST["id"])) || (is_null($_POST["id"])));
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
-
     $codigo = $_POST["codigo"];
-
-
     $sql = "SELECT codigo,estadoCivil,ativo from dbo.estadoCivil WHERE (0 = 0) and codigo = $codigo ";
-
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -142,12 +137,8 @@ function recuperaEstadoCivil()
 
 function excluirEstadoCivil()
 {
-
     $reposit = new reposit();
-
-
     $codigo = (int)$_POST["codigo"];
-
 
     $result = $reposit->update('dbo.estadoCivil' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);
 

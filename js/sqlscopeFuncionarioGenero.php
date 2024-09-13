@@ -43,7 +43,7 @@ function verificaGenero()
 
     if (!$result) {
         echo  "success#";
-        return ;
+        return;
     } else {
         $mensagem = "Informe o Gênero";
         echo "failed#" . $mensagem . ' ';
@@ -108,10 +108,7 @@ function recuperaGenero()
     $condicaoLogin = !((empty($_POST["loginPesquisa"])) || (!isset($_POST["loginPesquisa"])) || (is_null($_POST["loginPesquisa"])));
 
     $codigo = $_POST["codigo"];
-
-
     $sql = "SELECT codigo,descricao,ativo from dbo.genero WHERE (0 = 0) and codigo = $codigo ";
-
 
     $reposit = new reposit();
     $result = $reposit->RunQuery($sql);
@@ -141,8 +138,6 @@ function excluirGenero()
 {
 
     $reposit = new reposit();
-
-
     $codigo = (int) $_POST["codigo"];
 
     $result = $reposit->update('dbo.genero' . '|' . 'ativo = 0' .  '|' . 'codigo = ' . $codigo);

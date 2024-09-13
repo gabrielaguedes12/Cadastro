@@ -85,7 +85,6 @@ include("inc/nav.php");
                                             <div id="collapseCadastro" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
                                                         <div class="row">
                                                             <section class="col col-1 hidden">
                                                                 <label class="label">Código</label>
@@ -93,7 +92,6 @@ include("inc/nav.php");
                                                                     <input id="codigo" name="codigo" type="text" class="readonly" readonly>
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-4">
                                                                 <label class="select">Descrição</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
@@ -110,7 +108,6 @@ include("inc/nav.php");
                                                                     </select><i></i>
                                                             </section>
                                                         </div>
-
                                                     </fieldset>
                                                 </div>
                                             </div>
@@ -196,63 +193,66 @@ include("inc/scripts.php");
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/form2js.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/form-to-json/jquery.toObject.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/inputMask/script.js"></script>
-
 <script language="JavaScript" type="text/javascript">
     $(document).ready(function() {
-        // $('#estadoCivil').on('change', function() {
-        //     verificaEstadoCivil();
-        // });
+        $("#btnGravar").on("click", function() {
+            verificaEstadoCivil()
+        });
+
+        $("#btnExcluir").on("click", function() {
+            var id = +$("#codigo").val();
+
+            if (id === 0) {
+                smartAlert("Atenção", "Selecione um registro para excluir !", "error");
+                $("#nome").focus();
+                return;
+            }
+            if (id !== 0) {
+                $('#dlgSimpleExcluir').dialog('open');
+            }
+        });
+
+        $("#btnNovo").on("click", function() {
+            novo();
+        });
+
+        $("#btnVoltar").on("click", function() {
+            voltar();
+        });
+
+
+        //caixa de diálogo
+        $('#dlgSimpleExcluir').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            modal: true,
+            title: 'Confirma Exclusão',
+            buttons: [{
+                html: "Excluir registro",
+                "class": "btn btn-success",
+                click: function() {
+                    $(this).dialog("close");
+                    excluir();
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
+                "class": "btn btn-default",
+                click: function() {
+                    $(this).dialog("close");
+                }
+            }]
+        });
+
+        //não permitir caracteres especiais
+        document.getElementById("estadoCivil").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/ ".indexOf(chr) < 0)
+                return false;
+        };
+
         carregaPagina();
     })
-
-    //caixa de diálogo
-    $('#dlgSimpleExcluir').dialog({
-        autoOpen: false,
-        width: 400,
-        resizable: false,
-        modal: true,
-        title: 'Confirma Exclusão',
-        buttons: [{
-            html: "Excluir registro",
-            "class": "btn btn-success",
-            click: function() {
-                $(this).dialog("close");
-                excluir();
-            }
-        }, {
-            html: "<i class='fa fa-times'></i>&nbsp; Cancelar",
-            "class": "btn btn-default",
-            click: function() {
-                $(this).dialog("close");
-            }
-        }]
-    });
-
-    //setTimeout-->para determinar o tempo//
-    $("#btnGravar").on("click", function() {
-        verificaEstadoCivil()
-    });
-
-    $("#btnExcluir").on("click", function() {
-        var id = +$("#codigo").val();
-
-        if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir !", "error");
-            $("#nome").focus();
-            return;
-        }
-        if (id !== 0) {
-            $('#dlgSimpleExcluir').dialog('open');
-        }
-    });
-
-    $("#btnNovo").on("click", function() {
-        novo();
-    });
-
-    $("#btnVoltar").on("click", function() {
-        voltar();
-    });
 
     function carregaPagina() {
         var urlx = window.document.URL.toString();
@@ -266,6 +266,32 @@ include("inc/scripts.php");
             }
         }
         $("#nome").focus();
+    }
+
+    function gravar() {
+        var codigo = +($("#codigo").val());
+        var estadoCivil = $("#estadoCivil").val().trim();
+        var ativo = $("#ativo").val();
+
+        if (estadoCivil == "") {
+            smartAlert("Atenção", "Estado civil não preenchido.", "error")
+            estadoCivil = $("#estadoCivil").focus();
+            return;
+        }
+
+        gravaEstadoCivil(codigo, estadoCivil, ativo);
+        $(location).attr('href', 'filtroEstadoCivil.php');
+    }
+
+    function excluir() {
+        var id = +$("#codigo").val();
+
+        if (id === 0) {
+            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
+            return;
+        }
+        excluirEstadoCivil(id);
+        $(location).attr('href', 'filtroEstadoCivil.php');
     }
 
     function novo() {
@@ -290,7 +316,7 @@ include("inc/scripts.php");
             success: function(data, textStatus) {
                 if (data.indexOf('failed') > -1) {
                     smartAlert("Atenção", "Estado Civil já Cadastrado.", "error")
-                }else{
+                } else {
                     gravar();
                 }
             },
@@ -299,36 +325,4 @@ include("inc/scripts.php");
             }
         });
     }
-
-    function gravar() {
-        var codigo = +($("#codigo").val());
-        var estadoCivil = $("#estadoCivil").val().trim();
-        var ativo = $("#ativo").val();
-
-        if (estadoCivil == "") {
-            smartAlert("Atenção", "Estado civil não preenchido.", "error")
-            estadoCivil = $("#estadoCivil").focus();
-            return
-        }
-
-        gravaEstadoCivil(codigo, estadoCivil, ativo);
-        $(location).attr('href', 'filtroEstadoCivil.php');
-    }
-
-    function excluir() {
-        var id = +$("#codigo").val();
-
-        if (id === 0) {
-            smartAlert("Atenção", "Selecione um registro para excluir!", "error");
-            return;
-        }
-        excluirEstadoCivil(id);
-        $(location).attr('href', 'filtroEstadoCivil.php');
-    }
-
-    document.getElementById("estadoCivil").onkeypress = function(e) {
-        var chr = String.fromCharCode(e.which);
-        if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ()/ ".indexOf(chr) < 0)
-            return false;
-    };
 </script>

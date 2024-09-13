@@ -11,14 +11,14 @@ function gravaFuncionario(id, ativo, nome, cpf, rg, dataNascimento, estadoCivil,
             if (data.indexOf('sucess') < 0) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
-                smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
-                return '';
-            } else {
-                smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
-                $('#btnGravar').attr('disabled', true);
-
-                setInterval(voltar(), 1500)
-
+                if (mensagem !== "") {
+                    smartAlert("Atenção", "Operação não realizada - entre em contato com a GIR!", "error");
+                    return '';
+                } else {
+                    smartAlert("Sucesso", "Operação realizada com sucesso!", "success");
+                    $('#btnGravar').attr('disabled', true);
+                    setInterval(voltar(), 1500)
+                }
             }
             //retorno dos dados
         },
@@ -40,7 +40,6 @@ function validarCpf(cpf) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
-
                 if (mensagem !== "") {
                     smartAlert("Atenção", mensagem, "error");
                 } else {
@@ -65,7 +64,7 @@ function validarCpfDependentes(cpfDependentes) {
             funcao: 'validaCpfDependentes',
             cpfDependentes: cpfDependentes
         },
-        success: function(data, textStatus) {
+        success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
@@ -75,16 +74,14 @@ function validarCpfDependentes(cpfDependentes) {
                 } else {
                     smartAlert("Atenção", "CPF dependente inválido", "error");
                     $('#cpfDependentes').val("");
-
                 }
             }
         },
-        error: function(xhr, er) {
+        error: function (xhr, er) {
             //tratamento de erro
         }
     });
 }
-
 
 function validarRg(rg) {
     $.ajax({
@@ -95,7 +92,7 @@ function validarRg(rg) {
             funcao: 'validaRg',
             rg: rg
         },
-        success: function(data, textStatus) {
+        success: function (data, textStatus) {
             if (data.indexOf('failed') > -1) {
                 var piece = data.split("#");
                 var mensagem = piece[1];
@@ -105,11 +102,10 @@ function validarRg(rg) {
                 } else {
                     smartAlert("Atenção", "RG dependente inválido", "error");
                     $('#rg').val("");
-
                 }
             }
         },
-        error: function(xhr, er) {
+        error: function (xhr, er) {
             //tratamento de erro
         }
     });
@@ -152,7 +148,6 @@ function verificarRg(id, rg) {
                 if (mensagem !== "") {
                     smartAlert("Atenção", "RG já cadastrado", "error");
                     $('#rg').val("");
-
                 }
             }
         },
@@ -232,15 +227,14 @@ function recuperaFuncionario(id) {
                     $('#btnExcluir').removeClass('hidden');
                 }
 
+                validaData();
+
                 if (emprego == 0) {
                     $('#pis').removeClass("readonly").attr("disabled", false)
                 } else {
                     $('#pis').addClass("readonly").attr("disabled", true).val("")
                 }
 
-                // idade($("#dataNascimento").val());
-
-                validaData();
 
                 $("#jsonTelefone").val(strarrayTelefone)
                 jsonTelefoneArray = JSON.parse($("#jsonTelefone").val());

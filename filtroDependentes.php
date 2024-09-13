@@ -64,7 +64,6 @@ include("inc/nav.php");
                             <h2>Dependentes</h2>
                         </header>
                         <div>
-
                             <div class="widget-body no-padding">
                                 <form action="javascript:gravar()" class="smart-form client-form" id="formUsuarioFiltro" method="post">
                                     <div class="panel-group smart-accordion-default" id="accordion">
@@ -78,19 +77,16 @@ include("inc/nav.php");
                                                     </a>
                                                 </h4>
                                             </div>
-
                                             <div id="collapseFiltroDependentes" class="panel-collapse collapse in">
                                                 <div class="panel-body no-padding">
                                                     <fieldset>
-
-                                                    <div class="row">
+                                                        <div class="row">
                                                             <section class="col col-3">
                                                                 <label class="label">Tipo de Dependente</label>
                                                                 <label class="input"><i class="icon-prepend fa fa-user"></i>
-                                                                    <input id="tipo" maxlength="255" name="tipo" type="text" placeholder=" " value="">                                                                   
+                                                                    <input id="tipo" maxlength="255" name="tipo" type="text" placeholder=" " value="">
                                                                 </label>
                                                             </section>
-
                                                             <section class="col col-1">
                                                                 <label class="label">Ativo</label>
                                                                 <label class="select">
@@ -101,7 +97,6 @@ include("inc/nav.php");
                                                                     </select><i></i>
                                                                 </label>
                                                             </section>
-
                                                         </div>
                                                     </fieldset>
                                                 </div>
@@ -168,8 +163,6 @@ include("inc/scripts.php");
 <!--<script src="/js/plugin/fullcalendar/jquery.fullcalendar.min.js"></script>-->
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/fullcalendar.js"></script>
 <script src="<?php echo ASSETS_URL; ?>/js/plugin/fullcalendar/locale-all.js"></script>
-
-
 <script>
     $(document).ready(function() {
         $('#btnSearch').on("click", function() {
@@ -179,7 +172,11 @@ include("inc/scripts.php");
         $('#btnNovo').on("click", function() {
             novo();
         });
-
+        document.getElementById("tipo").onkeypress = function(e) {
+            var chr = String.fromCharCode(e.which);
+            if ("qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNMáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ       ".indexOf(chr) < 0)
+                return false;
+        };
     });
 
     function listarFiltro() {
